@@ -1,0 +1,318 @@
+.choice {
+  padding: 170px 0 0;
+  max-width: 1440px;
+  margin: 0 auto;
+  box-sizing: border-box;
+
+  &-title {
+    @include appetite48;
+
+    margin: 0 0 70px;
+
+    color: $white;
+    text-align: center;
+  }
+
+  &-wrapper {
+    position: relative;
+
+    display: flex;
+    justify-content: space-between;
+    gap: 0 32px;
+    margin: 0 86px;
+
+    &:after,
+    &:before {
+      position: absolute;
+
+      content: "";
+    }
+
+    &:before {
+      top: -85px;
+      left: -68px;
+
+      width: 129px;
+      height: 117px;
+
+      background: url("../images/gnome1.png");
+    }
+
+    &:after {
+      top: -104px;
+      right: -48px;
+
+      width: 182px;
+      height: 148px;
+
+      background: url("../images/gnome2.png");
+    }
+
+    &.is-no-mobile {
+      display: flex;
+    }
+
+    &.is-mobile {
+      display: none;
+    }
+  }
+
+  &__item {
+    box-sizing: border-box;
+    overflow: hidden;
+    max-width: 360px;
+    padding: 0 0 28px;
+
+    border: 6px solid $white;
+    border-radius: 35px;
+    background: $white;
+
+    text-align: center;
+
+    cursor: pointer;
+
+    &--img {
+      display: block;
+      margin: 0 0 36px;
+    }
+
+    &--title {
+      @include appetite24;
+
+      margin: 0 0 22px;
+
+      color: $purple;
+      text-transform: uppercase;
+    }
+
+    &--text {
+      @include lifehack24;
+
+      margin: 0 auto 30px;
+      max-width: 245px;
+
+      color: $purple;
+    }
+
+    &--button {
+      @include appetite24;
+      @include button-base(18px, 18px);
+    }
+  }
+}
+
+@include tablet {
+  .choice {
+    &-title {
+      margin: 0 0 140px;
+    }
+
+    &-wrapper {
+      flex-direction: column;
+      align-items: center;
+      gap: 104px 0;
+      margin: 0 auto;
+      padding: 0 0 140px;
+
+      &:before,
+      &:after {
+        display: none;
+      }
+    }
+
+    &__item {
+      position: relative;
+
+      width: 500px;
+      max-width: none;
+      overflow: visible;
+
+      &--img {
+        width: 100%;
+        margin: 0 0 30px;
+
+        border-radius: 35px 35px 0 0;
+      }
+
+      &--title {
+        margin: 0 0 8px;
+      }
+
+      &--text {
+        max-width: none;
+      }
+
+      &:first-of-type,
+      &:last-of-type {
+        &:before {
+          position: absolute;
+
+          content: "";
+        }
+      }
+
+      &:first-of-type {
+        &:before {
+          top: -87px;
+          left: 146px;
+
+          width: 129px;
+          height: 117px;
+
+          background: url("../images/gnome1.png");
+        }
+      }
+
+      &:last-of-type {
+        &:before {
+          top: -97px;
+          right: -67px;
+
+          width: 182px;
+          height: 148px;
+
+          background: url("../images/gnome2.png");
+        }
+      }
+    }
+  }
+}
+
+@include mobile {
+  $width: 70px;
+
+  .choice {
+    padding: 276px 0 0;
+
+    &-title {
+      margin: 0 0 44px;
+    }
+
+    &-wrapper {
+      &.is-no-mobile {
+        display: none;
+      }
+
+      &.is-mobile {
+        display: block;
+        width: 528px;
+      }
+
+      .slick-list {
+        padding: 0 !important; //перебил стили slick.css
+        width: 528px;
+        margin: 0 auto;
+      }
+
+      .slick-arrow {
+        position: absolute;
+        top: 148px;
+        z-index: 1;
+
+        width: $width;
+        height: $width;
+
+        font-size: 0;
+
+        background-size: contain;
+      }
+
+      .slick-prev {
+        left: calc(#{$width} / -2 + 24px);// 24px половина расстояния между карточками в слайдере
+
+        background-image: url("../images/arrow-prev.svg");
+      }
+
+      .slick-next {
+        right: calc(#{$width} / -2 + 24px);
+
+        background-image: url("../images/arrow-next.svg");
+      }
+    }
+
+    &__for-item {
+      position: relative;
+
+      margin: 0 24px;
+      padding: 0 0 100px;
+    }
+
+    &__item {
+      position: static;
+
+      width: 480px;
+      padding: 0 0 56px;
+
+      &:before {
+        display: none;
+      }
+
+      &--img {
+        margin: 0 0 48px;
+      }
+
+      &--title {
+        margin: 0 0 24px;
+      }
+
+      &--text {
+        max-width: 245px;
+        margin: 0 auto;
+      }
+
+      &--link {
+        @include lifehack32;
+
+        position: absolute;
+        bottom: 0;
+        left: 0;
+
+        width: 100%;
+
+        color: $white;
+        text-decoration: underline;
+        text-align: center;
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 580px) {
+  .choice {
+    &-wrapper {
+      &.is-mobile {
+        width: 370px;
+      }
+    }
+
+    &__item {
+      width: 320px;
+    }
+
+    .slick-list {
+      width: 370px;
+    }
+  }
+}
+
+@media screen and (max-width: 420px) {
+  .choice {
+    &-wrapper {
+      &.is-mobile {
+        width: 290px;
+      }
+    }
+
+    &__for-item {
+      padding: 0 0 140px;
+    }
+
+    &__item {
+      width: 240px;
+    }
+
+    .slick-list {
+      width: 290px;
+    }
+  }
+}

@@ -1,0 +1,188 @@
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: -1;
+
+  height: 100%;
+  width: 100%;
+  padding: 48px;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background: rgba(0, 0, 0, 0.45);
+
+  opacity: 0;
+  transition: opacity ease-in 300ms, z-index ease-in 10ms 320ms;
+
+  &-wrapper {
+    position: relative;
+
+    padding: 40px;
+    max-width: 480px;
+    box-sizing: border-box;
+
+    border-radius: 35px;
+    border: 6px solid $white;
+    background: $purple-light;
+
+    transform: scale(0);
+    transition: $transition-out;
+  }
+
+  &__cross {
+    $width: 70px;
+
+    position: absolute;
+    top: calc(#{$width} / -2);
+    right: calc(#{$width} / -2);
+
+    width: $width;
+    height: $width;
+
+    background: url("../images/cross.svg");
+
+    transform: rotate(0);
+    transition: $transition-out;
+    cursor: pointer;
+
+    &:hover {
+      transform: rotate(180deg);
+      transition: $transition-in;
+    }
+  }
+
+  &__text {
+    font-family: "lifehack";
+    font-size: 32px;
+    text-align: center;
+    color: $purple;
+  }
+
+  &.is-visibility {
+    z-index: 10;
+
+    opacity: 1;
+    transition: z-index ease-in 10ms, opacity ease-in 300ms 15ms;
+
+    .modal-wrapper {
+      transform: scale(1);
+      transition: $transition-in;
+    }
+  }
+}
+
+.modal-gifts {
+  .modal-wrapper {
+    max-width: 1340px;
+  }
+}
+@include tablet {
+  .modal {
+    &-gifts {
+      &-content {
+        overflow-y: scroll;
+      }
+    }
+  }
+}
+@include mobile {
+  .modal {
+    &-gifts {
+      padding: 88px 16px 0;
+      display: block;
+
+      background: #7D69AC url("../images/stars.png") center 0 no-repeat;
+      background-size: contain;
+
+      text-align: center;
+
+
+      &__title {
+        @include appetite36;
+
+        max-width: 400px;
+        margin: 0 auto 32px;
+
+        color: $white;
+        text-align: center;
+      }
+
+      .modal-wrapper {
+        display: inline-block;
+        padding: 0;
+      }
+
+      &-content {
+        padding: 48px;
+      }
+    }
+
+    &__cross {
+      top: -164px;
+      right: -6px;
+    }
+  }
+}
+
+.modal-lk {
+  .modal {
+    &-wrapper {
+      padding: 36px 0 0;
+      width: 480px;
+
+      border-color: $purple3;
+    }
+  }
+
+  &-content {
+    @include lifehack36;
+
+    color: $purple;
+
+    >div {
+      padding: 0 0 30px;
+
+      text-align: center;
+      color: $purple;
+
+      border-bottom: 4px solid rgba(96, 71, 150, 0.60);
+    }
+
+    >ul {
+      overflow: hidden;
+      border-radius: 0 0 35px 35px;
+
+      >li {
+        padding: 8px 16px;
+        margin: 0 0 8px;
+
+        background: linear-gradient(180deg, rgba(209, 198, 239, 0.66) 1.56%, rgba(255, 255, 255, 0.07) 44.79%, rgba(157, 131, 218, 0.23) 100%);
+
+        cursor: pointer;
+
+        &:last-of-type {
+          margin: 0;
+        }
+      }
+    }
+  }
+}
+
+@include mobile {
+  .modal {
+    &-wrapper {
+      padding: 40px 32px;
+    }
+  }
+}
+
+@media screen and (max-width: 400px) {
+  .modal {
+    &-wrapper {
+      padding: 40px 16px;
+    }
+  }
+}

@@ -1,0 +1,215 @@
+.form {
+  position: relative;
+
+  border-radius: 35px;
+  max-width: 480px;
+
+  background: $white;
+
+  &__wrapper {
+    padding: 16px 73px 0;
+
+    text-align: center;
+  }
+
+  &__name {
+    @include appetite36;
+
+    padding: 42px 0 27px;
+
+    text-shadow: 0 4px 0 $white;
+    color: $purple;
+    text-transform: uppercase;
+    text-align: center;
+
+    background: $purple-light;
+    border-radius: 35px 35px 0 0;
+
+    &:first-of-type {
+      display: block;
+
+      & + .form__name {
+        display: none;
+      }
+    }
+  }
+
+  &.form-enter {
+    .form__name {
+      &:first-of-type {
+        display: none;
+
+        & + .form__name {
+          display: block;
+        }
+      }
+    }
+
+    .re-password {
+      display: block;
+    }
+  }
+
+  &__item {
+    position: relative;
+
+    margin: 0 0 24px;
+
+    &:last-of-type {
+      margin: 0;
+    }
+
+    &-text {
+      margin: 8px auto 0;
+
+      font-family: "lifehack";
+      font-size: 36px;
+      line-height: 43px;
+      color: $purple;
+    }
+
+    &-input {
+      position: relative;
+
+      >input {
+        height: 68px;
+        box-sizing: border-box;
+        width: 100%;
+        padding: 0 10px;
+        box-sizing: border-box;
+
+        border: 3px solid $purple-light;
+        border-radius: 35px;
+
+        &,
+        &::placeholder {
+          font-family: "lifehack";
+          font-size: 24px;
+          color: $purple;
+          text-align: center;
+        }
+      }
+
+      &.is-error {
+        >input {
+          border-color: $red;
+        }
+
+        & + .error-message {
+          display: block;
+        }
+      }
+    }
+
+    .error-message {
+      position: absolute;
+      bottom: -23px;
+      left: 0;
+
+      display: none;
+
+      font-family: "lifehack";
+      font-size: 12px;
+      line-height: normal;
+      color: $red;
+    }
+  }
+
+  .button {
+    @include appetite36;
+    @include button-base(22px, 35px);
+
+    margin: 33px 0 -22px;
+  }
+
+  .re-password {
+    position: absolute;
+    bottom: -76px;
+    left: 0;
+
+    width: 100%;
+    display: none;
+
+    font-family: "lifehack";
+    font-size: 32px;
+    line-height: normal;
+    text-decoration: underline;
+    text-align: center;
+    color: $purple;
+
+    cursor: pointer;
+  }
+}
+
+@media screen and (min-width: 1280px) {
+  .form {
+    width: 480px;
+  }
+}
+
+@include tablet {
+  .form {
+    width: 480px;
+  }
+}
+
+@include mobile {
+  .form {
+    &.form-enter {
+      margin-bottom: 100px;
+    }
+
+    &__name {
+      border: 6px solid $white;
+      border-bottom: 0;
+    }
+
+    &__decor {
+      $width: 24px;
+
+      position: absolute;
+      top: calc(#{$width} / -2 + 3px);// +3 половина высоты border'a
+      left: 0;
+
+      display: flex;
+      justify-content: space-evenly;
+      width: 100%;
+
+      >span {
+        display: block;
+        width: $width;
+        height: $width;
+
+        background: radial-gradient(50% 50% at 50% 50%, #FFEB3A 0%, #FFF7AF 100%);
+        border-radius: 50%;
+        filter: drop-shadow(1px 0px 18px #FFEF60);
+      }
+    }
+
+    .re-password {
+      color: $white;
+    }
+  }
+}
+
+@media screen and (max-width: 500px) {
+  .form {
+    width: auto;
+  }
+};
+
+@media screen and (max-width: 400px) {
+  .form {
+    &__wrapper {
+      padding: 16px 16px 0;
+    }
+  }
+}
+
+@media screen and (max-width: 310px) {
+  .form {
+    .re-password {
+      bottom: -120px;
+    }
+  }
+}

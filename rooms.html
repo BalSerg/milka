@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en" class="height100">
+<head>
+    <meta charset="UTF-8">
+    <title>milka</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link rel="stylesheet" type="text/css" href="scripts/slick/slick.css"/>
+    <link rel="stylesheet" href="styles/main.min.css">
+    <script type="text/javascript" src="scripts/jquery-3.6.3.min.js"></script>
+    <script type="text/javascript" src="scripts/slick/slick.min.js"></script>
+    <script type="text/javascript" src="scripts/index.js"></script>
+</head>
+<body class="height100">
+    <main class="main height100">
+        <div class="menu js-menu">
+            <div class="menu__item js-call-modal is-hidden"></div>
+            <div class="menu__item js-call-modal"></div>
+        </div>
+        <div class="choice js-choice">
+            <h1 class="choice-title">Выбери комнату!</h1>
+            <div class="choice-wrapper is-no-mobile">
+                <div class="choice__item js-go-room1">
+                    <img src="images/room_preview1.png" alt="" class="choice__item--img"/>
+                    <div class="choice__item--title">Спортивная комната</div>
+                    <div class="choice__item--text">Если любишь гонять мяч, тебе сюда!</div>
+                    <button class="choice__item--button"><span>ПЕРЕЙТИ</span></button>
+                </div>
+                <div class="choice__item js-go-room2">
+                    <img src="images/room_preview2.png" alt="" class="choice__item--img"/>
+                    <div class="choice__item--title">Комната творчества</div>
+                    <div class="choice__item--text">Любишь рисовать! Скорее заходи!</div>
+                    <button class="choice__item--button"><span>ПЕРЕЙТИ</span></button>
+                </div>
+                <div class="choice__item js-go-room3">
+                    <img src="images/room_preview3.png" alt="" class="choice__item--img"/>
+                    <div class="choice__item--title">ИГРОВАЯ</div>
+                    <div class="choice__item--text">Игрушки ждут тебя здесь!</div>
+                    <button class="choice__item--button"><span>ПЕРЕЙТИ</span></button>
+                </div>
+            </div>
+            <div class="choice-wrapper is-mobile js-choice-slick">
+                <div class="choice__for-item">
+                    <div class="choice__item js-go-room1">
+                        <img src="images/room_preview1.png" alt="" class="choice__item--img"/>
+                        <div class="choice__item--title">Спортивная комната</div>
+                        <div class="choice__item--text">Если любишь гонять мяч, тебе сюда!</div>
+                        <button class="choice__item--link"><div>У меня уже есть комната</div>Войти</button>
+                    </div>
+                </div>
+                <div class="choice__for-item">
+                    <div class="choice__item js-go-room2">
+                        <img src="images/room_preview2.png" alt="" class="choice__item--img"/>
+                        <div class="choice__item--title">Комната творчества</div>
+                        <div class="choice__item--text">Любишь рисовать! Скорее заходи!</div>
+                        <button class="choice__item--link"><div>У меня уже есть комната</div>Войти</button>
+                    </div>
+                </div>
+                <div class="choice__for-item">
+                    <div class="choice__item js-go-room3">
+                        <img src="images/room_preview3.png" alt="" class="choice__item--img"/>
+                        <div class="choice__item--title">ИГРОВАЯ</div>
+                        <div class="choice__item--text">Игрушки ждут тебя здесь!</div>
+                        <button class="choice__item--link"><div>У меня уже есть комната</div>Войти</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="rooms js-rooms is-hidden">
+            <div class="room-wrapper js-current-room"></div>
+        </div>
+        <div class="range is-hidden">
+            <div class="range-top js-range-button-top"></div>
+            <input type="range" min="100" max="200" value="120" step="1" orient="vertical" class="js-range"/>
+            <div class="range-bottom js-range-button-bottom"></div>
+        </div>
+    </main>
+    <div class="modal modal-gifts js-modal js-modal-gifts">
+        <div class="modal-gifts__title is-mobile">Моя коробка с подарками</div>
+        <div class="modal-wrapper">
+            <div class="modal__cross js-cross"></div>
+            <div class="modal-gifts-content js-gifts-content">
+                <div class="gifts js-gifts">
+                <div class="gifts__item is-can-get">
+                    <span>1</span>
+                    <img src="images/gifts/gift1.png" alt=""/>
+                </div>
+                <div class="gifts__item is-can-get">
+                    <span>2</span>
+                    <img src="images/gifts/gift2.png" alt=""/>
+                </div>
+                <div class="gifts__item is-can-get">
+                    <span>3</span>
+                    <img src="images/gifts/gift3.png" alt=""/>
+                </div>
+                <div class="gifts__item is-can-get">
+                    <span>4</span>
+                    <img src="images/gifts/gift4.png" alt=""/>
+                </div>
+                <div class="gifts__item is-can-get">
+                    <span>5</span>
+                    <img src="images/gifts/gift5.png" alt=""/>
+                </div>
+                <div class="gifts__item is-can-get">
+                    <span>6</span>
+                    <img src="images/gifts/gift6.png" alt=""/>
+                </div>
+                <div class="gifts__item is-can-get">
+                    <span>7</span>
+                    <img src="images/gifts/gift7.png" alt=""/>
+                </div>
+                <div class="gifts__item is-can-get">
+                    <span>8</span>
+                    <img src="images/gifts/gift8.png" alt=""/>
+                </div>
+                <div class="gifts__item is-can-get">
+                    <span>9</span>
+                    <img src="images/gifts/gift9.png" alt=""/>
+                </div>
+                <div class="gifts__item is-can-get">
+                    <span>10</span>
+                    <img src="images/gifts/gift10.png" alt=""/>
+                </div>
+                <div class="gifts__item is-can-get">
+                    <span>12</span>
+                    <img src="images/gifts/gift11.png" alt=""/>
+                </div>
+                <div class="gifts__item is-can-get">
+                    <span>13</span>
+                    <img src="images/gifts/gift12.png" alt=""/>
+                </div>
+                <div class="gifts__item is-can-get">
+                    <span>14</span>
+                    <img src="images/gifts/gift13.png" alt=""/>
+                </div>
+                <div class="gifts__item is-can-get">
+                    <span>15</span>
+                    <img src="images/gifts/gift14.png" alt=""/>
+                </div>
+                <div class="gifts__item is-can-get">
+                    <span>16</span>
+                    <img src="images/gifts/gift15.png" alt=""/>
+                </div>
+                <div class="gifts__item is-can-get">
+                    <span>17</span>
+                    <img src="images/gifts/gift16.png" alt=""/>
+                </div>
+                <div class="gifts__item is-can-get">
+                    <span>18</span>
+                    <img src="images/gifts/gift17.png" alt=""/>
+                </div>
+                <div class="gifts__item is-can-get">
+                    <span>19</span>
+                    <img src="images/gifts/gift18.png" alt=""/>
+                </div>
+                <div class="gifts__item is-can-get">
+                    <span>20</span>
+                    <img src="images/gifts/gift19.png" alt=""/>
+                </div>
+                <div class="gifts__item is-can-get">
+                    <span>21</span>
+                    <img src="images/gifts/gift20.png" alt=""/>
+                </div>
+                <div class="gifts__item is-can-get">
+                    <span>22</span>
+                    <img src="images/gifts/gift21.png" alt=""/>
+                </div>
+                <div class="gifts__item is-can-get">
+                    <span>23</span>
+                    <img src="images/gifts/gift22.png" alt=""/>
+                </div>
+                <div class="gifts__item is-can-get">
+                    <span>24</span>
+                    <img src="images/gifts/gift23.png" alt=""/>
+                </div>
+                <div class="gifts__item is-can-get">
+                    <span>25</span>
+                    <img src="images/gifts/gift24.png" alt=""/>
+                </div>
+                <div class="gifts__item is-can-get">
+                    <span>26</span>
+                    <img src="images/gifts/gift25.png" alt=""/>
+                </div>
+                <div class="gifts__item is-can-get">
+                    <span>26</span>
+                    <img src="images/gifts/gift26.png" alt=""/>
+                </div>
+            </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal modal-lk js-modal js-modal-lk">
+        <div class="modal-wrapper">
+            <div class="modal__cross js-cross"></div>
+            <div class="modal-lk-content">
+                <div>examlpe@email.com</div>
+                <ul>
+                    <li class="js-link-gift">Мои подарки</li>
+                    <li class="js-link-choice">Сменить комнату</li>
+                    <li>Сохранить</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>

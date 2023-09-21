@@ -1,0 +1,12 @@
+<svg width="70" height="70" viewBox="0 0 70 70" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g id="Btns">
+<circle id="Ellipse 2" cx="35" cy="35" r="33" transform="matrix(-1 0 0 1 70 0)" fill="url(#paint0_linear_115_4602)" stroke="white" stroke-width="4"/>
+<path id="Vector 1" d="M35.0655 16.625V25.375C38.1275 25.375 45.1962 25.375 49.0656 28.4375C58.689 36.0542 52.337 46.492 50.3771 48.125C47.3141 50.6771 38.128 54.6875 41.628 51.625C45.128 48.5625 45.5655 42.4375 43.8155 39.8125C42.4155 37.7125 37.3988 37.7708 35.0655 38.0625V48.125L15.8155 31.9375L35.0655 16.625Z" fill="white"/>
+</g>
+<defs>
+<linearGradient id="paint0_linear_115_4602" x1="35" y1="0" x2="35" y2="70" gradientUnits="userSpaceOnUse">
+<stop stop-color="#826AB4"/>
+<stop offset="1" stop-color="#614897"/>
+</linearGradient>
+</defs>
+</svg>

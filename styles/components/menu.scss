@@ -1,0 +1,50 @@
+.menu {
+  position: absolute;
+  right: calc((100% - 1440px) / 2);
+  top: 0;
+  z-index: 2;
+
+  padding: 65px 65px 0 16px;
+  box-sizing: border-box;
+  display: flex;
+  gap: 0 16px;
+
+  &__item {
+    $width: 90px;
+
+    width: $width;
+    height: $width;
+
+    background-size: contain;
+
+    &:first-of-type {
+      background-image: url("../images/gift.svg");
+    }
+
+    &:last-of-type {
+      background-image: url("../images/lk.svg");
+    }
+
+    cursor: pointer;
+  }
+}
+
+@media screen and (max-width: 1520px) {
+  .menu {
+    right: 0;
+  }
+}
+
+
+@include mobile {
+  .menu {
+    padding: 32px 15px 0 0;
+
+    &__item {
+      $width: 70px;
+
+      width: $width;
+      height: $width;
+    }
+  }
+}
