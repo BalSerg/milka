@@ -6,6 +6,8 @@
 @import "components/choice";
 @import "components/menu";
 @import "components/gifts";
+@import "components/rooms";
+@import "components/range";
 
 .main {
   position: relative;
@@ -14,119 +16,7 @@
   background-repeat: no-repeat;
   background-position: center 0;
   background-size: cover;
-}
-
-.rooms {
-  overflow: hidden;
-  display: flex;
-  height: 100%;
-
-  background-size: cover;
-  background-position: center;
-
-  .room-wrapper {
-    position: relative;
-
-    width: 820px;
-    height: 820px;
-    margin: auto;
-
-    background-size: contain;
-    background-position: center;
-    background-repeat: no-repeat;
-
-    transition: all ease-in 200ms;
-  }
-
-  &.room1 {
-    background-image: url("../images/for-room1.png");
-
-    .room-wrapper {
-      background-image: url("../images/room1.png");
-    }
-  }
-
-  &.room2 {
-    background-image: url("../images/for-room2.png");
-
-    .room-wrapper {
-      background-image: url("../images/room2.png");
-    }
-  }
-
-  &.room3 {
-    background-image: url("../images/for-room3.png");
-
-    .room-wrapper {
-      background-image: url("../images/room3.png");
-    }
-  }
-}
-
-.range {
-  position: absolute;
-  top: calc(100% - 200px);
-  left: calc((100% - 75vw) /2);
-
-  transform: rotate(-90deg);
-  transform-origin: 0;
-
-  &-top,
-  &-bottom {
-    $width: 60px;
-
-    position: absolute;
-    top: 0;
-
-    width: $width;
-    height: $width;
-
-    background-size: cover;
-
-    transform: rotate(-90deg);
-    cursor: pointer;
-  }
-
-  &-top {
-    right: 0;
-
-    background: url("../images/plus.svg") center no-repeat;
-  }
-
-  &-bottom {
-    top: 0;
-
-    background: url("../images/minus.svg") center no-repeat;
-  }
-
-  >input {
-    height: 60px;
-    margin: 0 0 0 54px;
-    width: calc(100% - 54px - 54px);
-
-    &::-webkit-slider-runnable-track {
-      height: 10px;
-      background-color: $white;
-    }
-
-    &::-webkit-slider-thumb {
-      width: 40px;
-      height: 40px;
-      margin: -14px 0 0;
-
-      border-radius: 50%;
-      background: $purple-light;
-      border: 10px solid #7D69AC;
-
-      appearance: none;
-    }
-  }
-}
-
-@media screen and (max-width: 1520px) {
-  .range {
-    left: 65px;
-  }
+  background-color: #7D69AC;
 }
 
 @include tablet {
@@ -146,5 +36,7 @@
 }
 
 
-
+.z-index-max {
+  z-index: 10;
+}
 

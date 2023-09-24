@@ -38,13 +38,33 @@
 
 @include mobile {
   .menu {
-    padding: 32px 15px 0 0;
+    left: inherit;
+    right: 86px;
+
+    padding: 0 32px 0 88px;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    transform: rotate(-90deg);
+    transform-origin: right 0;
+
 
     &__item {
       $width: 70px;
 
       width: $width;
       height: $width;
+
+      transform: rotate(90deg);
+
+      &:last-of-type {
+        background-image: url("../images/lk.svg");
+        margin-left: auto;
+      }
+
+      &:first-of-type {
+        background-image: url("../images/gift.svg");
+      }
     }
   }
 }

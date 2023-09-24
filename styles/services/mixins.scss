@@ -18,6 +18,10 @@
   @include appetite(48px, normal);
 }
 
+@mixin appetite32 {
+  @include appetite(36px, normal);
+}
+
 @mixin appetite36 {
   @include appetite(36px, 36px);
 }

@@ -1,0 +1,58 @@
+.rooms {
+  overflow: hidden;
+  display: flex;
+  height: 100%;
+
+  background-size: cover;
+  background-position: center;
+
+  .room-wrapper {
+    position: relative;
+
+    width: 820px;
+    height: 820px;
+    margin: auto;
+
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+
+    transition: all ease-in 200ms;
+  }
+
+  &.room1 {
+    background-image: url("../images/for-room1.png");
+
+    .room-wrapper {
+      background-image: url("../images/room1.png");
+    }
+  }
+
+  &.room2 {
+    background-image: url("../images/for-room2.png");
+
+    .room-wrapper {
+      background-image: url("../images/room2.png");
+    }
+  }
+
+  &.room3 {
+    background-image: url("../images/for-room3.png");
+
+    .room-wrapper {
+      background-image: url("../images/room3.png");
+    }
+  }
+
+  &-shadow {
+    position: fixed;
+    z-index: 2;
+    top: -6%;
+    left: -85%;
+
+    width: 100%;
+    height: 100%;
+
+    background: rgba(0, 0, 0, 0.6);
+  }
+}
