@@ -1,3 +1,7 @@
+const mobile_size = 870;
+const desctop_size = 1100;
+let first_visit = true;
+
 let gifts = [
     [
         {left: 360, top: 30 ,scale: 0.8, rotate: 0},
@@ -20,7 +24,7 @@ let gifts = [
         {left: 290, top: -75, scale: 0.6, rotate: 45},
         {left: 120, top: 425, scale: 0.7, rotate: 0},
         {left: 320, top: 155, scale: 0.7, rotate: 0},
-        {left: 650, top: 195, scale: 0.6, rotate: 0},
+        {left: 650, top: 125, scale: 0.6, rotate: 0},
         {left: 325, top: 340, scale: 0.5, rotate: 0},
         {left: 125, top: -70, scale: 0.35, rotate: 45},
         {left: 380, top: 305 ,scale: 0.6, rotate: 0},
@@ -102,8 +106,8 @@ window.onload = function () {
             'ВЕРНУТЬ В КОРОБКУ'
         ],
         [
-            'callAr()',
-            'let elCurrentGift = this.parentNode.parentNode; elCurrentGift.remove(); let start = String("gift gift").length; let indexItem = String(elCurrentGift.classList).substr(start); let tempGifts = Array.from(document.querySelectorAll(\".gifts__item\"));  tempGifts[indexItem-1].classList.remove(\"is-active\")'
+            'js-call-ar',
+            'js-del-gift'
         ]
     ]
 
@@ -121,12 +125,12 @@ window.onload = function () {
         if(getElement('.js-gifts')) {
             let elGifts = getElement('.gifts');
             elGifts.removeAttribute('style');
-            let generalWidth = Number(screen.width) - (48 * 2) - (40 * 2);
-
+            let generalWidth = elGifts.offsetWidth - 40;//40-паддинг вунтренний
             let elWidth = 128;
             const margins = 32;
-            let countElements = Math.trunc(generalWidth / elWidth) - 1;//40-паддинг вунтренний
-            alert(generalWidth + ' ' + countElements);
+
+            let countElements = Math.trunc(generalWidth / elWidth) - 1;
+
 
             let elGiftsWrapper = getElement('.js-gifts-content');
             if(screen.width <= 870) {
@@ -171,7 +175,20 @@ window.onload = function () {
         let arrModals = getArrayElements('[class *= "js-modal"]');
 
         arrButtonsCallModal.forEach((item, index) => {
-            item.addEventListener('click', () => {
+            item.addEventListener('click', (e) => {
+                if(e.target.classList.contains('js-call-lk-modal')) {
+                    getElement('.js-call-lk-modal').classList.add('is-hidden');
+                }
+
+                if(e.target.parentNode.classList.contains('js-menu') && (!e.target.classList.contains('js-call-lk-modal'))){
+                    if(getElement('.js-gift-buttons')) {
+                        getArrayElements('.js-gift-buttons').forEach((item) => {
+                            if(!item.classList.contains('is-hidden')){
+                                item.classList.add('is-hidden');
+                            }
+                        })
+                    }
+                }
 
                 if(arrModals[index].classList.contains('is-hidden')) {
                     arrModals[index].classList.remove('is-hidden');
@@ -235,8 +252,19 @@ window.onload = function () {
         arrCross.forEach((item) => {
             item.addEventListener('click', () => {
                 item.parentNode.parentNode.classList.remove('is-visibility');
+
+                getElement('.js-call-lk-modal').classList.remove('is-hidden');
             })
         })
+
+        window.addEventListener('keypress', (e) => {
+            if((e.key==='Escape'||e.key==='Esc'||e.keyCode===27)){
+                arrModals.forEach((item) => {
+                    item.classList.remove('is-visibility');
+                })
+            }
+
+        });
     }
 
     $('.js-choice-slick'). slick({
@@ -248,6 +276,36 @@ window.onload = function () {
         infinite: true,
     })
 
+    function getIndexElementFromCollection(el) {
+        let currentIndex = String(el.parentNode.parentNode.classList).substr(("gift gift".length));
+        return currentIndex;
+    }
+
+    //Функция удаления подарка из комнаты, которая срабатывает на кнопке Удалить в коробку
+    function deleteGiftFromRoom() {
+        getArrayElements('.js-del-gift').forEach((item) => {
+            item.addEventListener('click', function() {
+                this.parentNode.parentNode.remove();
+                let indexGift = getIndexElementFromCollection(this);
+                let tempGifts = Array.from(document.querySelectorAll(".gifts__item"));
+                tempGifts[indexGift-1].classList.remove("is-active");
+            })
+        })
+    }
+
+    //Функция вызова модалки AR
+    function callModallAr() {
+        if(screen.width >= desctop_size) {
+            getArrayElements('.js-call-ar').forEach((item) => {
+                item.addEventListener('click', function() {
+                    let indexGift = getIndexElementFromCollection(this);
+                    getElement('.js-qr-code').src = 'images/qr-codes/qr-code' + indexGift + '.png';
+                    getElement('.js-qr').classList.add('is-visibility');
+                })
+            })
+        }
+    }
+
 
     //Функция создает подарок в комнате используя данные из gifts[], параметр num - это номер текущей комнаты
     function createBlock(num) {
@@ -255,6 +313,7 @@ window.onload = function () {
         let styleValueDiv = 'left: ' + gifts[numCurrentRoom-1][num-1].left + 'px; top: ' + gifts[numCurrentRoom-1][num-1].top + 'px;';
         elDiv.classList.add('gift');
         elDiv.classList.add('gift' + num);
+        elDiv.classList.add('z-index-max');
         elDiv.setAttribute('style', styleValueDiv);
 
         let elButtons = document.createElement('ul');
@@ -265,28 +324,49 @@ window.onload = function () {
             let elLi = document.createElement('li');
             let elSpan = document.createElement('span');
             elLi.classList.add('gift-buttons__item');
-            elLi.setAttribute('onclick', contentButtonsForGift[1][i]);
+            elLi.classList.add(contentButtonsForGift[1][i]);
             elLi.append(elSpan);
             elSpan.textContent = contentButtonsForGift[0][i];
             elButtons.append(elLi);
         }
-
         let elImg = document.createElement('img');
         let styleValueImg = 'transform: scale(' + gifts[numCurrentRoom-1][num-1].scale + ') rotate(' + gifts[numCurrentRoom-1][num-1].rotate + 'deg)';
         elImg.setAttribute('style', styleValueImg);
+        elImg.classList.add('js-img');
         elImg.src = 'images/gifts/gift' + num + '.png';
         elImg.setAttribute('onclick',
-            'let tempButtons = this.parentNode.querySelector(\".js-gift-buttons\");'+
+            'let blockButtons = this.parentNode.querySelector(\".js-gift-buttons\");'+
             'let start = String(\"gift gift\").length;' +
             'let currentNumberGift = String(this.parentNode.classList).substr(start);' +
             'let excludeClass = \"gift"\ + currentNumberGift;' +
             'let arrBlockButtons = document.querySelectorAll(\"\.js-gift-buttons\");'+
             'arrBlockButtons.forEach((item) => {if(!item.parentNode.classList.contains(excludeClass)) item.classList.add(\"is-hidden\")});'+
-            'tempButtons.classList.toggle(\"is-hidden\");'
+            'blockButtons.classList.toggle(\"is-hidden\");'+
+            'blockButtons.removeAttribute(\"style\");'+
+            'let currentRoomWidth = document.querySelector(\"\.js-current-room\").offsetWidth;'+
+            'let remainWidth = Number((this.parentNode.style.left).substr(0, this.parentNode.style.left.indexOf(\"px\"))) + this.parentNode.offsetWidth;'+
+            '(currentRoomWidth - remainWidth) < blockButtons.offsetWidth \? blockButtons.style.right = \"100%\" \: blockButtons.style.left = \"100%\";'+
+            'let currentRoomHeight = document.querySelector(\"\.js-current-room\").offsetHeight;'+
+            'let heightGift = Number((this.parentNode.style.top).substr(0, this.parentNode.style.top.indexOf(\"px\")));'+
+            'heightGift > 0 \? blockButtons.style.top = \"0\" \: blockButtons.style.bottom = \"0\";'
             );
+        let elShadow = document.createElement('div');
+        elShadow.classList.add('js-rooms-shadow');
+        elShadow.classList.add('rooms-shadow');
         elDiv.append(elImg);
         elDiv.append(elButtons);
+        elDiv.append(elShadow);
         getElement('.js-current-room').append(elDiv);
+
+        deleteGiftFromRoom();
+        callModallAr();
+
+        elShadow.style.height = getElement('.js-rooms').offsetHeight + 'px';
+        elShadow.style.width = getElement('.js-rooms').offsetWidth + 'px';
+        setTimeout(() => {
+            elShadow.classList.add('is-hidden');
+            elShadow.parentNode.classList.remove('z-index-max');
+        }, 800)
     }
 
     if(getElement('.js-rooms')) {
@@ -296,13 +376,32 @@ window.onload = function () {
         let elBlock = getElement('.js-range').parentNode;
         let elCurrentRoom = getElement('.js-current-room');
 
+        if(first_visit) {
+            let elBoadring = getElement('.js-onboarding-choice');
+            elBoadring.classList.add('is-visibility');
+            elBoadring.addEventListener('click', () => {
+                elBoadring.classList.remove('is-visibility');
+            })
+            setTimeout(() => {
+                elBoadring.classList.remove('is-visibility');
+            }, 2500)
+        }
+
+        if(screen.width <= mobile_size) {
+            elMenu = getElement('.js-menu');
+            elMenu.style.width = screen.height + 'px';
+        }
+
         const countRooms = 3;
 
-        function goRoom(e) {
+        function goRoom() {
             elChoice.addEventListener('click', (e) => {
-                let classes = (String(e.target.parentNode.classList));
-                if (classes.includes('js-go')) {
-
+                if (String(e.target.parentNode.classList).includes('js-go') || (String(e.target.parentNode.parentNode.classList).includes('js-go'))) {
+                    let classes1 = String(e.target.parentNode.classList);
+                    let classes2 = String(e.target.parentNode.parentNode.classList);
+                    let classes;
+                    if (classes1.includes('js-go')){classes = classes1}
+                    if (classes2.includes('js-go')){classes = classes2}
                     elChoice.classList.add('is-hidden');//скрыть выбор комнат
 
                     let arrMenuItems = elMenu.childNodes;//показать в меню выбор подарков
@@ -326,7 +425,7 @@ window.onload = function () {
                     elRoom.classList.remove('is-hidden');
                     elRoom.classList.add('room' + currentNumber);
 
-                    //elRoom.style.height = getElement('body').offsetHeight + 'px';
+                    elRoom.style.height = screen.height + 'px';
                     elBlock.style.width = (getElement('body').offsetHeight - topValue * 2) + 'px';//всему блоку с ползункои присваиваем высоту подолжки модалки т.к. она всегда по высоте во весь экран
                 }
             })

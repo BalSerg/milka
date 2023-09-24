@@ -15,9 +15,14 @@
     <main class="main height100">
         <div class="menu js-menu">
             <div class="menu__item js-call-modal is-hidden"></div>
-            <div class="menu__item js-call-modal"></div>
+            <div class="menu__item js-call-modal js-call-lk-modal"></div>
         </div>
         <div class="choice js-choice">
+            <div class="modal js-onboarding-choice">
+                <div class="modal-wrapper">
+                    <div class="modal__text">Ты всегда можешь изменить свой выбор в личном кабинете!</div>
+                </div>
+            </div>
             <h1 class="choice-title">Выбери комнату!</h1>
             <div class="choice-wrapper is-no-mobile">
                 <div class="choice__item js-go-room1">
@@ -192,6 +197,10 @@
     <div class="modal modal-lk js-modal js-modal-lk">
         <div class="modal-wrapper">
             <div class="modal__cross js-cross"></div>
+            <div class="is-mobile modal-lk-title">
+                <img src="images/lk.svg" alt=""/>
+                <span>Личный кабинет</span>
+            </div>
             <div class="modal-lk-content">
                 <div>examlpe@email.com</div>
                 <ul>
@@ -202,6 +211,15 @@
             </div>
         </div>
     </div>
-
+    <div class="modal modal-qr js-qr">
+        <div class="modal-wrapper">
+            <div class="modal__cross js-cross"></div>
+            <div class="modal__text">
+                Чтобы перейти в дополненную<br/>
+                реальность, отсканируй QR-код!
+            </div>
+            <img class="js-qr-code" src="images/qr-code.png" alt="">
+        </div>
+    </div>
 </body>
 </html>
