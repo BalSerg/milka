@@ -1,4 +1,4 @@
-const mobile_size = 870;
+const mobile_size = 820;
 const desctop_size = 1100;
 let first_visit = true;
 
@@ -12,7 +12,7 @@ let gifts = [
         {left: 190, top: 415, scale: 0.8, rotate: 0},
         {left: 630, top: 255, scale: 0.5, rotate: 0},
         {left: 250, top: 500, scale: 1, rotate: 0},
-        {left: 385, top: 305, scale: 0.5, rotate: 0},
+        {left: 385, top: 175, scale: 0.5, rotate: 0},
         {left: 60, top: 15, scale: 0.8, rotate: 0},
         {left: 255, top: 370, scale: 0.6, rotate: 0},
         {left: 235, top: 265, scale: 0.9, rotate: 0},
@@ -86,6 +86,95 @@ let gifts = [
         {left: 620, top: 395 ,scale: 0.5, rotate: 0},
         {left: 240, top: 70 ,scale: 0.9, rotate: 0},
         {left: 115, top: 405 ,scale: 0.45, rotate: 0},
+    ]
+]
+
+let gifts_mobile = [
+    [
+        {left: 165, top: 0, scale: 0.65, rotate: 0},
+        {left: 30, top: 45, scale: 0.5, rotate: 0},
+        {left: 305, top: -15, scale: 0.4, rotate: 0},
+        {left: 325, top: 25, scale: 0.2, rotate: 0},
+        {left: 295, top: 35, scale: 0.2, rotate: 90},
+        {left: 70, top: 165, scale: 0.4, rotate: 0},
+        {left: 300, top: 115, scale: 0.45, rotate: 0},
+        {left: 150, top: 255, scale: 1, rotate: 0},
+        {left: 170, top: 90, scale: 0.3, rotate: 0},
+        {left: 15, top: -7, scale: 0.5, rotate: 0},
+        {left: 110, top: 175, scale: 0.4, rotate: 0},
+        {left: 105, top: 100, scale: 0.4, rotate: 0},
+        {left: 283, top: 165, scale: 0.4, rotate: 0},
+        {left: 40, top: 85, scale: 0.4, rotate: 0},
+        {left: 168, top: 53, scale: 0.25, rotate: 0},
+        {left: 70, top: 50, scale: 0.4, rotate: 0},
+        {left: 125, top: 100, scale: 0.5, rotate: 0},
+        {left: 135, top: -52, scale: 0.4, rotate: 35},
+        {left: 45, top: 210, scale: 0.4, rotate: 0},
+        {left: 138, top: 45, scale: 0.3, rotate: 0},
+        {left: 300, top: 80, scale: 0.4, rotate: 0},
+        {left: 140, top: 140, scale: 0.25, rotate: 0},
+        {left: 60, top: -55, scale: 0.3, rotate: 45},
+        {left: 170, top: 130, scale: 0.3, rotate: 0},
+        {left: 280, top: -18, scale: 0.4, rotate: 0},
+        {left: 80, top: -55, scale: 0.35, rotate: -75},
+    ],
+    [
+        {left: 158, top: 10, scale: 0.65, rotate: 0},
+        {left: 200, top: 30, scale: 0.4, rotate: 0},
+        {left: 233, top: 240, scale: 0.45, rotate: 0},
+        {left: 15, top: 113, scale: 0.25, rotate: 0},
+        {left: 198, top: 138, scale: 0.2, rotate: 90},
+        {left: 120, top: 205, scale: 0.4, rotate: 0},
+        {left: 160, top: 75, scale: 0.4, rotate: 0},
+        {left: 180, top: 255, scale: 0.65, rotate: 0},
+        {left: 160, top: 92, scale: 0.25, rotate: 0},
+        {left: 15, top: 2, scale: 0.5, rotate: 0},
+        {left: 120, top: 175, scale: 0.5, rotate: 0},
+        {left: 310, top: 205, scale: 0.4, rotate: 0},
+        {left: 85, top: 110, scale: 0.4, rotate: 0},
+        {left: 40, top: 135, scale: 0.4, rotate: 0},
+        {left: 220, top: 105, scale: 0.3, rotate: 0},
+        {left: 70, top: 50, scale: 0.4, rotate: 0},
+        {left: 120, top: 100, scale: 0.5, rotate: 0},
+        {left: 200, top: 140, scale: 0.4, rotate: 0},
+        {left: 70, top: 195, scale: 0.4, rotate: 0},
+        {left: 136, top: 55, scale: 0.3, rotate: 0},
+        {left: 200, top: 95, scale: 0.3, rotate: 0},
+        {left: 140, top: 140, scale: 0.25, rotate: 0},
+        {left: 90, top: -53, scale: 0.35, rotate: 55},
+        {left: 160, top: 125, scale: 0.25, rotate: 0},
+        {left: 60, top: -18, scale: 0.4, rotate: 0},
+        {left: 20, top: 25, scale: 0.4, rotate: 0},
+    ],
+    [
+        {left: 265, top: 210, scale: 0.8, rotate: 0},
+        {left: 175, top: 15, scale: 0.4, rotate: 0},
+        {left: 195, top: 69, scale: 0.3, rotate: 0},
+        {left: 10, top: 105, scale: 0.2, rotate: 0},
+        {left: 290, top: 137, scale: 0.2, rotate: 90},
+        {left: 120, top: 165, scale: 0.4, rotate: 0},
+        {left: 165, top: 145, scale: 0.4, rotate: 0},
+        {left: 180, top: 275, scale: 0.7, rotate: 0},
+        {left: 290, top: 75, scale: 0.2, rotate: 0},
+        {left: 35, top: 22, scale: 0.4, rotate: 0},
+        {left: 70, top: 192, scale: 0.4, rotate: 0},
+        {left: 70, top: 115, scale: 0.4, rotate: 0},
+        {left: -5, top: 50, scale: 0.4, rotate: 0},
+        {left: 15, top: 137, scale: 0.4, rotate: 0},
+        {left: 285, top: 35, scale: 0.3, rotate: 0},
+        {left: 70, top: 65, scale: 0.4, rotate: 0},
+
+        {left: 80, top: 127, scale: 0.5, rotate: 0},
+        {left: 75, top: -25, scale: 0.4, rotate: 0},
+        {left: 15, top: 165, scale: 0.4, rotate: 0},
+        {left: 262, top: 70, scale: 0.4, rotate: 0},
+        {left: 285, top: 120, scale: 0.3, rotate: 0},
+        {left: 15, top: 90, scale: 0.25, rotate: 0},
+        {left: 200, top: 160, scale: 0.3, rotate: 20},
+        {left: 285, top: 173, scale: 0.3, rotate: 0},
+        {left: 110, top: -10, scale: 0.4, rotate: 0},
+        {left: 50, top: 180, scale: 0.3, rotate: 0},
+        {left: 70, top: 165, scale: 0.4, rotate: 0},
     ]
 ]
 
@@ -306,11 +395,19 @@ window.onload = function () {
         }
     }
 
-
     //Функция создает подарок в комнате используя данные из gifts[], параметр num - это номер текущей комнаты
     function createBlock(num) {
         let elDiv = document.createElement('div');
-        let styleValueDiv = 'left: ' + gifts[numCurrentRoom-1][num-1].left + 'px; top: ' + gifts[numCurrentRoom-1][num-1].top + 'px;';
+        let styleValueDiv;
+        let styleValueImg;
+        if(screen.width <= mobile_size) {
+            styleValueDiv = 'left: ' + gifts_mobile[numCurrentRoom-1][num-1].left + 'px; top: ' + gifts_mobile[numCurrentRoom-1][num-1].top + 'px;';
+            styleValueImg = 'transform: scale(' + gifts_mobile[numCurrentRoom-1][num-1].scale + ') rotate(' + gifts_mobile[numCurrentRoom-1][num-1].rotate + 'deg)';
+        }
+        else {
+            styleValueDiv = 'left: ' + gifts[numCurrentRoom-1][num-1].left + 'px; top: ' + gifts[numCurrentRoom-1][num-1].top + 'px;';
+            styleValueImg = 'transform: scale(' + gifts[numCurrentRoom-1][num-1].scale + ') rotate(' + gifts[numCurrentRoom-1][num-1].rotate + 'deg)';
+        }
         elDiv.classList.add('gift');
         elDiv.classList.add('gift' + num);
         elDiv.classList.add('z-index-max');
@@ -330,7 +427,6 @@ window.onload = function () {
             elButtons.append(elLi);
         }
         let elImg = document.createElement('img');
-        let styleValueImg = 'transform: scale(' + gifts[numCurrentRoom-1][num-1].scale + ') rotate(' + gifts[numCurrentRoom-1][num-1].rotate + 'deg)';
         elImg.setAttribute('style', styleValueImg);
         elImg.classList.add('js-img');
         elImg.src = 'images/gifts/gift' + num + '.png';
@@ -343,10 +439,20 @@ window.onload = function () {
             'arrBlockButtons.forEach((item) => {if(!item.parentNode.classList.contains(excludeClass)) item.classList.add(\"is-hidden\")});'+
             'blockButtons.classList.toggle(\"is-hidden\");'+
             'blockButtons.removeAttribute(\"style\");'+
-            'let currentRoomWidth = document.querySelector(\"\.js-current-room\").offsetWidth;'+
-            'let remainWidth = Number((this.parentNode.style.left).substr(0, this.parentNode.style.left.indexOf(\"px\"))) + this.parentNode.offsetWidth;'+
-            '(currentRoomWidth - remainWidth) < blockButtons.offsetWidth \? blockButtons.style.right = \"100%\" \: blockButtons.style.left = \"100%\";'+
-            'let currentRoomHeight = document.querySelector(\"\.js-current-room\").offsetHeight;'+
+            'let leftCoordGift = Number((this.parentNode.style.left).substr(0, this.parentNode.style.left.indexOf(\"px\")));' +
+            'if(screen.width > mobile_size) {;' +
+                'leftCoordGift >= blockButtons.offsetWidth \? blockButtons.style.right = \"100%\" \: blockButtons.style.left = \"100%\";'+
+            '}'+
+            'else {'+
+                'if(leftCoordGift <= blockButtons.offsetWidth) {;' +
+                    'alert(\"1Левая координата: "\ + leftCoordGift +\" \" + \"Делитель:\" + (screen.width/400) +\" \" + \"Ширина кнопок: \" + blockButtons.offsetWidth + \" \" + blockButtons.offsetWidth / (screen.width/400));'+
+                    'blockButtons.style.left = \"100%\"; blockButtons.style.transformOrigin = \"left\"'+
+                '}'+
+                'else {'+
+                    'alert(\"2Левая координата: "\ + leftCoordGift +\" \" + \"Делитель:\" + (400/screen.width) +\" \" + \"Ширина кнопок: \" + blockButtons.offsetWidth);'+
+                    'blockButtons.style.right = \"100%\"; blockButtons.style.transformOrigin = \"right\"'+
+                '}'+
+            '};'+
             'let heightGift = Number((this.parentNode.style.top).substr(0, this.parentNode.style.top.indexOf(\"px\")));'+
             'heightGift > 0 \? blockButtons.style.top = \"0\" \: blockButtons.style.bottom = \"0\";'
             );
@@ -375,6 +481,18 @@ window.onload = function () {
         let elMenu = getElement('.js-menu');
         let elBlock = getElement('.js-range').parentNode;
         let elCurrentRoom = getElement('.js-current-room');
+        const widthMobileRoom = 400;
+        let forRoom = getElement('.room-content');
+
+        function setRoomInAllWindow_mobile () {
+            if(screen.width <= 820 && screen.width > 400) {
+                let newScale = screen.width/widthMobileRoom;
+                forRoom.style.transform = 'scale(' + newScale  + ')';
+            }
+            else {
+                forRoom.removeAttribute('style');
+            }
+        }
 
         if(first_visit) {
             let elBoadring = getElement('.js-onboarding-choice');
@@ -427,6 +545,8 @@ window.onload = function () {
 
                     elRoom.style.height = screen.height + 'px';
                     elBlock.style.width = (getElement('body').offsetHeight - topValue * 2) + 'px';//всему блоку с ползункои присваиваем высоту подолжки модалки т.к. она всегда по высоте во весь экран
+
+                    setRoomInAllWindow_mobile();
                 }
             })
         }
@@ -494,12 +614,14 @@ window.onload = function () {
                 }
             })
         })
+
+        window.onresize = function () {
+            setBlockGifts();
+            setRoomInAllWindow_mobile();
+
+        }
     }
 
-
-    window.onresize = function () {
-        setBlockGifts();
-    }
 }
 
 

@@ -2,41 +2,13 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="8a0c825c-a522-4436-abc2-6df9fc45fb03" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/images/qr-codes/qr-code1.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/images/qr-codes/qr-code10.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/images/qr-codes/qr-code11.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/images/qr-codes/qr-code12.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/images/qr-codes/qr-code13.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/images/qr-codes/qr-code14.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/images/qr-codes/qr-code15.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/images/qr-codes/qr-code16.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/images/qr-codes/qr-code17.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/images/qr-codes/qr-code18.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/images/qr-codes/qr-code19.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/images/qr-codes/qr-code2.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/images/qr-codes/qr-code20.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/images/qr-codes/qr-code21.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/images/qr-codes/qr-code22.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/images/qr-codes/qr-code23.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/images/qr-codes/qr-code24.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/images/qr-codes/qr-code3.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/images/qr-codes/qr-code4.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/images/qr-codes/qr-code5.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/images/qr-codes/qr-code6.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/images/qr-codes/qr-code7.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/images/qr-codes/qr-code8.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/images/qr-codes/qr-code9.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/styles/components/range.scss" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/styles/components/rooms.scss" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/rooms.html" beforeDir="false" afterPath="$PROJECT_DIR$/rooms.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/scripts/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/index.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/styles/components/gifts.scss" beforeDir="false" afterPath="$PROJECT_DIR$/styles/components/gifts.scss" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/styles/components/menu.scss" beforeDir="false" afterPath="$PROJECT_DIR$/styles/components/menu.scss" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/styles/components/modal.scss" beforeDir="false" afterPath="$PROJECT_DIR$/styles/components/modal.scss" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/styles/components/rooms.scss" beforeDir="false" afterPath="$PROJECT_DIR$/styles/components/rooms.scss" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/styles/main.min.css" beforeDir="false" afterPath="$PROJECT_DIR$/styles/main.min.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/styles/main.min.css.map" beforeDir="false" afterPath="$PROJECT_DIR$/styles/main.min.css.map" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/styles/main.scss" beforeDir="false" afterPath="$PROJECT_DIR$/styles/main.scss" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/styles/services/mixins.scss" beforeDir="false" afterPath="$PROJECT_DIR$/styles/services/mixins.scss" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -85,7 +57,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1695321333025</updated>
-      <workItem from="1695321334173" duration="36950000" />
+      <workItem from="1695321334173" duration="79795000" />
     </task>
     <task id="LOCAL-00001" summary="Markup. Part1">
       <created>1695321471173</created>
@@ -108,7 +80,14 @@
       <option name="project" value="LOCAL" />
       <updated>1695323441997</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="Markup. Part 2">
+      <created>1695539255979</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1695539255979</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -128,6 +107,8 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Markup. Part1" />
     <MESSAGE value=" service" />
-    <option name="LAST_COMMIT_MESSAGE" value=" service" />
+    <MESSAGE value="Markup. Part 3" />
+    <MESSAGE value="Markup. Part 2" />
+    <option name="LAST_COMMIT_MESSAGE" value="Markup. Part 2" />
   </component>
 </project>

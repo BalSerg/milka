@@ -1,10 +1,14 @@
 .rooms {
   overflow: hidden;
-  display: flex;
   height: 100%;
 
   background-size: cover;
   background-position: center;
+
+  .room-content {
+    display: flex;
+    height: 100%;
+  }
 
   .room-wrapper {
     position: relative;
@@ -54,5 +58,27 @@
     height: 100%;
 
     background: rgba(0, 0, 0, 0.6);
+  }
+}
+
+@media screen and (max-width: 820px) {
+  .rooms {
+    .room-wrapper {
+      width: 400px;
+      height: 400px;
+      min-width: 400px;
+    }
+
+    &.room3 {
+      .gift1,
+      .gift5,
+      .gift15,
+      .gift21,
+      .gift24 {
+        .gift-buttons {
+          //right: 100% !important;
+        }
+      }
+    }
   }
 }
