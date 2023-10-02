@@ -73,6 +73,7 @@
         </div>
         <div class="rooms js-rooms is-hidden">
             <div class="room-content">
+
                 <div class="room-wrapper js-current-room"></div>
             </div>
         </div>
@@ -84,116 +85,143 @@
     </main>
     <div class="modal modal-gifts js-modal js-modal-gifts">
         <div class="modal-gifts__title is-mobile">Моя коробка с подарками</div>
-        <div class="modal-wrapper">
+        <div class="modal-wrapper js-gifts-content">
             <div class="modal__cross js-cross"></div>
-            <div class="modal-gifts-content js-gifts-content">
+            <div class="modal-gifts-content">
                 <div class="gifts js-gifts">
-                <div class="gifts__item is-can-get">
-                    <span>1</span>
-                    <img src="images/gifts/gift1.png" alt=""/>
-                </div>
-                <div class="gifts__item is-can-get">
-                    <span>2</span>
-                    <img src="images/gifts/gift2.png" alt=""/>
-                </div>
-                <div class="gifts__item is-can-get">
-                    <span>3</span>
-                    <img src="images/gifts/gift3.png" alt=""/>
-                </div>
-                <div class="gifts__item is-can-get">
-                    <span>4</span>
-                    <img src="images/gifts/gift4.png" alt=""/>
-                </div>
-                <div class="gifts__item is-can-get">
-                    <span>5</span>
-                    <img src="images/gifts/gift5.png" alt=""/>
-                </div>
-                <div class="gifts__item is-can-get">
-                    <span>6</span>
-                    <img src="images/gifts/gift6.png" alt=""/>
-                </div>
-                <div class="gifts__item is-can-get">
-                    <span>7</span>
-                    <img src="images/gifts/gift7.png" alt=""/>
-                </div>
-                <div class="gifts__item is-can-get">
-                    <span>8</span>
-                    <img src="images/gifts/gift8.png" alt=""/>
-                </div>
-                <div class="gifts__item is-can-get">
-                    <span>9</span>
-                    <img src="images/gifts/gift9.png" alt=""/>
-                </div>
-                <div class="gifts__item is-can-get">
-                    <span>10</span>
-                    <img src="images/gifts/gift10.png" alt=""/>
-                </div>
-                <div class="gifts__item is-can-get">
-                    <span>12</span>
-                    <img src="images/gifts/gift11.png" alt=""/>
-                </div>
-                <div class="gifts__item is-can-get">
-                    <span>13</span>
-                    <img src="images/gifts/gift12.png" alt=""/>
-                </div>
-                <div class="gifts__item is-can-get">
-                    <span>14</span>
-                    <img src="images/gifts/gift13.png" alt=""/>
-                </div>
-                <div class="gifts__item is-can-get">
-                    <span>15</span>
-                    <img src="images/gifts/gift14.png" alt=""/>
-                </div>
-                <div class="gifts__item is-can-get">
-                    <span>16</span>
-                    <img src="images/gifts/gift15.png" alt=""/>
-                </div>
-                <div class="gifts__item is-can-get">
-                    <span>17</span>
-                    <img src="images/gifts/gift16.png" alt=""/>
-                </div>
-                <div class="gifts__item is-can-get">
-                    <span>18</span>
-                    <img src="images/gifts/gift17.png" alt=""/>
-                </div>
-                <div class="gifts__item is-can-get">
-                    <span>19</span>
-                    <img src="images/gifts/gift18.png" alt=""/>
-                </div>
-                <div class="gifts__item is-can-get">
-                    <span>20</span>
-                    <img src="images/gifts/gift19.png" alt=""/>
-                </div>
-                <div class="gifts__item is-can-get">
-                    <span>21</span>
-                    <img src="images/gifts/gift20.png" alt=""/>
-                </div>
-                <div class="gifts__item is-can-get">
-                    <span>22</span>
-                    <img src="images/gifts/gift21.png" alt=""/>
-                </div>
-                <div class="gifts__item is-can-get">
-                    <span>23</span>
-                    <img src="images/gifts/gift22.png" alt=""/>
-                </div>
-                <div class="gifts__item is-can-get">
-                    <span>24</span>
-                    <img src="images/gifts/gift23.png" alt=""/>
-                </div>
-                <div class="gifts__item is-can-get">
-                    <span>25</span>
-                    <img src="images/gifts/gift24.png" alt=""/>
-                </div>
-                <div class="gifts__item is-can-get">
-                    <span>26</span>
-                    <img src="images/gifts/gift25.png" alt=""/>
-                </div>
-                <div class="gifts__item is-can-get">
-                    <span>26</span>
-                    <img src="images/gifts/gift26.png" alt=""/>
+                    <div class="gifts__item is-can-get one">
+                        <span>1</span>
+                        <img src="images/gifts/gift1.png" alt=""/>
+                    </div>
+                    <div class="gifts__item is-can-get">
+                        <span>2</span>
+                        <img src="images/gifts/gift2.png" alt=""/>
+                    </div>
+                    <div class="gifts__item is-can-get">
+                        <span>3</span>
+                        <img src="images/gifts/gift3.png" alt=""/>
+                    </div>
+                    <div class="gifts__item is-can-get">
+                        <span>4</span>
+                        <img src="images/gifts/gift4.png" alt=""/>
+                    </div>
+                    <div class="gifts__item is-can-get">
+                        <span>5</span>
+                        <img src="images/gifts/gift5.png" alt=""/>
+                    </div>
+                    <div class="gifts__item is-can-get">
+                        <span>6</span>
+                        <img src="images/gifts/gift6.png" alt=""/>
+                    </div>
+                    <div class="gifts__item is-can-get">
+                        <span>7</span>
+                        <img src="images/gifts/gift7.png" alt=""/>
+                    </div>
+                    <div class="gifts__item is-can-get">
+                        <span>8</span>
+                        <img src="images/gifts/gift8.png" alt=""/>
+                    </div>
+                    <div class="gifts__item is-can-get">
+                        <span>9</span>
+                        <img src="images/gifts/gift9.png" alt=""/>
+                    </div>
+                    <div class="gifts__item is-can-get">
+                        <span>10</span>
+                        <img src="images/gifts/gift10.png" alt=""/>
+                    </div>
+                    <div class="gifts__item is-can-get">
+                        <span>12</span>
+                        <img src="images/gifts/gift11.png" alt=""/>
+                    </div>
+                    <div class="gifts__item is-can-get">
+                        <span>13</span>
+                        <img src="images/gifts/gift12.png" alt=""/>
+                    </div>
+                    <div class="gifts__item is-can-get">
+                        <span>14</span>
+                        <img src="images/gifts/gift13.png" alt=""/>
+                    </div>
+                    <div class="gifts__item is-can-get">
+                        <span>15</span>
+                        <img src="images/gifts/gift14.png" alt=""/>
+                    </div>
+                    <div class="gifts__item is-can-get">
+                        <span>16</span>
+                        <img src="images/gifts/gift15.png" alt=""/>
+                    </div>
+                    <div class="gifts__item is-can-get">
+                        <span>17</span>
+                        <img src="images/gifts/gift16.png" alt=""/>
+                    </div>
+                    <div class="gifts__item is-can-get">
+                        <span>18</span>
+                        <img src="images/gifts/gift17.png" alt=""/>
+                    </div>
+                    <div class="gifts__item is-can-get">
+                        <span>19</span>
+                        <img src="images/gifts/gift18.png" alt=""/>
+                    </div>
+                    <div class="gifts__item is-can-get">
+                        <span>20</span>
+                        <img src="images/gifts/gift19.png" alt=""/>
+                    </div>
+                    <div class="gifts__item is-can-get">
+                        <span>21</span>
+                        <img src="images/gifts/gift20.png" alt=""/>
+                    </div>
+                    <div class="gifts__item is-can-get">
+                        <span>22</span>
+                        <img src="images/gifts/gift21.png" alt=""/>
+                    </div>
+                    <div class="gifts__item is-can-get">
+                        <span>23</span>
+                        <img src="images/gifts/gift22.png" alt=""/>
+                    </div>
+                    <div class="gifts__item is-can-get">
+                        <span>24</span>
+                        <img src="images/gifts/gift23.png" alt=""/>
+                    </div>
+                    <div class="gifts__item is-can-get">
+                        <span>25</span>
+                        <img src="images/gifts/gift24.png" alt=""/>
+                    </div>
+                    <div class="gifts__item is-can-get">
+                        <span>26</span>
+                        <img src="images/gifts/gift25.png" alt=""/>
+                    </div>
+                    <div class="gifts__item is-can-get">
+                        <span>26</span>
+                        <img src="images/gifts/gift26.png" alt=""/>
+                    </div>
                 </div>
             </div>
+        </div>
+    </div>
+    <div class="modal onboarding js-onboarding-range">
+        <div class="js-onboarding-content">
+            <img src="images/finger1.svg" alt=""/>
+            <span>Приближай  и отдаляй комнату с помощью ползунка</span>
+        </div>
+    </div>
+    <div class="modal onboarding onboarding-menu-gift js-onboarding-menu-gift">
+        <div class="js-onboarding-content-gift">
+            <span>Нажми, чтобы открыть свои подарки</span>
+            <img src="images/finger2.svg" alt=""/>
+        </div>
+    </div>
+    <div class="modal onboarding onboarding-lk js-onboarding-lk">
+        <div class="js-onboarding-content-lk">
+            <span>Здесь твой личный кабинет</span>
+            <img src="images/finger3.svg" alt=""/>
+        </div>
+    </div>
+    <div class="modal onboarding onboarding-gift js-onboarding-gift">
+        <div class="js-onboarding-wrapper-gift">
+            <div class="gifts__item is-can-get ">
+                <img src="images/gifts/gift1.png" alt=""/>
             </div>
+            <span>Нажми на игрушку, чтобы переместить ее в комнату</span>
+            <span>Игрушка, которая размещена в комнате становится чернобелой</span>
         </div>
     </div>
     <div class="modal modal-lk js-modal js-modal-lk">

@@ -34,6 +34,10 @@
   @include appetite(17px, normal);
 }
 
+@mixin appetite12 {
+  @include appetite(12px, normal);
+}
+
 @mixin lifehack36 {
   @include lifehack(36px, normal);
 }

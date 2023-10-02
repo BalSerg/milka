@@ -8,6 +8,7 @@
 @import "components/gifts";
 @import "components/rooms";
 @import "components/range";
+@import "components/onboarding";
 
 .main {
   position: relative;
@@ -37,6 +38,6 @@
 
 
 .z-index-max {
-  z-index: 10;
+  z-index: 20;
 }
 

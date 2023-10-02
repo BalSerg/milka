@@ -4,7 +4,8 @@
   top: 0;
   z-index: 2;
 
-  padding: 65px 65px 0 16px;
+  padding: 65px 65px 0 0;
+  margin: 0 0 0 16px;
   box-sizing: border-box;
   display: flex;
   gap: 0 16px;
@@ -42,7 +43,6 @@
     right: 86px;
 
     padding: 0 32px 0 88px;
-    width: 100%;
     display: flex;
     justify-content: space-between;
     transform: rotate(-90deg);

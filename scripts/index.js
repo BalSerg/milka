@@ -1,6 +1,8 @@
 const mobile_size = 820;
 const desctop_size = 1100;
 let first_visit = true;
+let first_visit_new = true;
+let isExistGift = false;
 
 let gifts = [
     [
@@ -187,7 +189,8 @@ function getArrayElements(selector) {
 }
 
 window.onload = function () {
-    let numCurrentRoom;// Номер текущей комнатыё
+    let numCurrentRoom;// Номер текущей комнаты
+    let newScale = 0; //Переменная для скейлинга в мобилке.
 
     const contentButtonsForGift = [
         [
@@ -212,49 +215,26 @@ window.onload = function () {
 
     function setBlockGifts() {//функция для равномерного выстраивания блоков с подарками в модалке
         if(getElement('.js-gifts')) {
-            let elGifts = getElement('.gifts');
+            let elGifts = getElement('.js-gifts-content');
             elGifts.removeAttribute('style');
-            let generalWidth = elGifts.offsetWidth - 40;//40-паддинг вунтренний
             let elWidth = 128;
-            const margins = 32;
-
-            let countElements = Math.trunc(generalWidth / elWidth) - 1;
-
-
-            let elGiftsWrapper = getElement('.js-gifts-content');
+            const margin = 32;
+            const maxCount = 8;
+            const borderWidth = 6;
+            let outerPadding = 48;
+            let innerPadding = 40;
             if(screen.width <= 870) {
-                generalWidth = Number(screen.width) - (16 * 2) - (48 * 2);
-                countElements = Math.trunc(generalWidth / elWidth)-1;//48-паддинг вунтренний
-                elGiftsWrapper.style.height = (screen.height - 250) + 'px';// 250 отсутп сверху для заголовка и крестика
-
+                outerPadding = 16;
+                innerPadding = 48;
             }
-            if(screen.width <=600) {
-                countElements = Math.trunc(generalWidth / elWidth);//48-паддинг вунтренний
+            let availableWidth = screen.width - outerPadding * 2;
+            let generalWidth = availableWidth - innerPadding - (innerPadding-margin) - borderWidth *2;
+            let countElements = Math.trunc(generalWidth / (elWidth + margin));
+            if(countElements >= maxCount ) {
+                countElements = maxCount;
             }
-            let newWidth = margins * (countElements - 1) + countElements * elWidth;
+            let newWidth = margin * (countElements - 1) + countElements * elWidth + innerPadding * 2 + borderWidth * 2;
             elGifts.style.width = newWidth + 'px';
-            /*
-            if(screen.width <= 520) {
-                alert(1);
-                countElements = 3;
-                elWidth = (generalWidth - 4 * margins) / countElements;
-                let arrNodesGifts = elGifts.childNodes;
-                let arrGifts = [];
-                for(let i=0; i<arrNodesGifts.length; i++) {
-                    if(arrNodesGifts[i].nodeType === 1) {
-                        arrGifts.push(arrNodesGifts[i]);
-                    }
-                }
-                arrGifts.forEach((item) => {
-                    item.style.width = elWidth + 'px';
-                    item.style.height = elWidth + 'px';
-                })
-
-            }
-            else {
-                alert(2);
-
-            }*/
         }
     }
     setBlockGifts();
@@ -267,16 +247,6 @@ window.onload = function () {
             item.addEventListener('click', (e) => {
                 if(e.target.classList.contains('js-call-lk-modal')) {
                     getElement('.js-call-lk-modal').classList.add('is-hidden');
-                }
-
-                if(e.target.parentNode.classList.contains('js-menu') && (!e.target.classList.contains('js-call-lk-modal'))){
-                    if(getElement('.js-gift-buttons')) {
-                        getArrayElements('.js-gift-buttons').forEach((item) => {
-                            if(!item.classList.contains('is-hidden')){
-                                item.classList.add('is-hidden');
-                            }
-                        })
-                    }
                 }
 
                 if(arrModals[index].classList.contains('is-hidden')) {
@@ -332,6 +302,47 @@ window.onload = function () {
                             }
                         }
                     })
+                }
+
+                if(e.target.parentNode.classList.contains('js-menu') && (!e.target.classList.contains('js-call-lk-modal'))){
+                    if(getElement('.js-gift-buttons')) {
+                        getArrayElements('.js-gift-buttons').forEach((item) => {
+                            if(!item.classList.contains('is-hidden')){
+                                item.classList.add('is-hidden');
+                            }
+                        })
+                    }
+
+                    if(first_visit) {//Показ онбоардингов на модалке подарков
+                        let elOnboardingGift = getElement('.js-onboarding-gift');
+                        elOnboardingGift.classList.add('is-visibility');
+                        elOnboardingGift.classList.add('z-index-max');
+                        let elOnboardingWrapperGift = getElement('.js-onboarding-wrapper-gift');
+                        elOnboardingWrapperGift.style.left = (document.documentElement.scrollWidth - getElement('.js-gifts').offsetWidth) / 2 + 'px';
+                        if(screen.width > 820) {
+                            elOnboardingWrapperGift.style.top = (document.documentElement.scrollHeight - getElement('.js-gifts-content').offsetHeight) / 2 + 40 + 6 + 'px';
+                        }
+                        else {
+                            elOnboardingWrapperGift.style.top = (document.documentElement.scrollHeight - getElement('.js-gifts-content').offsetHeight) / 2 + 40 + 6 + 139 + 'px';
+                        }
+                        function showSecondOnboarding() {
+                            elOnboardingGift.classList.add('is-added');
+                            if(elOnboardingGift.classList.contains('is-added')){
+                                setTimeout(() => {
+                                    elOnboardingGift.classList.remove('is-visibility');
+                                    elOnboardingGift.classList.remove('z-index-max');
+                                    elOnboardingGift.classList.remove('is-added');
+                                }, 1500);
+                            }
+                            //return first_visit = false;
+                        }
+                        elOnboardingGift.addEventListener('click', () => {
+                            showSecondOnboarding();
+                        })
+                        setTimeout(() => {
+                            showSecondOnboarding();
+                        },2500)
+                    }
                 }
 
             })
@@ -445,11 +456,9 @@ window.onload = function () {
             '}'+
             'else {'+
                 'if(leftCoordGift <= blockButtons.offsetWidth) {;' +
-                    'alert(\"1Левая координата: "\ + leftCoordGift +\" \" + \"Делитель:\" + (screen.width/400) +\" \" + \"Ширина кнопок: \" + blockButtons.offsetWidth + \" \" + blockButtons.offsetWidth / (screen.width/400));'+
                     'blockButtons.style.left = \"100%\"; blockButtons.style.transformOrigin = \"left\"'+
                 '}'+
                 'else {'+
-                    'alert(\"2Левая координата: "\ + leftCoordGift +\" \" + \"Делитель:\" + (400/screen.width) +\" \" + \"Ширина кнопок: \" + blockButtons.offsetWidth);'+
                     'blockButtons.style.right = \"100%\"; blockButtons.style.transformOrigin = \"right\"'+
                 '}'+
             '};'+
@@ -463,52 +472,170 @@ window.onload = function () {
         elDiv.append(elButtons);
         elDiv.append(elShadow);
         getElement('.js-current-room').append(elDiv);
+        isExistGift = true;
 
         deleteGiftFromRoom();
         callModallAr();
 
-        elShadow.style.height = getElement('.js-rooms').offsetHeight + 'px';
-        elShadow.style.width = getElement('.js-rooms').offsetWidth + 'px';
+        let timer = 0;
+        if(first_visit_new) {
+            timer = 2500;
+        }
+        else {
+            timer = 800;
+        }
         setTimeout(() => {
             elShadow.classList.add('is-hidden');
             elShadow.parentNode.classList.remove('z-index-max');
-        }, 800)
+        }, timer);
+
+
+        function moveGift() {
+            let isDragging = false;
+            let dragElement = getElement('.js-current-room');
+
+            if (!dragElement) return;
+
+            dragElement.ondragstart = function() {
+                return false;
+            };
+
+            let coords, shiftX, shiftY;
+
+            startDrag(dragElement, event.clientX, event.clientY);
+            function onMouseUp(event) {
+                finishDrag();
+            };
+
+            function onMouseMove(event) {
+                moveAt(event.clientX, event.clientY);
+            }
+
+            function startDrag(element, clientX, clientY) {
+                if(isDragging) {
+                    return;
+                }
+
+                isDragging = true;
+
+                document.addEventListener('mousemove', onMouseMove);
+                element.addEventListener('mouseup', onMouseUp);
+
+                shiftX = clientX - element.getBoundingClientRect().left;
+                shiftY = clientY - element.getBoundingClientRect().top;
+
+                element.style.position = 'fixed';
+
+                moveAt(clientX, clientY);
+            }
+
+            function finishDrag() {
+                if(!isDragging) {
+                    return;
+                }
+
+                isDragging = false;
+
+                dragElement.style.top = parseInt(dragElement.style.top) + pageYOffset + 'px';
+                dragElement.style.position = 'absolute';
+
+                document.removeEventListener('mousemove', onMouseMove);
+                dragElement.removeEventListener('mouseup', onMouseUp);
+            }
+
+            function moveAt(clientX, clientY) {
+                // вычисляем новые координаты (относительно окна)
+                let newX = clientX - shiftX;
+                let newY = clientY - shiftY;
+
+                // проверяем, не переходят ли новые координаты за нижний край окна:
+                // сначала вычисляем гипотетический новый нижний край окна
+                let newBottom = newY + dragElement.offsetHeight;
+
+                // затем, если новый край окна выходит за пределы документа, прокручиваем страницу
+                if (newBottom > document.documentElement.clientHeight) {
+                    // координата нижнего края документа относительно окна
+                    let docBottom = document.documentElement.getBoundingClientRect().bottom;
+
+                    // простой скролл документа на 10px вниз имеет проблему -
+                    // он может прокручивать документ за его пределы,
+                    // поэтому используем Math.min(расстояние до конца, 10)
+                    let scrollY = Math.min(docBottom - newBottom, 10);
+
+                    // вычисления могут быть не совсем точны - случаются ошибки при округлении,
+                    // которые приводят к отрицательному значению прокрутки. отфильтруем их:
+                    if (scrollY < 0) scrollY = 0;
+
+                    window.scrollBy(0, scrollY);
+
+                    // быстрое перемещение мыши может поместить курсор за пределы документа вниз
+                    // если это произошло -
+                    // ограничиваем новое значение Y максимально возможным исходя из размера документа:
+                    newY = Math.min(newY, document.documentElement.clientHeight - dragElement.offsetHeight);
+                }
+
+                // проверяем, не переходят ли новые координаты за верхний край окна (по схожему алгоритму)
+                if (newY < 0) {
+                    // прокручиваем окно вверх
+                    let scrollY = Math.min(-newY, 10);
+                    if (scrollY < 0) scrollY = 0; // проверяем ошибки точности
+
+                    window.scrollBy(0, -scrollY);
+                    // быстрое перемещение мыши может поместить курсор за пределы документа вверх
+                    newY = Math.max(newY, 0); // newY не может быть меньше нуля
+                }
+
+
+                // ограничим newX размерами окна
+                // согласно условию, горизонтальная прокрутка отсутствует, поэтому это не сложно:
+                if (newX < 0) newX = 0;
+                if (newX > document.documentElement.clientWidth - dragElement.offsetWidth) {
+                    newX = document.documentElement.clientWidth - dragElement.offsetWidth;
+                }
+
+                dragElement.style.left = newX + 'px';
+                dragElement.style.top = newY + 'px';
+            }
+
+        }
+        //moveGift();
     }
 
     if(getElement('.js-rooms')) {
         let elChoice = getElement('.js-choice');
         let elRoom = getElement('.js-rooms');
         let elMenu = getElement('.js-menu');
-        let elBlock = getElement('.js-range').parentNode;
+        let elBlockRange = getElement('.js-range').parentNode;
         let elCurrentRoom = getElement('.js-current-room');
         const widthMobileRoom = 400;
         let forRoom = getElement('.room-content');
 
         function setRoomInAllWindow_mobile () {
             if(screen.width <= 820 && screen.width > 400) {
-                let newScale = screen.width/widthMobileRoom;
+                newScale = screen.width/widthMobileRoom;
                 forRoom.style.transform = 'scale(' + newScale  + ')';
             }
             else {
                 forRoom.removeAttribute('style');
             }
+
+            return newScale;
         }
 
-        if(first_visit) {
-            let elBoadring = getElement('.js-onboarding-choice');
-            elBoadring.classList.add('is-visibility');
-            elBoadring.addEventListener('click', () => {
-                elBoadring.classList.remove('is-visibility');
-            })
-            setTimeout(() => {
-                elBoadring.classList.remove('is-visibility');
-            }, 2500)
+        function callOnboarding(selector, time) {
+            if(first_visit) {
+                let elBoadring = getElement(selector);
+                elBoadring.classList.add('is-visibility');
+                elBoadring.addEventListener('click', () => {
+                    elBoadring.classList.remove('is-visibility');
+                })
+                setTimeout(() => {
+                    elBoadring.classList.remove('is-visibility');
+                }, time)
+            }
         }
 
-        if(screen.width <= mobile_size) {
-            elMenu = getElement('.js-menu');
-            elMenu.style.width = screen.height + 'px';
-        }
+        callOnboarding('.js-onboarding-choice', 2500);
 
         const countRooms = 3;
 
@@ -535,7 +662,7 @@ window.onload = function () {
                         }
                     }
 
-                    elBlock.classList.remove('is-hidden');
+                    elBlockRange.classList.remove('is-hidden');
 
                     let currentNumber = classes[classes.length - 1];
                     numCurrentRoom = currentNumber;
@@ -543,10 +670,69 @@ window.onload = function () {
                     elRoom.classList.remove('is-hidden');
                     elRoom.classList.add('room' + currentNumber);
 
-                    elRoom.style.height = screen.height + 'px';
-                    elBlock.style.width = (getElement('body').offsetHeight - topValue * 2) + 'px';//всему блоку с ползункои присваиваем высоту подолжки модалки т.к. она всегда по высоте во весь экран
+                    elRoom.style.height = document.documentElement.scrollHeight + 'px';
+                    elBlockRange.style.width = (getElement('body').offsetHeight - topValue * 2) + 'px';//всему блоку с ползункои присваиваем высоту подолжки модалки т.к. она всегда по высоте во весь экран
 
                     setRoomInAllWindow_mobile();
+
+                    if(screen.width <= 870) {
+                        elMenu = getElement('.js-menu');
+                        elMenu.style.width = screen.height + 'px';
+                    }
+
+                    if(first_visit) {
+                        elBlockRange.classList.add('z-index-max');
+                        setTimeout(() => {
+                            elBlockRange.classList.remove('z-index-max');
+                        }, 2500);
+                        let elBoardingRange = getElement('.js-onboarding-range');
+                        if(screen.width > 820) {
+                            getElement(".js-onboarding-content").style.left = elBlockRange.getBoundingClientRect().x + elBlockRange.offsetHeight + 'px';
+                            getElement(".js-onboarding-content").style.top = elBlockRange.getBoundingClientRect().y + 'px';
+                            getElement(".js-onboarding-content-gift").style.left = elMenu.getBoundingClientRect().x - elMenu.offsetWidth + 'px';
+                            getElement(".js-onboarding-content-gift").style.top = elMenu.getBoundingClientRect().y  + elMenu.offsetHeight +'px';
+                            getElement(".js-onboarding-content-lk").style.left = elMenu.getBoundingClientRect().x - elMenu.offsetWidth/4 + 'px';
+                            getElement(".js-onboarding-content-lk").style.top = elMenu.getBoundingClientRect().y + elMenu.offsetHeight + 50 + 'px';
+                        }
+                        let elBoardingMenuGift = getElement('.js-onboarding-menu-gift');
+                        let elBoardingLk = getElement('.js-onboarding-lk');
+
+                        let isClickBoardingGift = false;
+                        let isClickBoardingLk = false;
+                        elBoardingRange.classList.add('is-visibility');
+                        elBoardingRange.addEventListener('click', () => {
+                            elBoardingRange.classList.remove('is-visibility');
+                            elBoardingMenuGift.classList.add('is-visibility');
+                            elMenu.classList.add('z-index-max');
+                        });
+                        elBoardingMenuGift.addEventListener('click', () => {
+                            elBoardingMenuGift.classList.remove('is-visibility');
+                            elBoardingLk.classList.add('is-visibility');
+                            isClickBoardingGift = true;
+                        });
+                        elBoardingLk.addEventListener('click', () => {
+                            elBoardingLk.classList.remove('is-visibility');
+                            elMenu.classList.remove('z-index-max');
+                            isClickBoardingLk = true;
+                        });
+                        setTimeout(() => {
+                            elBoardingRange.classList.remove('is-visibility');
+                            if(!isClickBoardingGift) {
+                                elBoardingMenuGift.classList.add('is-visibility');
+                                elMenu.classList.add('z-index-max');
+                            }
+                        }, 2500);
+                        setTimeout(() => {
+                            elBoardingMenuGift.classList.remove('is-visibility')
+                            if(!isClickBoardingLk) {
+                                elBoardingLk.classList.add('is-visibility');
+                            }
+                        }, 5000);
+                        setTimeout(() => {
+                            elBoardingLk.classList.remove('is-visibility');
+                            elMenu.classList.remove('z-index-max');
+                        }, 7500);
+                    }
                 }
             })
         }
@@ -611,9 +797,30 @@ window.onload = function () {
                     item.classList.add('is-active');
                     getElement('.js-modal-gifts').classList.remove('is-visibility');
                     createBlock(index+1);
+                    if(first_visit_new) {
+                        let elDiv = document.createElement('div');
+                        let elContent = document.createElement('div');
+                        elDiv.setAttribute('class', 'onboarding');
+                        elDiv.classList.add('onboarding-room');
+                        elDiv.classList.add('z-index-max');
+                        let elSpan = document.createElement('span');
+                        elSpan.textContent = 'Кликни, чтобы перейти в ar или убрать в коробку';
+                        let elImg = document.createElement('img');
+                        elImg.src = 'images/finger2.svg';
+                        elContent.append(elSpan);
+                        elContent.append(elImg);
+                        elDiv.append(elContent)
+                        if(elCurrentRoom.childNodes.length === 1){
+                            elCurrentRoom.childNodes[0].append(elDiv)
+                        }
+
+                        setTimeout(() => {
+                            elDiv.remove();
+                        }, 2500)
+                    }
                 }
             })
-        })
+        });
 
         window.onresize = function () {
             setBlockGifts();
