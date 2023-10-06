@@ -1,8 +1,9 @@
 const mobile_size = 820;
 const desctop_size = 1100;
-let first_visit = true;
-let first_visit_new = true;
-let isExistGift = false;
+let first_visit = false;
+let first_visit_new = false;
+let time1_Ms= 0;
+let time2_Ms= 0;
 
 let gifts = [
     [
@@ -221,19 +222,26 @@ window.onload = function () {
             const margin = 32;
             const maxCount = 8;
             const borderWidth = 6;
+            const scrollWidth = 4;
             let outerPadding = 48;
             let innerPadding = 40;
             if(screen.width <= 870) {
                 outerPadding = 16;
                 innerPadding = 48;
             }
-            let availableWidth = screen.width - outerPadding * 2;
-            let generalWidth = availableWidth - innerPadding - (innerPadding-margin) - borderWidth *2;
+            let availableWidth = document.documentElement.scrollWidth - outerPadding * 2;
+            let generalWidth = availableWidth - innerPadding - (innerPadding - margin - scrollWidth) - borderWidth * 2;
             let countElements = Math.trunc(generalWidth / (elWidth + margin));
             if(countElements >= maxCount ) {
                 countElements = maxCount;
             }
-            let newWidth = margin * (countElements - 1) + countElements * elWidth + innerPadding * 2 + borderWidth * 2;
+            let newWidth;
+                if(navigator.userAgent.indexOf('Fire')){
+                    newWidth = margin * (countElements - 1) + countElements * elWidth + innerPadding * 2 + borderWidth * 2 + 8;
+                }
+                else {
+                    newWidth = margin * (countElements - 1) + countElements * elWidth + innerPadding * 2 + borderWidth * 2 + scrollWidth;
+                }
             elGifts.style.width = newWidth + 'px';
         }
     }
@@ -334,7 +342,7 @@ window.onload = function () {
                                     elOnboardingGift.classList.remove('is-added');
                                 }, 1500);
                             }
-                            //return first_visit = false;
+                            return first_visit = false;
                         }
                         elOnboardingGift.addEventListener('click', () => {
                             showSecondOnboarding();
@@ -406,6 +414,84 @@ window.onload = function () {
         }
     }
 
+    function moveGift() {
+        let elCurrentRoom = getElement('.js-current-room');
+        let arrGifts = elCurrentRoom.childNodes;
+        arrGifts.forEach((item) => {
+            function moveAt(pageX, pageY) {// Функция которая подставляет подарок под курсор
+                let newleft = pageX - ((document.documentElement.scrollWidth - elCurrentRoom.offsetWidth) / 2) - item.offsetWidth /2;
+                let newTop =  ((pageY - ((document.documentElement.scrollHeight - elCurrentRoom.offsetHeight) / 2) - item.offsetHeight/2));
+
+                if (newleft <= 0) {
+                    item.style.left = 0 + 'px';
+                }
+                else if (newleft > 820 - item.offsetWidth){
+                    item.style.left = 820 - item.offsetWidth + 'px';
+                }
+                else {
+                    item.style.left = newleft + 'px';
+                }
+
+                if (newTop <= 0) {
+                    item.style.top = 0 + 'px';
+                }
+                else if (newTop > 820 - item.offsetHeight){
+                    item.style.top = 820 - item.offsetHeight + 'px';
+                }
+                else {
+                    item.style.top = newTop + 'px';
+                }
+            }
+            function onMouseMove(event) {
+                if(item.classList.contains('is-dragged')) {
+                    moveAt(event.pageX, event.pageY);
+                }
+            }
+            item.addEventListener('mousedown', function (e){
+                item.style.position = 'fixed';
+                for(let gift of arrGifts) {
+                    gift.classList.remove('is-dragged');
+                }
+                if(e.target.tagName !== 'SPAN') {
+                    item.classList.add('is-dragged');
+                    elCurrentRoom.addEventListener('mousemove', onMouseMove);
+                }
+                let time1 = new Date;
+                time1_Ms = time1.getTime();
+                return time1_Ms;
+            })
+            item.addEventListener('mouseup', function () {
+                item.classList.remove('is-dragged');
+                item.removeEventListener('mousemove', onMouseMove);
+                item.onmouseup = null;
+                let time2 = new Date;
+                time2_Ms = time2.getTime();
+                return time2_Ms;
+            });
+            elCurrentRoom.ondragstart = function () {
+                return false;
+            }
+            document.documentElement.addEventListener('mouseup', () => {
+                item.removeEventListener('mousemove', onMouseMove);
+                item.onmouseup = null;
+            })
+        })
+    }
+
+
+    //Остлеживание изменения переменной isExist твечающей за наличие подарков в комнате и запуск нужных функций
+    const existencGift = { _isGift : false }
+    Object.defineProperty(existencGift, 'isExist', {
+        get: function() { return this._isGift },
+        set: function(value){
+            this._isGift = value;
+            moveGift();
+            deleteGiftFromRoom();
+            callModallAr();
+        }
+    })
+
+
     //Функция создает подарок в комнате используя данные из gifts[], параметр num - это номер текущей комнаты
     function createBlock(num) {
         let elDiv = document.createElement('div');
@@ -442,6 +528,7 @@ window.onload = function () {
         elImg.classList.add('js-img');
         elImg.src = 'images/gifts/gift' + num + '.png';
         elImg.setAttribute('onclick',
+            'if(time2_Ms - time1_Ms < 150) {;'+
             'let blockButtons = this.parentNode.querySelector(\".js-gift-buttons\");'+
             'let start = String(\"gift gift\").length;' +
             'let currentNumberGift = String(this.parentNode.classList).substr(start);' +
@@ -463,7 +550,8 @@ window.onload = function () {
                 '}'+
             '};'+
             'let heightGift = Number((this.parentNode.style.top).substr(0, this.parentNode.style.top.indexOf(\"px\")));'+
-            'heightGift > 0 \? blockButtons.style.top = \"0\" \: blockButtons.style.bottom = \"0\";'
+            'heightGift > 0 \? blockButtons.style.top = \"0\" \: blockButtons.style.bottom = \"0\";'+
+            '}'
             );
         let elShadow = document.createElement('div');
         elShadow.classList.add('js-rooms-shadow');
@@ -472,10 +560,8 @@ window.onload = function () {
         elDiv.append(elButtons);
         elDiv.append(elShadow);
         getElement('.js-current-room').append(elDiv);
-        isExistGift = true;
 
-        deleteGiftFromRoom();
-        callModallAr();
+        existencGift.isExist = true;
 
         let timer = 0;
         if(first_visit_new) {
@@ -487,118 +573,8 @@ window.onload = function () {
         setTimeout(() => {
             elShadow.classList.add('is-hidden');
             elShadow.parentNode.classList.remove('z-index-max');
+            first_visit_new = false;
         }, timer);
-
-
-        function moveGift() {
-            let isDragging = false;
-            let dragElement = getElement('.js-current-room');
-
-            if (!dragElement) return;
-
-            dragElement.ondragstart = function() {
-                return false;
-            };
-
-            let coords, shiftX, shiftY;
-
-            startDrag(dragElement, event.clientX, event.clientY);
-            function onMouseUp(event) {
-                finishDrag();
-            };
-
-            function onMouseMove(event) {
-                moveAt(event.clientX, event.clientY);
-            }
-
-            function startDrag(element, clientX, clientY) {
-                if(isDragging) {
-                    return;
-                }
-
-                isDragging = true;
-
-                document.addEventListener('mousemove', onMouseMove);
-                element.addEventListener('mouseup', onMouseUp);
-
-                shiftX = clientX - element.getBoundingClientRect().left;
-                shiftY = clientY - element.getBoundingClientRect().top;
-
-                element.style.position = 'fixed';
-
-                moveAt(clientX, clientY);
-            }
-
-            function finishDrag() {
-                if(!isDragging) {
-                    return;
-                }
-
-                isDragging = false;
-
-                dragElement.style.top = parseInt(dragElement.style.top) + pageYOffset + 'px';
-                dragElement.style.position = 'absolute';
-
-                document.removeEventListener('mousemove', onMouseMove);
-                dragElement.removeEventListener('mouseup', onMouseUp);
-            }
-
-            function moveAt(clientX, clientY) {
-                // вычисляем новые координаты (относительно окна)
-                let newX = clientX - shiftX;
-                let newY = clientY - shiftY;
-
-                // проверяем, не переходят ли новые координаты за нижний край окна:
-                // сначала вычисляем гипотетический новый нижний край окна
-                let newBottom = newY + dragElement.offsetHeight;
-
-                // затем, если новый край окна выходит за пределы документа, прокручиваем страницу
-                if (newBottom > document.documentElement.clientHeight) {
-                    // координата нижнего края документа относительно окна
-                    let docBottom = document.documentElement.getBoundingClientRect().bottom;
-
-                    // простой скролл документа на 10px вниз имеет проблему -
-                    // он может прокручивать документ за его пределы,
-                    // поэтому используем Math.min(расстояние до конца, 10)
-                    let scrollY = Math.min(docBottom - newBottom, 10);
-
-                    // вычисления могут быть не совсем точны - случаются ошибки при округлении,
-                    // которые приводят к отрицательному значению прокрутки. отфильтруем их:
-                    if (scrollY < 0) scrollY = 0;
-
-                    window.scrollBy(0, scrollY);
-
-                    // быстрое перемещение мыши может поместить курсор за пределы документа вниз
-                    // если это произошло -
-                    // ограничиваем новое значение Y максимально возможным исходя из размера документа:
-                    newY = Math.min(newY, document.documentElement.clientHeight - dragElement.offsetHeight);
-                }
-
-                // проверяем, не переходят ли новые координаты за верхний край окна (по схожему алгоритму)
-                if (newY < 0) {
-                    // прокручиваем окно вверх
-                    let scrollY = Math.min(-newY, 10);
-                    if (scrollY < 0) scrollY = 0; // проверяем ошибки точности
-
-                    window.scrollBy(0, -scrollY);
-                    // быстрое перемещение мыши может поместить курсор за пределы документа вверх
-                    newY = Math.max(newY, 0); // newY не может быть меньше нуля
-                }
-
-
-                // ограничим newX размерами окна
-                // согласно условию, горизонтальная прокрутка отсутствует, поэтому это не сложно:
-                if (newX < 0) newX = 0;
-                if (newX > document.documentElement.clientWidth - dragElement.offsetWidth) {
-                    newX = document.documentElement.clientWidth - dragElement.offsetWidth;
-                }
-
-                dragElement.style.left = newX + 'px';
-                dragElement.style.top = newY + 'px';
-            }
-
-        }
-        //moveGift();
     }
 
     if(getElement('.js-rooms')) {
@@ -671,7 +647,15 @@ window.onload = function () {
                     elRoom.classList.add('room' + currentNumber);
 
                     elRoom.style.height = document.documentElement.scrollHeight + 'px';
-                    elBlockRange.style.width = (getElement('body').offsetHeight - topValue * 2) + 'px';//всему блоку с ползункои присваиваем высоту подолжки модалки т.к. она всегда по высоте во весь экран
+                    if(!navigator.userAgent.includes('Fire')){
+                        elBlockRange.style.width = (getElement('body').offsetHeight - topValue * 2) + 'px';//всему блоку с ползункои присваиваем высоту подолжки модалки т.к. она всегда по высоте во весь экран
+                    }
+                    else {
+                        elBlockRange.classList.add('isMoz')
+                        elBlockRange.style.height = (getElement('body').offsetHeight - topValue * 2) + 'px';//всему блоку с ползункои присваиваем высоту подолжки модалки т.к. она всегда по высоте во весь экран
+                        elBlockRange.style.top = (document.documentElement.scrollHeight - elBlockRange.offsetHeight) / 2 + 'px'
+                    }
+
 
                     setRoomInAllWindow_mobile();
 
@@ -741,9 +725,13 @@ window.onload = function () {
         const topValue = 160;
         let elRange = getElement('.js-range');
 
+        //elCurrentRoom.style.width = Number(elRange.value)/100 * 820 + 'px';
         elCurrentRoom.style.transform = 'scale(' + elRange.value + '%)';
 
+
         elRange.addEventListener('input', () => {
+            //elCurrentRoom.style.width = 820 * (Number(elRange.value)/100) + 'px';
+            //elCurrentRoom.style.height = 820 * (Number(elRange.value)/100) + 'px';
             elCurrentRoom.style.transform = 'scale(' + elRange.value + '%)';
         })
 
@@ -779,7 +767,7 @@ window.onload = function () {
                 }
 
             })
-        })
+        });
 
         //Обращаемся к блоку с подарками в модалке , собираем там все подарки в массив и по клику на элемента модалку закрываем,
         //куда кликнули ставим класс is-active и рисуем подарок в комнате
