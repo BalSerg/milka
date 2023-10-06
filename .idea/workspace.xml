@@ -3,12 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="8a0c825c-a522-4436-abc2-6df9fc45fb03" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/rooms.html" beforeDir="false" afterPath="$PROJECT_DIR$/rooms.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/scripts/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/index.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/styles/components/modal.scss" beforeDir="false" afterPath="$PROJECT_DIR$/styles/components/modal.scss" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/styles/components/range.scss" beforeDir="false" afterPath="$PROJECT_DIR$/styles/components/range.scss" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/styles/main.min.css" beforeDir="false" afterPath="$PROJECT_DIR$/styles/main.min.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/styles/main.min.css.map" beforeDir="false" afterPath="$PROJECT_DIR$/styles/main.min.css.map" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -57,7 +52,7 @@
       <option name="presentableId" value="Default" />
       <updated>1695321333025</updated>
       <workItem from="1695321334173" duration="96620000" />
-      <workItem from="1695895171271" duration="131831000" />
+      <workItem from="1695895171271" duration="153490000" />
     </task>
     <task id="LOCAL-00001" summary="Markup. Part1">
       <created>1695321471173</created>
@@ -108,7 +103,14 @@
       <option name="project" value="LOCAL" />
       <updated>1696258811130</updated>
     </task>
-    <option name="localTasksCounter" value="8" />
+    <task id="LOCAL-00008" summary="Markup. Part 6">
+      <created>1696579756249</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1696579756249</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -133,6 +135,7 @@
     <MESSAGE value="Markup. Part 3" />
     <MESSAGE value="Markup. Part 4" />
     <MESSAGE value="Markup. Part 5" />
-    <option name="LAST_COMMIT_MESSAGE" value="Markup. Part 5" />
+    <MESSAGE value="Markup. Part 6" />
+    <option name="LAST_COMMIT_MESSAGE" value="Markup. Part 6" />
   </component>
 </project>
