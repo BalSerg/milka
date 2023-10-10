@@ -3,7 +3,11 @@
   <component name="ChangeListManager">
     <list default="true" id="8a0c825c-a522-4436-abc2-6df9fc45fb03" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rooms.html" beforeDir="false" afterPath="$PROJECT_DIR$/rooms.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/scripts/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/styles/components/rooms.scss" beforeDir="false" afterPath="$PROJECT_DIR$/styles/components/rooms.scss" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/styles/main.min.css" beforeDir="false" afterPath="$PROJECT_DIR$/styles/main.min.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/styles/main.min.css.map" beforeDir="false" afterPath="$PROJECT_DIR$/styles/main.min.css.map" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -53,6 +57,9 @@
       <updated>1695321333025</updated>
       <workItem from="1695321334173" duration="96620000" />
       <workItem from="1695895171271" duration="153490000" />
+      <workItem from="1696701872698" duration="613000" />
+      <workItem from="1696838209429" duration="479000" />
+      <workItem from="1696839507777" duration="39085000" />
     </task>
     <task id="LOCAL-00001" summary="Markup. Part1">
       <created>1695321471173</created>
