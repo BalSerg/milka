@@ -6,8 +6,9 @@ let time1_Ms= 0;
 let time2_Ms= 0;
 let valueTranslateX;
 let valueTranslateY;
+let isMoveRoom = false;
 
-let gifts = [
+const gifts = [
     [
         {left: 360, top: 30 ,scale: 0.8, rotate: 0},
         {left: 65, top: 130, scale: 0.5, rotate: 0},
@@ -94,7 +95,7 @@ let gifts = [
     ]
 ]
 
-let gifts_mobile = [
+const gifts_mobile = [
     [
         {left: 165, top: 0, scale: 0.65, rotate: 0},
         {left: 30, top: 45, scale: 0.5, rotate: 0},
@@ -184,11 +185,18 @@ let gifts_mobile = [
 ]
 
 function getElement(selector) {
-    return document.querySelector(selector);
+    const elem = document.querySelector(selector);
+    if(!elem) {
+        return;
+    }
+    return elem;
 }
 
 function getArrayElements(selector) {
-    return Array.from(document.querySelectorAll(selector));
+    const array = Array.from(document.querySelectorAll(selector));
+    if(array) {
+        return Array.from(document.querySelectorAll(selector));
+    }
 }
 
 window.onload = function () {
@@ -206,9 +214,10 @@ window.onload = function () {
         ]
     ]
 
+    //Показ формыы на странице index.html
     if(getElement('.js-form')) {
-        let elForm = getElement('.js-form');
-        let elButtonLk = getElement('.js-go-lk');
+        const elForm = getElement('.js-form');
+        const elButtonLk = getElement('.js-go-lk');
 
         elButtonLk.addEventListener('click', ()=> {
             elForm.classList.add('form-enter');
@@ -216,7 +225,8 @@ window.onload = function () {
         })
     }
 
-    function setBlockGifts() {//функция для равномерного выстраивания блоков с подарками в модалке
+    //функция для равномерного выстраивания блоков с подарками в модалке подарков
+    function setBlockGifts() {
         if(getElement('.js-gifts')) {
             let elGifts = getElement('.js-gifts-content');
             elGifts.removeAttribute('style');
@@ -249,9 +259,18 @@ window.onload = function () {
     }
     setBlockGifts();
 
+    //сброс к начальным значениям стилей комнаты и ползунка
+    function setDefaultValueRoomRange() {
+        const elRange = getElement('.js-range');
+        const elCurrentRoom = getElement('.js-current-room');
+        elCurrentRoom.style = 'margin: auto; transform:scale(1.2)';
+        elRange.value = '120';
+    }
+
+    //Открытие-закрытие модалок
     if(getElement('[class *= "js-modal"]')) {
-        let arrButtonsCallModal = getArrayElements('[class *= "js-call-modal"]');
-        let arrModals = getArrayElements('[class *= "js-modal"]');
+        const arrButtonsCallModal = getArrayElements('[class *= "js-call-modal"]');
+        const arrModals = getArrayElements('[class *= "js-modal"]');
 
         arrButtonsCallModal.forEach((item, index) => {
             item.addEventListener('click', (e) => {
@@ -263,12 +282,12 @@ window.onload = function () {
                     arrModals[index].classList.remove('is-hidden');
                 }
 
-                if(!arrModals[index].classList.contains('is-visibilit')) {
+                if(!arrModals[index].classList.contains('is-visibility')) {
                     arrModals[index].classList.add('is-visibility');
                 }
                 if(arrModals[index].classList.contains('js-modal-lk')) {
-                    let elLinkGift = getElement('.js-link-gift');
-                    let elLinkChoice = getElement('.js-link-choice');
+                    const elLinkGift = getElement('.js-link-gift');
+                    const elLinkChoice = getElement('.js-link-choice');
 
                     if(!getElement('.js-choice').classList.contains('is-hidden')) {
                         elLinkGift.classList.add('is-hidden');
@@ -291,7 +310,7 @@ window.onload = function () {
                         getElement(".js-range").parentNode.classList.add('is-hidden');
 
                         //Убрать в меню выбор подарков
-                        let arrMenuItems = getElement('.js-menu').childNodes;
+                        const arrMenuItems = getElement('.js-menu').childNodes;
                         let arrItems = [];
                         for (let jtem of arrMenuItems) {
                             if (jtem.nodeType === 1) {
@@ -305,12 +324,13 @@ window.onload = function () {
                         for(let i=arrGifts.length-1; i >=0; i--) {//Обратный порядок перебора массива, чтоб в массиве элементы по индексу не смещались
                             arrGifts[i].remove();
                         }
-                        let arrGiftsInBox = getElement('.js-gifts').childNodes;
+                        const arrGiftsInBox = getElement('.js-gifts').childNodes;
                         for(let i=0; i < arrGiftsInBox.length; i++) {
                             if(arrGiftsInBox[i].nodeType === 1 && arrGiftsInBox[i].classList.contains('is-active')) {
                                 arrGiftsInBox[i].classList.remove('is-active');
                             }
                         }
+                        setDefaultValueRoomRange();
                     })
                 }
 
@@ -358,7 +378,8 @@ window.onload = function () {
             })
         })
 
-        let arrCross = getArrayElements('.js-cross');
+        //Закрытие модалко по крестику
+        const arrCross = getArrayElements('.js-cross');
         arrCross.forEach((item) => {
             item.addEventListener('click', () => {
                 item.parentNode.parentNode.classList.remove('is-visibility');
@@ -367,16 +388,17 @@ window.onload = function () {
             })
         })
 
+        //Закрытие модалок по кнопке Esc
         window.addEventListener('keypress', (e) => {
             if((e.key==='Escape'||e.key==='Esc'||e.keyCode===27)){
                 arrModals.forEach((item) => {
                     item.classList.remove('is-visibility');
                 })
             }
-
         });
     }
 
+    //Карусель в модалке
     $('.js-choice-slick'). slick({
         slidesToShow: 1,
         slidesToScroll: 1,
@@ -396,20 +418,20 @@ window.onload = function () {
         getArrayElements('.js-del-gift').forEach((item) => {
             item.addEventListener('click', function() {
                 this.parentNode.parentNode.remove();
-                let indexGift = getIndexElementFromCollection(this);
-                let tempGifts = Array.from(document.querySelectorAll(".gifts__item"));
+                const indexGift = getIndexElementFromCollection(this);
+                const tempGifts = Array.from(document.querySelectorAll(".gifts__item"));
                 tempGifts[indexGift-1].classList.remove("is-active");
             })
         })
     }
 
-    //Функция вызова модалки AR
+    //Функция вызова модалки AR но только на десктопе. В других разрешениях не нужна эта модалка
     function callModallAr() {
         if(screen.width >= desctop_size) {
             getArrayElements('.js-call-ar').forEach((item) => {
                 item.addEventListener('click', function() {
-                    let indexGift = getIndexElementFromCollection(this);
-                    getElement('.js-qr-code').src = 'images/qr-codes/qr-code' + indexGift + '.png';
+                    const indexGift = getIndexElementFromCollection(this);
+                    getElement('.js-qr-code').src = `images/qr-codes/qr-code${indexGift}.png`;
                     getElement('.js-qr').classList.add('is-visibility');
                 })
             })
@@ -418,37 +440,68 @@ window.onload = function () {
 
     //Функция перетаскивания подарков по комнате
     function moveGift() {
-        let elCurrentRoom = getElement('.js-current-room');
+        const elCurrentRoom = getElement('.js-current-room');
         let arrGifts = elCurrentRoom.childNodes;
         arrGifts.forEach((item) => {
             function moveAt(pageX, pageY) {// Функция которая подставляет подарок под курсор
-                let increase = Number(getElement('.js-range').value) / 100;
-                let newleft = (Math.round(pageX) - ((document.documentElement.scrollWidth - Math.round(elCurrentRoom.offsetWidth * increase)) / 2)) / increase - (item.offsetWidth * increase /2) - valueTranslateX;
-                let newTop =  (Math.round(pageY) - ((document.documentElement.scrollHeight - Math.round(elCurrentRoom.offsetHeight * increase)) / 2)) / increase - (item.offsetWidth * increase /2) - valueTranslateY;
 
-                if (newleft <= 0) {
-                    item.style.left = 0 + 'px';
-                }
-                else if (newleft > 820 - item.offsetWidth){
-                    item.style.left = 820 - item.offsetWidth + 'px';
-                }
-                else {
-                    item.style.left = newleft + 'px';
-                }
+                // const a = elCurrentRoom.style.transform.split(")")
+                // console.log(a)
+                // console.log(elCurrentRoom.style.transform);
 
-                if (newTop <= 0) {
-                    item.style.top = 0 + 'px';
-                }
-                else if (newTop > 820 - item.offsetHeight){
-                    item.style.top = 820 - item.offsetHeight + 'px';
-                }
-                else {
-                    item.style.top = newTop + 'px';
-                }
+
+                let increase = parseInt(getElement('.js-range').value, 10) / 100; //скейлинг
+                let newleft, newTop;
+                // if(!isMoveRoom) {
+                    //(Координата мыши - доступная ширина - половина комнаты с учетом скейлинга)/2 - половина ширины подарка с учетом скейлинга
+                    newleft = (Math.round(pageX) - ((document.documentElement.scrollWidth - Math.round(elCurrentRoom.offsetWidth * increase)) / 2)) / increase - (item.offsetWidth * increase /2);
+                    newTop =  (Math.round(pageY) - ((document.documentElement.scrollHeight - Math.round(elCurrentRoom.offsetHeight * increase)) / 2)) / increase - (item.offsetWidth * increase /2);
+                // }
+                // else {
+                //     newleft = (Math.round(pageX) - elCurrentRoom.offsetLeft);
+                //     newTop =  0;
+                // }
+
+                // newleft = Math.round(pageX)
+                    // ((Math.round(elCurrentRoom.offsetWidth * increase)) / 2)) /
+                    // increase - (item.offsetWidth * increase /2);
+                // newTop =  Math.round(pageY)
+                    // (( Math.round(elCurrentRoom.offsetHeight * increase)) / 2)) /
+                    // increase - (item.offsetWidth * increase /2);
+
+
+
+                // if (newleft <= 0) {
+                //     item.style.left = 0 + 'px';
+                // }
+                // else if (newleft > 820 - item.offsetWidth){
+                //     item.style.left = 820 - item.offsetWidth + 'px';
+                // }
+                // else {
+                //     item.style.left = newleft + 'px';
+                // }
+                //
+                // if (newTop <= 0) {
+                //     item.style.top = 0 + 'px';
+                // }
+                // else if (newTop > 820 - item.offsetHeight){
+                //     item.style.top = 820 - item.offsetHeight + 'px';
+                // }
+                // else {
+                //     item.style.top = newTop + 'px';
+                // }
+                item.style.left = newleft + 'px';
+                item.style.top = newTop + 'px';
+                console.log(pageX + ' ' + newleft);
             }
             function onMouseMove(event) {
+                console.log(event)
+                // const rect = event.target.getBoundingClientRect();
+                // console.log(rect)
+                // const x = e.clientX - rect.left; //x position within the element.
+                // const y = e.clientY - rect.top;  //y position within the element.
                 if(item.classList.contains('is-dragged')) {
-                    moveAt(event.pageX, event.pageY);
+                    moveAt(event.clientX, event.clientY);
                 }
             }
             item.addEventListener('mousedown', function (e){
@@ -458,15 +511,17 @@ window.onload = function () {
                 if(e.target.tagName !== 'SPAN' && this.classList.contains('gift')) {
                     e.stopPropagation();
                     item.classList.add('is-dragged');
+                    // item.addEventListener('mousemove', onMouseMove);
                     elCurrentRoom.addEventListener('mousemove', onMouseMove);
                 }
                 let time1 = new Date;
                 time1_Ms = time1.getTime();
                 return time1_Ms;
             })
+                // mouseout
             item.addEventListener('mouseup', function () {
                 item.classList.remove('is-dragged');
-                item.removeEventListener('mousemove', onMouseMove);
+                elCurrentRoom.removeEventListener('mousemove', onMouseMove);
                 item.onmouseup = null;
                 let time2 = new Date;
                 time2_Ms = time2.getTime();
@@ -475,9 +530,9 @@ window.onload = function () {
             item.ondragstart = function () {
                 return false;
             }
-            document.documentElement.addEventListener('mouseup', () => {
+            elCurrentRoom.addEventListener('mouseout', () => {
                 item.classList.remove('is-dragged');
-                item.removeEventListener('mousemove', onMouseMove);
+                elCurrentRoom.removeEventListener('mousemove', onMouseMove);
                 item.onmouseup = null;
             })
         })
@@ -530,32 +585,37 @@ window.onload = function () {
         elImg.setAttribute('style', styleValueImg);
         elImg.classList.add('js-img');
         elImg.src = 'images/gifts/gift' + num + '.png';
-        elImg.setAttribute('onclick',
-            'if(time2_Ms - time1_Ms < 150) {;'+
-            'let blockButtons = this.parentNode.querySelector(\".js-gift-buttons\");'+
-            'let start = String(\"gift gift\").length;' +
-            'let currentNumberGift = String(this.parentNode.classList).substr(start);' +
-            'let excludeClass = \"gift"\ + currentNumberGift;' +
-            'let arrBlockButtons = document.querySelectorAll(\"\.js-gift-buttons\");'+
-            'arrBlockButtons.forEach((item) => {if(!item.parentNode.classList.contains(excludeClass)) item.classList.add(\"is-hidden\")});'+
-            'blockButtons.classList.toggle(\"is-hidden\");'+
-            'blockButtons.removeAttribute(\"style\");'+
-            'let leftCoordGift = Number((this.parentNode.style.left).substr(0, this.parentNode.style.left.indexOf(\"px\")));' +
-            'if(screen.width > mobile_size) {;' +
-            'leftCoordGift >= blockButtons.offsetWidth \? blockButtons.style.right = \"100%\" \: blockButtons.style.left = \"100%\";'+
-            '}'+
-            'else {'+
-            'if(leftCoordGift <= blockButtons.offsetWidth) {;' +
-            'blockButtons.style.left = \"100%\"; blockButtons.style.transformOrigin = \"left\"'+
-            '}'+
-            'else {'+
-            'blockButtons.style.right = \"100%\"; blockButtons.style.transformOrigin = \"right\"'+
-            '}'+
-            '};'+
-            'let heightGift = Number((this.parentNode.style.top).substr(0, this.parentNode.style.top.indexOf(\"px\")));'+
-            'heightGift > 0 \? blockButtons.style.top = \"0\" \: blockButtons.style.bottom = \"0\";'+
-            '}'
-        );
+        const onClick =  function (event) {
+            // console.log(event);
+            console.log(event.currentTarget);
+        }
+        elImg.addEventListener("click", onClick);
+        // elImg.setAttribute('onclick',
+        //     'if(time2_Ms - time1_Ms < 150) {;'+
+        //     'let blockButtons = this.parentNode.querySelector(\".js-gift-buttons\");'+
+        //     'let start = String(\"gift gift\").length;' +
+        //     'let currentNumberGift = String(this.parentNode.classList).substr(start);' +
+        //     'let excludeClass = \"gift"\ + currentNumberGift;' +
+        //     'let arrBlockButtons = document.querySelectorAll(\"\.js-gift-buttons\");'+
+        //     'arrBlockButtons.forEach((item) => {if(!item.parentNode.classList.contains(excludeClass)) item.classList.add(\"is-hidden\")});'+
+        //     'blockButtons.classList.toggle(\"is-hidden\");'+
+        //     'blockButtons.removeAttribute(\"style\");'+
+        //     'let leftCoordGift = Number((this.parentNode.style.left).substr(0, this.parentNode.style.left.indexOf(\"px\")));' +
+        //     'if(screen.width > mobile_size) {;' +
+        //     'leftCoordGift >= blockButtons.offsetWidth \? blockButtons.style.right = \"100%\" \: blockButtons.style.left = \"100%\";'+
+        //     '}'+
+        //     'else {'+
+        //     'if(leftCoordGift <= blockButtons.offsetWidth) {;' +
+        //     'blockButtons.style.left = \"100%\"; blockButtons.style.transformOrigin = \"left\"'+
+        //     '}'+
+        //     'else {'+
+        //     'blockButtons.style.right = \"100%\"; blockButtons.style.transformOrigin = \"right\"'+
+        //     '}'+
+        //     '};'+
+        //     'let heightGift = Number((this.parentNode.style.top).substr(0, this.parentNode.style.top.indexOf(\"px\")));'+
+        //     'heightGift > 0 \? blockButtons.style.top = \"0\" \: blockButtons.style.bottom = \"0\";'+
+        //     '}'
+        // );
         let elShadow = document.createElement('div');
         elShadow.classList.add('js-rooms-shadow');
         elShadow.classList.add('rooms-shadow');
@@ -624,19 +684,19 @@ window.onload = function () {
                 let end = elCurrentRoom.style.transform.indexOf(')') ;
                 let scale = (elCurrentRoom.style.transform).substring(start, end);
                 elCurrentRoom.removeAttribute('style');
-                valueTranslateX = pageX - (elCurrentRoom.offsetWidth * (Number(elRange.value)/100)) / 2;
-                valueTranslateY = pageY - (elCurrentRoom.offsetHeight * (Number(elRange.value)/100)) / 2;
-                elCurrentRoom.setAttribute('style', 'transform: scale(' + scale + ') translate(' + valueTranslateX + 'px, ' + valueTranslateY + 'px)');
-                return `${valueTranslateX} ${valueTranslateY}`;
+                valueTranslateX =  (pageX - elCurrentRoom.offsetWidth*scale/2);
+                valueTranslateY =  (pageY - elCurrentRoom.offsetHeight*scale/2);
+                elCurrentRoom.setAttribute('style', 'margin: initial; transform: scale(' + scale + ') translate(' + valueTranslateX + 'px,' + valueTranslateY + 'px)');
+                isMoveRoom = true;
+                return `${valueTranslateX} ${valueTranslateY} ${isMoveRoom}`;
 
             }
             function onMouseMove(event) {
-
                 moveAt(event.pageX, event.pageY);
-
             }
             elCurrentRoom.addEventListener('mousedown', function (){
                 if((elCurrentRoom.offsetWidth * (Number(elRange.value) / 100) > document.documentElement.scrollWidth || elCurrentRoom.offsetHeight * (Number(elRange.value) / 100) > document.documentElement.scrollHeight) && String(this.classList).indexOf('current')) {
+                    //elCurrentRoom.style.margin = 'initial';
                     elCurrentRoom.addEventListener('mousemove', onMouseMove);
                 }
             })
@@ -758,32 +818,51 @@ window.onload = function () {
         goRoom();
 
         const topValue = 160;
-        let elRange = getElement('.js-range');
-        elCurrentRoom.style.transform = 'scale(' + elRange.value + '%)';
+        const elRange = getElement('.js-range');
+        elCurrentRoom.style.transform = `scale(${elRange.value}%) translate(0,0)`;
         elRange.addEventListener('input', () => {
-            elCurrentRoom.style.transform = 'scale(' + elRange.value + '%)';
+            //Проверяем если есть смещение, то его добавляем в style
+            //elCurrentRoom.removeAttribute('style');
+            const start = elCurrentRoom.style.transform.indexOf('translate(');
+            if(start !== -1) {
+
+                elCurrentRoom.style = 'margin: initial; transform: scale(' + elRange.value + '%) translate(' + valueTranslateX + 'px,' + valueTranslateY + 'px)';
+
+            }
+            else {
+                elCurrentRoom.style.transform = 'scale(' + elRange.value + '%)';
+            }
         })
 
         let arrButtons = getArrayElements("[class *= 'js-range-button']");//нажатие на кнопки + -
         arrButtons.forEach((item) => {
-            item.addEventListener('click', (e) => {
-                let enlarger = 0;
-                if(String(item.classList).includes('top')){
+            item.addEventListener('click', () => {
+                let enlarger;
+                let additionToEven;
+                if(`${item.classList.toString()}`.includes('top')){
                     enlarger = 20;
+                    additionToEven = 1;
                 }
                 else {
                     enlarger = -20;
+                    additionToEven = -1;
                 }
 
-                elRange.value = Number(elRange.value) + enlarger;
+                if(elRange.value % 2 === 0) {
+                    elRange.value = Number(elRange.value) + enlarger;
+                }
+                else {
+                    elRange.value = Number(elRange.value) + enlarger + additionToEven;
+                }
 
                 let start;
-                if((elCurrentRoom.style.transform).indexOf(1) !== -1) {
-                    start = (elCurrentRoom.style.transform).indexOf('1');
+                if((elCurrentRoom.style.transform).indexOf('1') !== -1) {
+                    start = (elCurrentRoom.style.transform).indexOf('(1')+1;
                 }
                 else {
                     start = (elCurrentRoom.style.transform).indexOf('(2') +1;
                 }
+                console.log('start: '+ start);
 
                 let valueScale;
                 valueScale =(elCurrentRoom.style.transform).substr(start, 3);
@@ -792,9 +871,13 @@ window.onload = function () {
                 }
                 let cangedValueScale = valueScale*100 + enlarger;
                 if((cangedValueScale >= 100) && (cangedValueScale <=200)) {
-                    elCurrentRoom.style.transform = 'scale(' + cangedValueScale + '%)';
+                    if(isMoveRoom) {
+                        elCurrentRoom.style = 'margin: initial; transform: scale(' + elRange.value/100 + ') translate(' + valueTranslateX + 'px,' + valueTranslateY + 'px)';
+                    }
+                    else {
+                        elCurrentRoom.style.transform = 'scale(' + elRange.value/100 + ')';
+                    }
                 }
-
             })
         });
 
