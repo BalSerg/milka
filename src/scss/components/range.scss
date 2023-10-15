@@ -1,0 +1,141 @@
+.range {
+  position: absolute;
+  top: calc(100% - 200px);
+  left: calc((100% - 75vw) / 2);
+
+  transform: rotate(-90deg);
+  transform-origin: 0;
+
+  &-top,
+  &-bottom {
+    $width: 60px;
+
+    position: absolute;
+    top: 0;
+
+    width: $width;
+    height: $width;
+
+    background-size: cover;
+
+    transform: rotate(-90deg);
+    cursor: pointer;
+  }
+
+  &-top {
+    right: 0;
+
+    background: url("./images/plus.svg") center no-repeat;
+  }
+
+  &-bottom {
+    top: 0;
+
+    background: url("./images/minus.svg") center no-repeat;
+  }
+
+  > input {
+    height: 60px;
+    margin: 0 0 0 54px;
+    width: calc(100% - 54px - 54px);
+
+    &::-webkit-slider-runnable-track {
+      height: 10px;
+      background-color: $white;
+    }
+
+    &::-webkit-slider-thumb {
+      width: 40px;
+      height: 40px;
+      margin: -14px 0 0;
+
+      border-radius: 50%;
+      background: $purple-light;
+      border: 10px solid #7d69ac;
+
+      appearance: none;
+    }
+  }
+
+  &.isMoz {
+    transform: none;
+    top: 0;
+
+    > input {
+      margin: 54px 0;
+      height: calc(100% - 54px - 54px);
+
+      &::-moz-range-track {
+        width: 10px;
+        background-color: $white;
+      }
+
+      &::-moz-range-thumb {
+        width: 15px;
+        height: 15px;
+        margin: -14px 0 0;
+
+        border-radius: 50%;
+        background: $purple-light;
+        border: 10px solid #7d69ac;
+
+        appearance: none;
+      }
+    }
+
+    .range {
+      &-top,
+      &-bottom {
+        right: -12px;
+
+        transform: none;
+      }
+
+      &-bottom {
+        top: initial;
+        bottom: 0;
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 1520px) {
+  .range {
+    left: 65px;
+  }
+}
+
+@include mobile {
+  .range {
+    left: 48px;
+
+    &-top,
+    &-bottom {
+      $width: 50px;
+
+      width: $width;
+      height: $width;
+
+      background-size: contain;
+    }
+
+    > input {
+      height: 50px;
+      margin: 0 0 0 50px;
+      width: calc(100% - 50px - 50px);
+    }
+
+    &.isMoz {
+      > input {
+        margin: 50px 0;
+        height: calc(100% - 48px - 48px);
+      }
+      .range {
+        &-top,
+        &-bottom {
+          right: -9px;
+        }
+      }
+    }
+  }
+}
