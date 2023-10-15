@@ -1,0 +1,79 @@
+@use "fonts/font";
+@import "services/_all";
+@import "helpers/_all";
+
+@import "components/form";
+@import "components/modal";
+
+.main {
+  position: relative;
+  background: url("./images/background.png") center 0 no-repeat;
+  background-size: cover;
+
+  &-wrapper {
+    max-width: 1440px;
+    margin: 0 auto;
+    padding: 0 48px;
+    box-sizing: border-box;
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    height: 100%;
+
+    > div {
+      width: 100%;
+      margin: auto;
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+    }
+  }
+}
+
+.button-to-lk {
+  @include appetite36;
+  @include button-add(15px, 34px);
+
+  max-width: 480px;
+}
+
+@media screen and (min-width: 1600px) {
+  .main {
+    &-wrapper {
+      > div {
+        flex-direction: column;
+        align-items: self-start;
+        gap: 48px 0;
+      }
+    }
+  }
+}
+
+@include tablet {
+  .height100 {
+    height: inherit;
+  }
+
+  .main {
+    background: url("./images/background-tablet.png") center 0 no-repeat;
+    background-size: cover;
+
+    &-wrapper > div {
+      flex-direction: column;
+      align-items: center;
+      gap: 48px 0;
+      padding: 540px 24px 120px;
+    }
+  }
+}
+
+@include mobile {
+  .main {
+    background: url("./images/background-mobile.png") center 0 no-repeat;
+    background-size: cover;
+
+    &-wrapper > div {
+      padding: 344px 16px 148px;
+    }
+  }
+}

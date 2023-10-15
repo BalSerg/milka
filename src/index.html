@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en" class="height100">
+<head>
+    <meta charset="UTF-8">
+    <title>milka</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+<!--    <link rel="stylesheet" href="styles/index.min.css">-->
+</head>
+<body class="height100">
+<main class="main height100">
+    <div class="main-wrapper">
+        <div>
+            <form class="form js-form">
+                <div class="form__name">РЕГИСТРАЦИЯ</div>
+                <div class="form__name">Вход</div>
+                <div class="form__wrapper">
+                    <div class="form__item">
+                        <div class="form__item-text">Почта</div>
+                        <div class="form__item-input">
+                            <input type="email" required placeholder="example@gmail.com"/>
+                        </div>
+                    </div>
+                    <div class="form__item">
+                        <div class="form__item-text">Пароль</div>
+                        <div class="form__item-input js-password">
+                            <input type="password" required/>
+                        </div>
+                        <div class="error-message">Неверный пароль, попробуйте еще раз</div>
+                    </div>
+                    <button type="submit" class="button"><span>Готово</span></button>
+                </div>
+                <div class="re-password js-call-modal">Восстановить пароль</div>
+                <div class="form__decor is-mobile">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+            </form>
+            <button class="button-to-lk js-go-lk"><span>УЖЕ ЕСТЬ ЛИЧНЫЙ КАБИНЕТ</span></button>
+        </div>
+    </div>
+    <div class="modal js-modal">
+        <div class="modal-wrapper">
+            <div class="modal__cross js-cross"></div>
+            <div class="modal__text">
+                Подробная инструкция по восстановлению пароля отправлена вам на почту
+            </div>
+        </div>
+    </div>
+</main>
+<!--<script src="scripts/index.js"></script>-->
+</body>
+</html>
