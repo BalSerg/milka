@@ -1,8 +1,8 @@
 function getElement(selector, parent = document) {
   const elem = parent.querySelector(selector);
   if (!elem) {
-    // throw new Error(`Element ${selector} not found`);
-    return null;
+    throw new Error(`Element ${selector} not found`);
+    // return null;
   }
 
   return elem;

@@ -114,7 +114,7 @@ const giftsObj = [
   ],
 ];
 
-const giftsObj_mobile = [
+const giftsObjMobile = [
   [
     { left: 165, top: 0, scale: 0.65, rotate: 0 },
     { left: 30, top: 45, scale: 0.5, rotate: 0 },
@@ -203,4 +203,4 @@ const giftsObj_mobile = [
   ],
 ];
 
-export { giftsObj_mobile, giftsObj, giftsInModal };
+export { giftsObjMobile, giftsObj, giftsInModal };
