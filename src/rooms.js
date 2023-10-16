@@ -13,6 +13,10 @@ let valueTranslateY;
 const availableWidth = document.documentElement.scrollWidth;
 const availableHeight = document.documentElement.scrollHeight;
 
+// FIXME: вытащить в конфиг?
+const topValue = 160;
+const widthMobileRoom = 400;
+
 class RoomsApp {
   constructor() {
     // super();
@@ -24,6 +28,11 @@ class RoomsApp {
       time2MS: 0,
 
       isMoveRoom: false,
+
+      isModal: false,
+
+      isClickBoardingGift: false,
+      isClickBoardingLk: false,
 
       currentRoom: null,
       newScale: 0, // Переменная для скейлинга в мобилке.
@@ -43,11 +52,25 @@ class RoomsApp {
       infinite: true,
     });
 
-    window.addEventListener("resize", () => {
-      console.log("resize");
-      this.setBlockGifts();
-      this.setRoomInAllWindowMobile();
-    });
+    this.elChoice = getElement(".js-choice");
+    this.elMenu = getElement(".js-menu");
+    this.roomsList = getElement(".js-rooms");
+    this.rooms = getArrayElements(".choice__item", this.elChoice);
+    this.elBlockRange = getElement(".js-range").parentNode;
+
+    this.arrModals = getArrayElements('[class *= "js-modal"]');
+    this.arrCross = getArrayElements(".js-cross");
+
+    this.elBoardingMenuGift = getElement(".js-onboarding-menu-gift");
+    this.elBoardingLk = getElement(".js-onboarding-lk");
+    this.elBoardingRange = getElement(".js-onboarding-range");
+
+    this.roomContent = getElement(".room-content");
+
+    this.resize = this.resize.bind(this);
+    this.clickRoom = this.clickRoom.bind(this);
+
+    this.initListeners();
 
     // Открытие-закрытие модалок
     // if (getElement('[class *= "js-modal"]')) {
@@ -194,49 +217,29 @@ class RoomsApp {
     //     });
     //   });
     //
-    //   // Закрытие модалки по крестику
-    //   const arrCross = getArrayElements(".js-cross");
-    //   arrCross.forEach((item) => {
-    //     item.addEventListener("click", () => {
-    //       item.parentNode.parentNode.classList.remove("is-visibility");
-    //
-    //       getElement(".js-call-lk-modal").classList.remove("is-hidden");
-    //     });
-    //   });
-    //
-    //   // Закрытие модалок по кнопке Esc
-    //   window.addEventListener("keypress", (e) => {
-    //     if (e.key === "Escape" || e.key === "Esc" || e.keyCode === 27) {
-    //       arrModals.forEach((item) => {
-    //         item.classList.remove("is-visibility");
-    //       });
-    //     }
-    //   });
+
     // }
 
     // Остлеживание изменения переменной isExist твечающей за наличие подарков в комнате и запуск нужных функций
-    const existencGift = { _isGift: false };
-    Object.defineProperty(existencGift, "isExist", {
-      get() {
-        return this._isGift;
-      },
-      set(value) {
-        this._isGift = value;
-        this.moveGift();
-        this.deleteGiftFromRoom();
-        this.callModallAr();
-      },
-    });
+    // const existencGift = { _isGift: false };
+    // Object.defineProperty(existencGift, "isExist", {
+    //   get() {
+    //     return this._isGift;
+    //   },
+    //   set(value) {
+    //     this._isGift = value;
+    //     this.moveGift();
+    //     this.deleteGiftFromRoom();
+    //     this.callModallAr();
+    //   },
+    // });
 
     // Функция создает подарок в комнате используя данные из gifts[], параметр num - это номер текущей комнаты
     if (getElement(".js-rooms")) {
-      const elChoice = getElement(".js-choice");
       const elRoom = getElement(".js-rooms");
       let elMenu = getElement(".js-menu");
-      const elBlockRange = getElement(".js-range").parentNode;
+
       const elCurrentRoom = getElement(".js-current-room");
-      const widthMobileRoom = 400;
-      const forRoom = getElement(".room-content");
 
       this.callOnboarding(".js-onboarding-choice", 2500);
 
@@ -244,17 +247,17 @@ class RoomsApp {
 
       // goRoom();
 
-      const topValue = 160;
       const elRange = getElement(".js-range");
       elCurrentRoom.style.transform = `scale(${
         parseInt(elRange.value, 10) / 100
       })`; // при загрузке сначала сразу ставим scale 1.2
+
       elRange.addEventListener("input", () => {
         const scale = parseInt(elRange.value, 10) / 100;
         elCurrentRoom.style.transform = `scale(${scale})`;
 
         // Проверяем если есть смещение, то его добавляем в style
-        if (isMoveRoom) {
+        if (this.state.isMoveRoom === true) {
           elCurrentRoom.style = `margin: initial; transform: scale(${
             parseInt(elRange.value, 10) / 100
           }) translate(${valueTranslateX}px,${valueTranslateY}px)`;
@@ -299,7 +302,7 @@ class RoomsApp {
           }
           const cangedValueScale = valueScale * 100 + enlarger;
           if (cangedValueScale >= 100 && cangedValueScale <= 200) {
-            if (isMoveRoom) {
+            if (this.state.isMoveRoom === true) {
               elCurrentRoom.style = `margin: initial; transform: scale(${
                 elRange.value / 100
               }) translate(${valueTranslateX}px,${valueTranslateY}px)`;
@@ -357,7 +360,174 @@ class RoomsApp {
     }
   }
 
+  resize() {
+    console.log("resize");
+    this.setBlockGifts();
+    this.setRoomInAllWindowMobile();
+  }
+
+  initListeners() {
+    /**
+     * RESIZE events
+     */
+    window.addEventListener("orientationchange", this.resize);
+    window.addEventListener("resize", this.resize);
+    //------------
+
+    /**
+     * Вешаем события на кнопки комнат
+     */
+    this.rooms.forEach((room) => {
+      room.addEventListener("click", this.clickRoom);
+    });
+
+    /**
+     * RANGE events
+     */
+    this.elBoardingRange.addEventListener("click", () => {
+      this.elBoardingRange.classList.remove("is-visibility");
+      this.elBoardingMenuGift.classList.add("is-visibility");
+      this.elMenu.classList.add("z-index-max");
+    });
+
+    this.elBoardingMenuGift.addEventListener("click", () => {
+      this.elBoardingMenuGift.classList.remove("is-visibility");
+      this.elBoardingLk.classList.add("is-visibility");
+      this.state.isClickBoardingGift = true;
+    });
+
+    this.elBoardingLk.addEventListener("click", () => {
+      this.elBoardingLk.classList.remove("is-visibility");
+      this.elMenu.classList.remove("z-index-max");
+      this.state.isClickBoardingLk = true;
+    });
+    //---------
+
+    /**
+     * MODAL events
+     */
+    // Закрытие модалки по крестику
+    this.arrCross.forEach((item) => {
+      item.addEventListener("click", () => {
+        item.parentNode.parentNode.classList.remove("is-visibility");
+
+        // FIXME Это точно нельзя вытащить из цикла?
+        getElement(".js-call-lk-modal").classList.remove("is-hidden");
+      });
+    });
+
+    // Закрытие модалок по кнопке Esc
+    window.addEventListener("keypress", (e) => {
+      if (this.state.isModal === false) {
+        return;
+      }
+
+      if (e.key === "Escape" || e.key === "Esc" || e.keyCode === 27) {
+        this.arrModals.forEach((item) => {
+          item.classList.remove("is-visibility");
+        });
+      }
+    });
+    //---------
+  }
+
   clickRoom(e) {
+    console.log(e);
+
+    if (this.state.currentRoom !== null) {
+      return;
+    }
+
+    const element = e.currentTarget;
+    if (!("room" in element.dataset)) {
+      return;
+    }
+
+    const { room } = element.dataset;
+    console.log(room);
+    this.state.currentRoom = room;
+
+    this.elChoice.classList.add("is-hidden");
+
+    const arrMenuItems = this.elMenu.childNodes; // показать в меню выбор подарков
+    arrMenuItems.forEach((menuItem) => {
+      if (menuItem.nodeType === 1) {
+        menuItem.classList.remove("is-hidden");
+      }
+    });
+
+    for (let i = 1; i <= this.rooms.length + 1; i++) {
+      // Проверяем и удаляем заранее у комнаты все классы room1 room2 и т.д.
+      if (this.roomsList.classList.contains(`room${i}`)) {
+        this.roomsList.classList.remove(`room${i}`);
+      }
+    }
+
+    this.elBlockRange.classList.remove("is-hidden"); // Показываем блок с полузнком
+
+    this.roomsList.classList.remove("is-hidden");
+    this.roomsList.classList.add(`room${room}`);
+    this.roomsList.style.height = `${availableHeight}px`;
+
+    this.styleFixes();
+
+    if (window.screen.width <= 870) {
+      this.elMenu.style.width = `${window.screen.height}px`;
+    }
+
+    this.elBoardingRange.classList.add("is-visibility");
+
+    this.moveRoom();
+
+    setTimeout(() => {
+      this.elBoardingRange.classList.remove("is-visibility");
+      if (this.state.isClickBoardingGift === false) {
+        this.elBoardingMenuGift.classList.add("is-visibility");
+        this.elMenu.classList.add("z-index-max");
+      }
+    }, 2500);
+
+    setTimeout(() => {
+      this.elBoardingMenuGift.classList.remove("is-visibility");
+      if (this.state.isClickBoardingLk === false) {
+        this.elBoardingLk.classList.add("is-visibility");
+      }
+    }, 5000);
+
+    setTimeout(() => {
+      this.elBoardingLk.classList.remove("is-visibility");
+      this.elMenu.classList.remove("z-index-max");
+    }, 7500);
+
+    if (this.state.firstVisit) {
+      this.elBlockRange.classList.add("z-index-max");
+      setTimeout(() => {
+        this.elBlockRange.classList.remove("z-index-max");
+      }, 2500);
+
+      if (window.screen.width > 820) {
+        getElement(".js-onboarding-content").style.left = `${
+          this.elBlockRange.getBoundingClientRect().x +
+          this.elBlockRange.offsetHeight
+        }px`;
+        getElement(".js-onboarding-content").style.top = `${
+          this.elBlockRange.getBoundingClientRect().y
+        }px`;
+        getElement(".js-onboarding-content-gift").style.left = `${
+          this.elMenu.getBoundingClientRect().x - this.elMenu.offsetWidth
+        }px`;
+        getElement(".js-onboarding-content-gift").style.top = `${
+          this.elMenu.getBoundingClientRect().y + this.elMenu.offsetHeight
+        }px`;
+        getElement(".js-onboarding-content-lk").style.left = `${
+          this.elMenu.getBoundingClientRect().x - this.elMenu.offsetWidth / 4
+        }px`;
+        getElement(".js-onboarding-content-lk").style.top = `${
+          this.elMenu.getBoundingClientRect().y + this.elMenu.offsetHeight + 50
+        }px`;
+      }
+    }
+
     // elChoice.addEventListener("click", (e) => {
     //   if (
     //     e.target.parentNode.classList.toString().includes("js-go") ||
@@ -487,6 +657,23 @@ class RoomsApp {
     //
     //   this.moveRoom();
     // });
+  }
+
+  styleFixes() {
+    if (!window.navigator.userAgent.includes("Fire")) {
+      this.elBlockRange.style.width = `${
+        getElement("body").offsetHeight - topValue * 2
+      }px`; // всему блоку с ползунком присваиваем высоту подолжки модалки т.к. она всегда по высоте во весь экран
+    } else {
+      this.elBlockRange.classList.add("isMoz");
+      this.elBlockRange.style.height = `${
+        getElement("body").offsetHeight - topValue * 2
+      }px`; // всему блоку с ползункои присваиваем высоту подолжки модалки т.к. она всегда по высоте во весь экран
+      this.elBlockRange.style.top = `${
+        (availableHeight - this.elBlockRange.offsetHeight) / 2
+      }px`;
+    }
+    this.setRoomInAllWindowMobile();
   }
 
   /**
@@ -673,7 +860,7 @@ class RoomsApp {
         shiftXItem = (item.offsetWidth * scale - item.offsetWidth) / 2;
         shiftYItem = (item.offsetHeight * scale - item.offsetHeight) / 2;
 
-        if (!isMoveRoom) {
+        if (this.state.isMoveRoom === true) {
           valueTranslateX = 0;
           valueTranslateY = 0;
         }
@@ -816,9 +1003,9 @@ class RoomsApp {
   setRoomInAllWindowMobile() {
     if (window.screen.width <= 820 && window.screen.width > 400) {
       this.newScale = window.screen.width / widthMobileRoom;
-      forRoom.style.transform = `scale(${this.newScale})`;
+      this.roomContent.style.transform = `scale(${this.newScale})`;
     } else {
-      forRoom.removeAttribute("style");
+      this.roomContent.removeAttribute("style");
     }
     return this.newScale;
   }
