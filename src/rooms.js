@@ -26,65 +26,11 @@ class RoomsApp {
     // super();
 
     let numCurrentRoom; // Номер текущей комнаты
-    let newScale = 0; //Переменная для скейлинга в мобилке.
+    let newScale = 0; // Переменная для скейлинга в мобилке.
 
-    //Показ формыы на странице index.html
-    if (getElement(".js-form")) {
-      const elForm = getElement(".js-form");
-      const elButtonLk = getElement(".js-go-lk");
+    // функция для равномерного выстраивания блоков с подарками в модалке подарков
 
-      elButtonLk.addEventListener("click", () => {
-        elForm.classList.add("form-enter");
-        elButtonLk.classList.add("is-hidden");
-      });
-    }
-
-    //функция для равномерного выстраивания блоков с подарками в модалке подарков
-    function setBlockGifts() {
-      if (getElement(".js-gifts")) {
-        let elGifts = getElement(".js-gifts-content");
-        elGifts.removeAttribute("style");
-        let elWidth = 128;
-        const margin = 32;
-        const maxCount = 8;
-        const borderWidth = 6;
-        const scrollWidth = 4;
-        let outerPadding = 48;
-        let innerPadding = 40;
-        if (screen.width <= 870) {
-          outerPadding = 16;
-          innerPadding = 48;
-        }
-        let availableWidthBlock = availableWidth - outerPadding * 2;
-        let generalWidth =
-          availableWidthBlock -
-          innerPadding -
-          (innerPadding - margin - scrollWidth) -
-          borderWidth * 2;
-        let countElements = Math.trunc(generalWidth / (elWidth + margin));
-        if (countElements >= maxCount) {
-          countElements = maxCount;
-        }
-        let newWidth;
-        if (navigator.userAgent.indexOf("Fire")) {
-          newWidth =
-            margin * (countElements - 1) +
-            countElements * elWidth +
-            innerPadding * 2 +
-            borderWidth * 2 +
-            8;
-        } else {
-          newWidth =
-            margin * (countElements - 1) +
-            countElements * elWidth +
-            innerPadding * 2 +
-            borderWidth * 2 +
-            scrollWidth;
-        }
-        elGifts.style.width = newWidth + "px";
-      }
-    }
-    setBlockGifts();
+    this.setBlockGifts();
 
     //сброс к начальным значениям стилей комнаты и ползунка
     function setDefaultValueRoomRange() {
@@ -950,6 +896,53 @@ class RoomsApp {
         setRoomInAllWindow_mobile();
       };
     }
+  }
+
+  setBlockGifts() {
+    if (!getElement(".js-gifts")) {
+      return;
+    }
+
+    let elGifts = getElement(".js-gifts-content");
+    elGifts.removeAttribute("style");
+    let elWidth = 128;
+    const margin = 32;
+    const maxCount = 8;
+    const borderWidth = 6;
+    const scrollWidth = 4;
+    let outerPadding = 48;
+    let innerPadding = 40;
+    if (screen.width <= 870) {
+      outerPadding = 16;
+      innerPadding = 48;
+    }
+    let availableWidthBlock = availableWidth - outerPadding * 2;
+    let generalWidth =
+      availableWidthBlock -
+      innerPadding -
+      (innerPadding - margin - scrollWidth) -
+      borderWidth * 2;
+    let countElements = Math.trunc(generalWidth / (elWidth + margin));
+    if (countElements >= maxCount) {
+      countElements = maxCount;
+    }
+    let newWidth;
+    if (navigator.userAgent.indexOf("Fire")) {
+      newWidth =
+        margin * (countElements - 1) +
+        countElements * elWidth +
+        innerPadding * 2 +
+        borderWidth * 2 +
+        8;
+    } else {
+      newWidth =
+        margin * (countElements - 1) +
+        countElements * elWidth +
+        innerPadding * 2 +
+        borderWidth * 2 +
+        scrollWidth;
+    }
+    elGifts.style.width = newWidth + "px";
   }
 }
 
