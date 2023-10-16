@@ -1,16 +1,20 @@
-function getElement(selector) {
-  const elem = document.querySelector(selector);
+function getElement(selector, parent = document) {
+  const elem = parent.querySelector(selector);
   if (!elem) {
-    return;
+    // throw new Error(`Element ${selector} not found`);
+    return null;
   }
+
   return elem;
 }
 
-function getArrayElements(selector) {
-  const array = Array.from(document.querySelectorAll(selector));
-  if (array) {
-    return Array.from(document.querySelectorAll(selector));
+function getArrayElements(selector, parent = document) {
+  const array = Array.from(parent.querySelectorAll(selector));
+  if (!array) {
+    return [];
   }
+
+  return array;
 }
 
 export { getElement, getArrayElements };
