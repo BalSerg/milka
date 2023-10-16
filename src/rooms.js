@@ -56,6 +56,7 @@ class RoomsApp {
     this.elMenu = getElement(".js-menu");
     this.roomsList = getElement(".js-rooms");
     this.rooms = getArrayElements(".choice__item", this.elChoice);
+    this.elCurrentRoom = getElement(".js-current-room");
     this.elBlockRange = getElement(".js-range").parentNode;
 
     this.arrModals = getArrayElements('[class *= "js-modal"]');
@@ -64,6 +65,7 @@ class RoomsApp {
     this.elBoardingMenuGift = getElement(".js-onboarding-menu-gift");
     this.elBoardingLk = getElement(".js-onboarding-lk");
     this.elBoardingRange = getElement(".js-onboarding-range");
+    this.elRange = getElement(".js-range");
 
     this.roomContent = getElement(".room-content");
 
@@ -235,129 +237,115 @@ class RoomsApp {
     // });
 
     // Функция создает подарок в комнате используя данные из gifts[], параметр num - это номер текущей комнаты
-    if (getElement(".js-rooms")) {
-      const elRoom = getElement(".js-rooms");
-      let elMenu = getElement(".js-menu");
+    // if (getElement(".js-rooms")) {
+    //   const elRoom = getElement(".js-rooms");
+    //   let elMenu = getElement(".js-menu");
+    //
+    //   const elCurrentRoom = getElement(".js-current-room");
+    //
+    //   this.callOnboarding(".js-onboarding-choice", 2500);
+    //
+    //   const countRooms = 3;
+    //
+    //   // goRoom();
+    //
+    //   const elRange = getElement(".js-range");
+    //   elCurrentRoom.style.transform = `scale(${
+    //     parseInt(elRange.value, 10) / 100
+    //   })`; // при загрузке сначала сразу ставим scale 1.2
+    //
 
-      const elCurrentRoom = getElement(".js-current-room");
+    //
+    //   const arrButtons = getArrayElements("[class *= 'js-range-button']"); // нажатие на кнопки + -
+    //   arrButtons.forEach((item) => {
+    //     item.addEventListener("click", () => {
+    //       let enlarger;
+    //       let additionToEven;
+    //       if (`${item.classList.toString()}`.includes("top")) {
+    //         enlarger = 20;
+    //         additionToEven = 1;
+    //       } else {
+    //         enlarger = -20;
+    //         additionToEven = -1;
+    //       }
+    //
+    //       if (elRange.value % 2 === 0) {
+    //         elRange.value = Number(elRange.value) + enlarger;
+    //       } else {
+    //         elRange.value = Number(elRange.value) + enlarger + additionToEven;
+    //       }
+    //
+    //       let start;
+    //       if (elCurrentRoom.style.transform.indexOf("1") !== -1) {
+    //         // Проверка на 1, потому что 2.1 быть не может
+    //         start = elCurrentRoom.style.transform.indexOf("(1") + 1;
+    //       } else {
+    //         start = elCurrentRoom.style.transform.indexOf("(2") + 1;
+    //       }
+    //
+    //       let valueScale;
+    //       valueScale = elCurrentRoom.style.transform.substr(start, 3);
+    //       if (valueScale.length < 3) {
+    //         valueScale = elCurrentRoom.style.transform.substr(start, 1);
+    //       }
+    //       const cangedValueScale = valueScale * 100 + enlarger;
+    //       if (cangedValueScale >= 100 && cangedValueScale <= 200) {
+    //         if (this.state.isMoveRoom === true) {
+    //           elCurrentRoom.style = `margin: initial; transform: scale(${
+    //             elRange.value / 100
+    //           }) translate(${valueTranslateX}px,${valueTranslateY}px)`;
+    //         } else {
+    //           elCurrentRoom.style.transform = `scale(${elRange.value / 100})`;
+    //         }
+    //       }
+    //     });
+    //   });
 
-      this.callOnboarding(".js-onboarding-choice", 2500);
-
-      const countRooms = 3;
-
-      // goRoom();
-
-      const elRange = getElement(".js-range");
-      elCurrentRoom.style.transform = `scale(${
-        parseInt(elRange.value, 10) / 100
-      })`; // при загрузке сначала сразу ставим scale 1.2
-
-      elRange.addEventListener("input", () => {
-        const scale = parseInt(elRange.value, 10) / 100;
-        elCurrentRoom.style.transform = `scale(${scale})`;
-
-        // Проверяем если есть смещение, то его добавляем в style
-        if (this.state.isMoveRoom === true) {
-          elCurrentRoom.style = `margin: initial; transform: scale(${
-            parseInt(elRange.value, 10) / 100
-          }) translate(${valueTranslateX}px,${valueTranslateY}px)`;
-        } else {
-          elCurrentRoom.style.transform = `margin: auto; scale(${
-            parseInt(elRange.value, 10) / 100
-          })`;
-        }
-      });
-
-      const arrButtons = getArrayElements("[class *= 'js-range-button']"); // нажатие на кнопки + -
-      arrButtons.forEach((item) => {
-        item.addEventListener("click", () => {
-          let enlarger;
-          let additionToEven;
-          if (`${item.classList.toString()}`.includes("top")) {
-            enlarger = 20;
-            additionToEven = 1;
-          } else {
-            enlarger = -20;
-            additionToEven = -1;
-          }
-
-          if (elRange.value % 2 === 0) {
-            elRange.value = Number(elRange.value) + enlarger;
-          } else {
-            elRange.value = Number(elRange.value) + enlarger + additionToEven;
-          }
-
-          let start;
-          if (elCurrentRoom.style.transform.indexOf("1") !== -1) {
-            // Проверка на 1, потому что 2.1 быть не может
-            start = elCurrentRoom.style.transform.indexOf("(1") + 1;
-          } else {
-            start = elCurrentRoom.style.transform.indexOf("(2") + 1;
-          }
-
-          let valueScale;
-          valueScale = elCurrentRoom.style.transform.substr(start, 3);
-          if (valueScale.length < 3) {
-            valueScale = elCurrentRoom.style.transform.substr(start, 1);
-          }
-          const cangedValueScale = valueScale * 100 + enlarger;
-          if (cangedValueScale >= 100 && cangedValueScale <= 200) {
-            if (this.state.isMoveRoom === true) {
-              elCurrentRoom.style = `margin: initial; transform: scale(${
-                elRange.value / 100
-              }) translate(${valueTranslateX}px,${valueTranslateY}px)`;
-            } else {
-              elCurrentRoom.style.transform = `scale(${elRange.value / 100})`;
-            }
-          }
-        });
-      });
-
-      // Обращаемся к блоку с подарками в модалке , собираем там все подарки в массив и по клику на элемента модалку закрываем,
-      // куда кликнули ставим класс is-active и рисуем подарок в комнате
-      const blockGifts = getElement(".js-gifts");
-      const gifts = blockGifts.childNodes;
-      const arrItems = [];
-      for (const jtem of gifts) {
-        if (jtem.nodeType === 1) {
-          arrItems.push(jtem);
-        }
-      }
-      arrItems.forEach((item, index) => {
-        item.addEventListener("click", () => {
-          if (
-            item.classList.contains("is-can-get") &&
-            !item.classList.contains("is-active")
-          ) {
-            item.classList.add("is-active");
-            getElement(".js-modal-gifts").classList.remove("is-visibility");
-            this.createBlock(index + 1);
-            if (this.state.firstVisitNew) {
-              const elDiv = document.createElement("div");
-              const elContent = document.createElement("div");
-              elDiv.setAttribute("class", "onboarding");
-              elDiv.classList.add("onboarding-room");
-              elDiv.classList.add("z-index-max");
-              const elSpan = document.createElement("span");
-              elSpan.textContent =
-                "Кликни, чтобы перейти в ar или убрать в коробку";
-              const elImg = document.createElement("img");
-              elImg.src = "images/finger2.svg";
-              elContent.append(elSpan);
-              elContent.append(elImg);
-              elDiv.append(elContent);
-              if (elCurrentRoom.childNodes.length === 1) {
-                elCurrentRoom.childNodes[0].append(elDiv);
-              }
-
-              setTimeout(() => {
-                elDiv.remove();
-              }, 2500);
-            }
-          }
-        });
-      });
-    }
+    // Обращаемся к блоку с подарками в модалке , собираем там все подарки в массив и по клику на элемента модалку закрываем,
+    // куда кликнули ставим класс is-active и рисуем подарок в комнате
+    //   const blockGifts = getElement(".js-gifts");
+    //   const gifts = blockGifts.childNodes;
+    //   const arrItems = [];
+    //   for (const jtem of gifts) {
+    //     if (jtem.nodeType === 1) {
+    //       arrItems.push(jtem);
+    //     }
+    //   }
+    //   arrItems.forEach((item, index) => {
+    //     item.addEventListener("click", () => {
+    //       if (
+    //         item.classList.contains("is-can-get") &&
+    //         !item.classList.contains("is-active")
+    //       ) {
+    //         item.classList.add("is-active");
+    //         getElement(".js-modal-gifts").classList.remove("is-visibility");
+    //         this.createBlock(index + 1);
+    //         if (this.state.firstVisitNew) {
+    //           const elDiv = document.createElement("div");
+    //           const elContent = document.createElement("div");
+    //           elDiv.setAttribute("class", "onboarding");
+    //           elDiv.classList.add("onboarding-room");
+    //           elDiv.classList.add("z-index-max");
+    //           const elSpan = document.createElement("span");
+    //           elSpan.textContent =
+    //             "Кликни, чтобы перейти в ar или убрать в коробку";
+    //           const elImg = document.createElement("img");
+    //           elImg.src = "images/finger2.svg";
+    //           elContent.append(elSpan);
+    //           elContent.append(elImg);
+    //           elDiv.append(elContent);
+    //           if (elCurrentRoom.childNodes.length === 1) {
+    //             elCurrentRoom.childNodes[0].append(elDiv);
+    //           }
+    //
+    //           setTimeout(() => {
+    //             elDiv.remove();
+    //           }, 2500);
+    //         }
+    //       }
+    //     });
+    //   });
+    // }
   }
 
   resize() {
@@ -381,9 +369,6 @@ class RoomsApp {
       room.addEventListener("click", this.clickRoom);
     });
 
-    /**
-     * RANGE events
-     */
     this.elBoardingRange.addEventListener("click", () => {
       this.elBoardingRange.classList.remove("is-visibility");
       this.elBoardingMenuGift.classList.add("is-visibility");
@@ -401,7 +386,28 @@ class RoomsApp {
       this.elMenu.classList.remove("z-index-max");
       this.state.isClickBoardingLk = true;
     });
-    //---------
+
+    this.elRange.addEventListener("input", () => {
+      if (this.state.currentRoom === null) {
+        return;
+      }
+
+      const scale = parseInt(this.elRange.value, 10) / 100;
+      this.elCurrentRoom.style.transform = `scale(${scale})`;
+
+      // Проверяем если есть смещение, то его добавляем в style
+      if (this.state.isMoveRoom === true) {
+        this.elCurrentRoom.style = `margin: initial; transform: scale(${
+          parseInt(this.elRange.value, 10) / 100
+        }) translate(${valueTranslateX}px,${valueTranslateY}px)`;
+        this.elCurrentRoom.dataset.translatex = valueTranslateX;
+        this.elCurrentRoom.dataset.translatey = valueTranslateY;
+      } else {
+        this.elCurrentRoom.style.transform = `margin: auto; scale(${
+          parseInt(this.elRange.value, 10) / 100
+        })`;
+      }
+    });
 
     /**
      * MODAL events
@@ -527,136 +533,6 @@ class RoomsApp {
         }px`;
       }
     }
-
-    // elChoice.addEventListener("click", (e) => {
-    //   if (
-    //     e.target.parentNode.classList.toString().includes("js-go") ||
-    //     e.target.parentNode.parentNode.classList.toString().includes("js-go")
-    //   ) {
-    //     // Это все надо от для того что мы нажатие идет и на кнпоку Перейти и на весь блок
-    //     const classes1 = e.target.parentNode.classList.toString();
-    //     const classes2 = e.target.parentNode.parentNode.classList.toString();
-    //     let classes;
-    //     if (classes1.includes("js-go")) {
-    //       classes = classes1;
-    //     }
-    //     if (classes2.includes("js-go")) {
-    //       classes = classes2;
-    //     }
-    //
-    //     elChoice.classList.add("is-hidden"); // скрыть выбор комнат
-    //
-    //     const arrMenuItems = elMenu.childNodes; // показать в меню выбор подарков
-    //     for (const jtem of arrMenuItems) {
-    //       if (jtem.nodeType === 1) {
-    //         jtem.classList.remove("is-hidden");
-    //       }
-    //     }
-    //
-    //     for (let i = 1; i <= countRooms; i++) {
-    //       // Проверяем и удаляем заранее у комнаты все классы room1 room2 и т.д.
-    //       if (elRoom.classList.contains(`room${i}`)) {
-    //         elRoom.classList.remove(`room${i}`);
-    //       }
-    //     }
-    //
-    //     elBlockRange.classList.remove("is-hidden"); // Показываем блок с полузнком
-    //
-    //     const currentNumber = classes[classes.length - 1]; // Получаем номер текущей комнаты беря цифру у класса
-    //     numCurrentRoom = currentNumber;
-    //
-    //     elRoom.classList.remove("is-hidden");
-    //     elRoom.classList.add(`room${currentNumber}`);
-    //
-    //     elRoom.style.height = `${availableHeight}px`;
-    //     if (!navigator.userAgent.includes("Fire")) {
-    //       elBlockRange.style.width = `${
-    //         getElement("body").offsetHeight - topValue * 2
-    //       }px`; // всему блоку с ползункои присваиваем высоту подолжки модалки т.к. она всегда по высоте во весь экран
-    //     } else {
-    //       elBlockRange.classList.add("isMoz");
-    //       elBlockRange.style.height = `${
-    //         getElement("body").offsetHeight - topValue * 2
-    //       }px`; // всему блоку с ползункои присваиваем высоту подолжки модалки т.к. она всегда по высоте во весь экран
-    //       elBlockRange.style.top = `${
-    //         (availableHeight - elBlockRange.offsetHeight) / 2
-    //       }px`;
-    //     }
-    //     setRoomInAllWindow_mobile();
-    //
-    //     if (screen.width <= 870) {
-    //       elMenu = getElement(".js-menu");
-    //       elMenu.style.width = `${screen.height}px`;
-    //     }
-    //     if (first_visit) {
-    //       elBlockRange.classList.add("z-index-max");
-    //       setTimeout(() => {
-    //         elBlockRange.classList.remove("z-index-max");
-    //       }, 2500);
-    //       const elBoardingRange = getElement(".js-onboarding-range");
-    //       if (screen.width > 820) {
-    //         getElement(".js-onboarding-content").style.left = `${
-    //           elBlockRange.getBoundingClientRect().x + elBlockRange.offsetHeight
-    //         }px`;
-    //         getElement(".js-onboarding-content").style.top = `${
-    //           elBlockRange.getBoundingClientRect().y
-    //         }px`;
-    //         getElement(".js-onboarding-content-gift").style.left = `${
-    //           elMenu.getBoundingClientRect().x - elMenu.offsetWidth
-    //         }px`;
-    //         getElement(".js-onboarding-content-gift").style.top = `${
-    //           elMenu.getBoundingClientRect().y + elMenu.offsetHeight
-    //         }px`;
-    //         getElement(".js-onboarding-content-lk").style.left = `${
-    //           elMenu.getBoundingClientRect().x - elMenu.offsetWidth / 4
-    //         }px`;
-    //         getElement(".js-onboarding-content-lk").style.top = `${
-    //           elMenu.getBoundingClientRect().y + elMenu.offsetHeight + 50
-    //         }px`;
-    //       }
-    //       const elBoardingMenuGift = getElement(".js-onboarding-menu-gift");
-    //       const elBoardingLk = getElement(".js-onboarding-lk");
-    //
-    //       let isClickBoardingGift = false;
-    //       let isClickBoardingLk = false;
-    //       elBoardingRange.classList.add("is-visibility");
-    //       elBoardingRange.addEventListener("click", () => {
-    //         elBoardingRange.classList.remove("is-visibility");
-    //         elBoardingMenuGift.classList.add("is-visibility");
-    //         elMenu.classList.add("z-index-max");
-    //       });
-    //       elBoardingMenuGift.addEventListener("click", () => {
-    //         elBoardingMenuGift.classList.remove("is-visibility");
-    //         elBoardingLk.classList.add("is-visibility");
-    //         isClickBoardingGift = true;
-    //       });
-    //       elBoardingLk.addEventListener("click", () => {
-    //         elBoardingLk.classList.remove("is-visibility");
-    //         elMenu.classList.remove("z-index-max");
-    //         isClickBoardingLk = true;
-    //       });
-    //       setTimeout(() => {
-    //         elBoardingRange.classList.remove("is-visibility");
-    //         if (!isClickBoardingGift) {
-    //           elBoardingMenuGift.classList.add("is-visibility");
-    //           elMenu.classList.add("z-index-max");
-    //         }
-    //       }, 2500);
-    //       setTimeout(() => {
-    //         elBoardingMenuGift.classList.remove("is-visibility");
-    //         if (!isClickBoardingLk) {
-    //           elBoardingLk.classList.add("is-visibility");
-    //         }
-    //       }, 5000);
-    //       setTimeout(() => {
-    //         elBoardingLk.classList.remove("is-visibility");
-    //         elMenu.classList.remove("z-index-max");
-    //       }, 7500);
-    //     }
-    //   }
-    //
-    //   this.moveRoom();
-    // });
   }
 
   styleFixes() {
@@ -948,6 +824,7 @@ class RoomsApp {
     }
   }
 
+  // eslint-disable-next-line class-methods-use-this
   getIndexElementFromCollection(el) {
     return `${el.parentNode.parentNode.className}`.substr("gift gift".length);
   }
@@ -993,10 +870,8 @@ class RoomsApp {
   }
 
   setDefaultValueRoomRange() {
-    const elRange = getElement(".js-range");
-    const elCurrentRoom = getElement(".js-current-room");
-    elCurrentRoom.style = "margin: auto; transform:scale(1.2)";
-    elRange.value = "120";
+    this.elCurrentRoom.style = "margin: auto; transform:scale(1.2)";
+    this.elRange.value = "120";
   }
 
   // eslint-disable-next-line class-methods-use-this
@@ -1139,9 +1014,9 @@ class RoomsApp {
   } */
 }
 
-window.onload = function () {
+window.addEventListener("load", () => {
   const a = new RoomsApp();
   if (!a) {
     throw new Error("App creation error");
   }
-};
+});
