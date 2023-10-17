@@ -613,18 +613,18 @@ class RoomsApp {
       let styleValueImg;
       if (window.screen.width <= config.size.mobile) {
         styleValueDiv = `left: ${
-          giftsObj_mobile[numCurrentRoom - 1][num - 1].left
-        }px; top:${giftsObj_mobile[numCurrentRoom - 1][num - 1].top}px`;
+          giftsObj_mobile[this.state.currentRoom - 1][num - 1].left
+        }px; top:${giftsObj_mobile[this.state.currentRoom - 1][num - 1].top}px`;
         styleValueImg = `transform: scale(${
-          giftsObj_mobile[numCurrentRoom - 1][num - 1].scale
-        }) rotate(${giftsObj_mobile[numCurrentRoom - 1][num - 1].rotate}deg)`;
+          giftsObj_mobile[this.state.currentRoom - 1][num - 1].scale
+        }) rotate(${giftsObj_mobile[this.state.currentRoom - 1][num - 1].rotate}deg)`;
       } else {
         styleValueDiv = `left:${
-          giftsObj[numCurrentRoom - 1][num - 1].left
-        }px; top:${giftsObj[numCurrentRoom - 1][num - 1].top}px`;
+          giftsObj[this.state.currentRoom - 1][num - 1].left
+        }px; top:${giftsObj[this.state.currentRoom - 1][num - 1].top}px`;
         styleValueImg = `transform: scale(${
-          giftsObj[numCurrentRoom - 1][num - 1].scale
-        }) rotate(${giftsObj[numCurrentRoom - 1][num - 1].rotate}deg)`;
+          giftsObj[this.state.currentRoom - 1][num - 1].scale
+        }) rotate(${giftsObj[this.state.currentRoom - 1][num - 1].rotate}deg)`;
       }
       elDiv.classList.add("gift");
       elDiv.classList.add(`gift${num}`);
@@ -703,7 +703,7 @@ class RoomsApp {
       elDiv.append(elShadow);
       getElement(".js-current-room").append(elDiv);
       getElement(".js-modal-gifts").classList.remove("is-visibility");
-      existencGift.isExist = true; // Подарок в комнате создан и переменная isExist получает true. Изначально она false
+      //existencGift.isExist = true; // Подарок в комнате создан и переменная isExist получает true. Изначально она false
 
       let timer = 0; // таймер показа тени под подарком. При первом визите он большой чтоб онбоардинг был виден, потом маленький
       if (this.state.firstVisitNew) {
