@@ -97,154 +97,6 @@ class RoomsApp {
     this.setBlockGifts();
     this.setDefaultValueRoomRange();
 
-    // Открытие-закрытие модалок
-    // if (getElement('[class *= "js-modal"]')) {
-    //   const arrButtonsCallModal = getArrayElements(
-    //     '[class *= "js-call-modal"]',
-    //   );
-    //   const arrModals = getArrayElements('[class *= "js-modal"]');
-    //
-    //   arrButtonsCallModal.forEach((item, index) => {
-    //     item.addEventListener("click", (e) => {
-    //       if (e.target.classList.contains("js-call-lk-modal")) {
-    //         getElement(".js-call-lk-modal").classList.add("is-hidden");
-    //       }
-    //
-    //       if (arrModals[index].classList.contains("is-hidden")) {
-    //         arrModals[index].classList.remove("is-hidden");
-    //       }
-    //
-    //       if (!arrModals[index].classList.contains("is-visibility")) {
-    //         arrModals[index].classList.add("is-visibility");
-    //       }
-    //       if (arrModals[index].classList.contains("js-modal-lk")) {
-    //         const elLinkGift = getElement(".js-link-gift");
-    //         const elLinkChoice = getElement(".js-link-choice");
-    //
-    //         if (!getElement(".js-choice").classList.contains("is-hidden")) {
-    //           elLinkGift.classList.add("is-hidden");
-    //         } else {
-    //           elLinkGift.classList.remove("is-hidden");
-    //         }
-    //
-    //         elLinkGift.addEventListener("click", () => {
-    //           // Нажатие на пункт Мои подарки в Модалке ЛК
-    //           if (getElement(".js-gifts").childNodes.length === 0) {
-    //             createBlockInModslGift();
-    //           }
-    //           getElement(".js-modal-lk").classList.remove("is-visibility");
-    //           getElement(".js-modal-gifts").classList.add("is-visibility");
-    //         });
-    //
-    //         // Обработка нажатия на кнопку Сменить комнату
-    //         elLinkChoice.addEventListener("click", () => {
-    //           getElement(".js-modal-lk").classList.remove("is-visibility");
-    //           getElement(".js-choice").classList.remove("is-hidden");
-    //           getElement(".js-rooms").classList.add("is-hidden");
-    //           getElement(".js-range").parentNode.classList.add("is-hidden");
-    //
-    //           // Убрать в меню выбор подарков и  показать в меню кнопку личного кабинета
-    //           const arrMenuItems = getElement(".js-menu").childNodes;
-    //           const arrItems = [];
-    //           for (const jtem of arrMenuItems) {
-    //             if (jtem.nodeType === 1) {
-    //               arrItems.push(jtem);
-    //             }
-    //           }
-    //           arrItems[0].classList.add("is-hidden"); // Кнопка подарки скрыта
-    //           arrItems[1].classList.remove("is-hidden"); // Кнопак ЛК показана
-    //
-    //           // Удалить все из комнаты и убрать в коробку
-    //           const arrGifts = getElement(".js-current-room").childNodes;
-    //           for (let i = arrGifts.length - 1; i >= 0; i--) {
-    //             // Обратный порядок перебора массива, чтоб в массиве элементы по индексу не смещались
-    //             arrGifts[i].remove();
-    //           }
-    //           const arrGiftsInBox = getElement(".js-gifts").childNodes;
-    //           for (let i = 0; i < arrGiftsInBox.length; i++) {
-    //             if (
-    //               arrGiftsInBox[i].nodeType === 1 &&
-    //               arrGiftsInBox[i].classList.contains("is-active")
-    //             ) {
-    //               arrGiftsInBox[i].classList.remove("is-active");
-    //             }
-    //           }
-    //           setDefaultValueRoomRange();
-    //         });
-    //       }
-    //
-    //       // Нажатие в меню кнопки Подарки
-    //       if (
-    //         e.target.parentNode.classList.contains("js-menu") &&
-    //         !e.target.classList.contains("js-call-lk-modal")
-    //       ) {
-    //         if (getElement(".js-gifts").childNodes.length === 0) {
-    //           createBlockInModslGift();
-    //         }
-    //
-    //         if (getElement(".js-gift-buttons")) {
-    //           // Скрываем блок кнопок околол подарка в комнате
-    //           getArrayElements(".js-gift-buttons").forEach((item) => {
-    //             if (!item.classList.contains("is-hidden")) {
-    //               item.classList.add("is-hidden");
-    //             }
-    //           });
-    //         }
-    //
-    //         if (first_visit) {
-    //           // Показ онбоардингов на модалке подарков
-    //           const elOnboardingGift = getElement(".js-onboarding-gift");
-    //           elOnboardingGift.classList.add("is-visibility");
-    //           elOnboardingGift.classList.add("z-index-max");
-    //           const elOnboardingWrapperGift = getElement(
-    //             ".js-onboarding-wrapper-gift",
-    //           );
-    //           elOnboardingWrapperGift.style.left = `${
-    //             (availableWidth - getElement(".js-gifts").offsetWidth) / 2
-    //           }px`;
-    //           if (screen.width > 820) {
-    //             elOnboardingWrapperGift.style.top = `${
-    //               (availableHeight -
-    //                 getElement(".js-gifts-content").offsetHeight) /
-    //                 2 +
-    //               40 +
-    //               6
-    //             }px`;
-    //           } else {
-    //             elOnboardingWrapperGift.style.top = `${
-    //               (availableHeight -
-    //                 getElement(".js-gifts-content").offsetHeight) /
-    //                 2 +
-    //               40 +
-    //               6 +
-    //               139
-    //             }px`;
-    //           }
-    //           function showSecondOnboarding() {
-    //             elOnboardingGift.classList.add("is-added");
-    //             if (elOnboardingGift.classList.contains("is-added")) {
-    //               setTimeout(() => {
-    //                 elOnboardingGift.classList.remove("is-visibility");
-    //                 elOnboardingGift.classList.remove("z-index-max");
-    //                 elOnboardingGift.classList.remove("is-added");
-    //               }, 1500);
-    //             }
-    //             return (first_visit = false);
-    //           }
-    //           elOnboardingGift.addEventListener("click", () => {
-    //             showSecondOnboarding();
-    //           });
-    //           setTimeout(() => {
-    //             showSecondOnboarding();
-    //           }, 2500);
-    //         }
-    //       }
-    //     });
-    //   });
-    //
-
-    // }
-
     // Остлеживание изменения переменной isExist твечающей за наличие подарков в комнате и запуск нужных функций
     // const existencGift = { _isGift: false };
     // Object.defineProperty(existencGift, "isExist", {
@@ -495,10 +347,8 @@ class RoomsApp {
       this.elCallLkModal.classList.remove('is-hidden');
       this.elCallGiftModal.classList.add('is-hidden');
       this.setDefaultValueRoomRange();
+      this.state.currentRoom = null;
     });
-
-
-
 
       // Закрытие модалки по крестику
       this.arrCross.forEach((item) => {
@@ -586,7 +436,6 @@ class RoomsApp {
     clickRoom(e)
     {
       console.log(e);
-
       if (this.state.currentRoom !== null) {
         return;
       }
