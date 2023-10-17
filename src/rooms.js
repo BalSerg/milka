@@ -29,6 +29,8 @@ class RoomsApp {
 
       isMoveRoom: false,
 
+      isMoveGift: null,
+
       isModal: false,
 
       isClickBoardingGift: false,
@@ -37,6 +39,19 @@ class RoomsApp {
       currentRoom: null,
       newScale: 0, // Переменная для скейлинга в мобилке.
     };
+
+    this.gifts = [];
+    // this.gifts.push({
+    //   element: HTMLElement,
+    //   position: { x: 0, y: 0 },
+    //   scale: 1,
+    // });
+
+    // const toSave = [];
+    // this.gifts.forEach((gift) => {
+    //   toSave.push({ position: gift.position, scale: gift.scale });
+    // });
+    // JSON.stringify(toSave);
 
     this.setBlockGifts();
 
@@ -61,6 +76,7 @@ class RoomsApp {
 
     this.arrModals = getArrayElements('[class *= "js-modal"]');
     this.arrCross = getArrayElements(".js-cross");
+    this.jsCallLkModal = getElement(".js-call-lk-modal");
 
     this.elBoardingMenuGift = getElement(".js-onboarding-menu-gift");
     this.elBoardingLk = getElement(".js-onboarding-lk");
@@ -394,18 +410,15 @@ class RoomsApp {
 
       const scale = parseInt(this.elRange.value, 10) / 100;
       this.elCurrentRoom.style.transform = `scale(${scale})`;
+      this.elCurrentRoom.dataset.scale = `${scale}`;
 
       // Проверяем если есть смещение, то его добавляем в style
       if (this.state.isMoveRoom === true) {
-        this.elCurrentRoom.style = `margin: initial; transform: scale(${
-          parseInt(this.elRange.value, 10) / 100
-        }) translate(${valueTranslateX}px,${valueTranslateY}px)`;
+        this.elCurrentRoom.style = `margin: initial; transform: scale(${scale}) translate(${valueTranslateX}px,${valueTranslateY}px)`;
         this.elCurrentRoom.dataset.translatex = valueTranslateX;
         this.elCurrentRoom.dataset.translatey = valueTranslateY;
       } else {
-        this.elCurrentRoom.style.transform = `margin: auto; scale(${
-          parseInt(this.elRange.value, 10) / 100
-        })`;
+        this.elCurrentRoom.style.transform = `margin: auto; scale(${scale})`;
       }
     });
 
@@ -416,9 +429,7 @@ class RoomsApp {
     this.arrCross.forEach((item) => {
       item.addEventListener("click", () => {
         item.parentNode.parentNode.classList.remove("is-visibility");
-
-        // FIXME Это точно нельзя вытащить из цикла?
-        getElement(".js-call-lk-modal").classList.remove("is-hidden");
+        this.jsCallLkModal.classList.remove("is-hidden");
       });
     });
 
@@ -435,6 +446,66 @@ class RoomsApp {
       }
     });
     //---------
+
+    this.elCurrentRoom.addEventListener("pointerout", (e) => {
+      const element = e.target;
+
+      if (!element.classList.contains("room-wrapper")) {
+        return;
+      }
+
+      this.state.isMoveRoom = false;
+      this.state.isMoveGift = null;
+    });
+
+    this.elCurrentRoom.addEventListener("pointerup", () => {
+      this.state.isMoveRoom = false;
+      this.state.isMoveGift = null;
+    });
+
+    this.elCurrentRoom.addEventListener("pointermove", (e) => {
+      console.log(e);
+      // console.log(e.offsetX, e.offsetY);
+      if (this.state.isMoveGift === null) {
+        return;
+      }
+
+      const { scale, translatex, translatey } = this.elCurrentRoom.dataset;
+      console.log(scale);
+
+      this.state.isMoveGift.parentElement.style.left = `${Math.round(
+        e.clientX,
+      )}px`;
+      this.state.isMoveGift.parentElement.style.top = `${Math.round(
+        e.clientY,
+      )}px`;
+    });
+
+    this.elCurrentRoom.addEventListener("pointerdown", (e) => {
+      console.log(e.target);
+      console.log(e.currentTarget);
+
+      const element = e.target;
+      if (element.parentElement.classList.contains("gift")) {
+        console.log("gift");
+        this.state.isMoveGift = element;
+        this.state.isMoveGift.classList.add("is-dragged");
+        this.state.isMoveGift.ondragstart = () => {
+          return false;
+        };
+      } else {
+      }
+
+      // if (
+      //   (elCurrentRoom.offsetWidth * (Number(elRange.value) / 100) >
+      //     availableWidth ||
+      //     elCurrentRoom.offsetHeight * (Number(elRange.value) / 100) >
+      //     availableHeight) &&
+      //   String(this.classList).indexOf("current")
+      // ) {
+      //   elCurrentRoom.addEventListener("mousemove", onMouseMove);
+      // }
+    });
   }
 
   clickRoom(e) {
