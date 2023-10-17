@@ -1,4 +1,5 @@
 export default {
+  onboardingStepIntervalTime: 3,
   size: {
     mobile: 820,
     desktop: 1100,
