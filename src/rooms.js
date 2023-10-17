@@ -339,7 +339,7 @@ class RoomsApp {
         arrGifts[i].remove();
       }
 
-      //При смене комнаты убираем в модалке подарков класс is-active у всех подарков
+      // При смене комнаты убираем в модалке подарков класс is-active у всех подарков
       for (let i = 0; i < this.arrGiftsInModal.length; i++) {
         if (this.arrGiftsInModal[i].nodeType === 1) {
           this.arrGiftsInModal[i].classList.remove("is-active");
@@ -391,21 +391,25 @@ class RoomsApp {
     });
 
     this.elCurrentRoom.addEventListener("pointermove", (e) => {
-      console.log(e);
-      // console.log(e.offsetX, e.offsetY);
       if (this.state.isMoveGift === null) {
         return;
       }
 
-      const { scale, translatex, translatey } = this.elCurrentRoom.dataset;
-      console.log(scale);
+      console.log(e.target);
+      // console.log(e.offsetX, e.offsetY);
 
-      this.state.isMoveGift.parentElement.style.left = `${Math.round(
-        e.clientX,
-      )}px`;
-      this.state.isMoveGift.parentElement.style.top = `${Math.round(
-        e.clientY,
-      )}px`;
+      const { scale, translatex, translatey } = this.elCurrentRoom.dataset;
+      // console.log(scale);
+
+      const { coordX, coordY, offsetX, offsetY } =
+        this.state.isMoveGift.dataset;
+
+      // INFO: https://jsfiddle.net/laurence/YNMEX/
+      const left = parseInt(coordX, 10) + e.clientX - parseInt(offsetX, 10);
+      const top = parseInt(coordY, 10) + e.clientY - parseInt(offsetY, 10);
+
+      this.state.isMoveGift.parentElement.style.left = `${Math.round(left)}px`;
+      this.state.isMoveGift.parentElement.style.top = `${Math.round(top)}px`;
     });
 
     this.elCurrentRoom.addEventListener("pointerdown", (e) => {
@@ -417,10 +421,18 @@ class RoomsApp {
         console.log("gift");
         this.state.isMoveGift = element;
         this.state.isMoveGift.classList.add("is-dragged");
+        element.dataset.coordX = parseInt(element.parentElement.style.left, 10);
+        element.dataset.coordY = parseInt(element.parentElement.style.top, 10);
+        element.dataset.offsetX = e.clientX;
+        element.dataset.offsetY = e.clientY;
+
+        // FIXME это лучше вставить во все гифты при их добавлении
         this.state.isMoveGift.ondragstart = () => {
+          e.preventDefault();
           return false;
         };
       } else {
+        this.state.isMoveRoom = true;
       }
 
       // if (
