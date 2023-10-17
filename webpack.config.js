@@ -113,11 +113,11 @@ module.exports = {
   module: {
     rules: [
       // { test: /\.ts?$/, loader: "ts-loader" },
-      {
-        test: /\.svg/,
-        type: "asset/source",
-        // type: "asset/inline",
-      },
+      // {
+      //   test: /\.svg/,
+      //   type: "asset/source",
+      //   // type: "asset/inline",
+      // },
       {
         test: /\.(js)$/,
         include: path.resolve(__dirname, "src"),
