@@ -12,3 +12,10 @@ elButtonLk.addEventListener("click", () => {
   elForm.classList.add("form-enter");
   elButtonLk.classList.add("is-hidden");
 });
+
+getElement('.js-call-modal').addEventListener('click', ()=> {
+  getElement('[class*= "js-modal"]').classList.add('is-visibility');
+})
+getElement('.js-cross').addEventListener('click', function () {
+  getElement('[class*= "js-modal"]').classList.remove('is-visibility');
+})

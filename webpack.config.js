@@ -11,7 +11,7 @@ const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const metrikaHTML = ``;
 
 // Список HTML-ок, к каждой отдельный JS
-const listOfHTML = ["index", "rooms"];
+const listOfHTML = ["index", "rooms", "reset"];
 
 const HtmlPluginList = [];
 const entry = {};
