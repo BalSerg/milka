@@ -4,8 +4,8 @@ import $ from "jquery";
 import "slick-carousel";
 
 import config from "./config";
-import {getElement, getArrayElements} from "./utils";
-import {giftsObjMobile, giftsObj, giftsInModal} from "./data/data";
+import { getElement, getArrayElements } from "./utils";
+import { giftsObjMobile, giftsObj, giftsInModal } from "./data/data";
 
 let valueTranslateX;
 let valueTranslateY;
@@ -285,15 +285,17 @@ class RoomsApp {
      * MODAL events
      */
     this.arrButtonsCallModal.forEach((item, index) => {
-      item.addEventListener('click', (e) => {
-
+      item.addEventListener("click", (e) => {
         // Если нажали на копку ЛК НЕ в комнате!, то скрываем эту кнопку
-        if (e.target.classList.contains("js-call-lk-modal") && !this.elChoice.classList.contains('is-hidden')) {
+        if (
+          e.target.classList.contains("js-call-lk-modal") &&
+          !this.elChoice.classList.contains("is-hidden")
+        ) {
           this.elCallLkModal.classList.add("is-hidden");
         }
 
         //Показ модалки
-        this.arrModals[index].classList.add('is-visibility');
+        this.arrModals[index].classList.add("is-visibility");
 
         if (this.arrModals[index].classList.contains("js-modal-gifts")) {
           this.createBlockInModalGift();
@@ -303,13 +305,12 @@ class RoomsApp {
           //если выбор из трех комнат НЕ скрыт, то в меню не показываем кнопку подарки, иначе показываем
           if (!this.elChoice.classList.contains("is-hidden")) {
             this.elLinkGift.classList.add("is-hidden");
-          }
-          else {
+          } else {
             this.elLinkGift.classList.remove("is-hidden");
           }
         }
-      })
-    })
+      });
+    });
 
     this.elLinkGift.addEventListener("click", () => {
       // Нажатие на пункт Мои подарки в Модалке ЛК
@@ -328,12 +329,13 @@ class RoomsApp {
       this.elRange.parentNode.classList.add("is-hidden");
 
       // Убрать в меню выбор подарков и  показать в меню кнопку личного кабинета
-      this.elCallGiftModal.classList.add('is-hidden'); // Кнопка подарки скрыта
-      this.elCallLkModal.classList.remove('is-hidden'); // Кнопак ЛК показана
+      this.elCallGiftModal.classList.add("is-hidden"); // Кнопка подарки скрыта
+      this.elCallLkModal.classList.remove("is-hidden"); // Кнопак ЛК показана
 
       // Удалить все из комнаты и убрать в коробку
       const arrGifts = this.elCurrentRoom.childNodes;
-      for (let i = arrGifts.length - 1; i >= 0; i--) {// Обратный порядок перебора массива, чтоб в массиве элементы по индексу не смещались
+      for (let i = arrGifts.length - 1; i >= 0; i--) {
+        // Обратный порядок перебора массива, чтоб в массиве элементы по индексу не смещались
         arrGifts[i].remove();
       }
 
@@ -344,609 +346,598 @@ class RoomsApp {
         }
       }
 
-      this.elCallLkModal.classList.remove('is-hidden');
-      this.elCallGiftModal.classList.add('is-hidden');
+      this.elCallLkModal.classList.remove("is-hidden");
+      this.elCallGiftModal.classList.add("is-hidden");
       this.setDefaultValueRoomRange();
       this.state.currentRoom = null;
     });
 
-      // Закрытие модалки по крестику
-      this.arrCross.forEach((item) => {
-        item.addEventListener("click", () => {
-          item.parentNode.parentNode.classList.remove("is-visibility");
-          this.elCallLkModal.classList.remove("is-hidden");
+    // Закрытие модалки по крестику
+    this.arrCross.forEach((item) => {
+      item.addEventListener("click", () => {
+        item.parentNode.parentNode.classList.remove("is-visibility");
+        this.elCallLkModal.classList.remove("is-hidden");
+      });
+    });
+
+    // Закрытие модалок по кнопке Esc
+    window.addEventListener("keypress", (e) => {
+      if (this.state.isModal === false) {
+        return;
+      }
+
+      if (e.key === "Escape" || e.key === "Esc" || e.keyCode === 27) {
+        this.arrModals.forEach((item) => {
+          item.classList.remove("is-visibility");
         });
-      });
+      }
+    });
+    //---------
 
-      // Закрытие модалок по кнопке Esc
-      window.addEventListener("keypress", (e) => {
-        if (this.state.isModal === false) {
-          return;
-        }
+    this.elCurrentRoom.addEventListener("pointerout", (e) => {
+      const element = e.target;
 
-        if (e.key === "Escape" || e.key === "Esc" || e.keyCode === 27) {
-          this.arrModals.forEach((item) => {
-            item.classList.remove("is-visibility");
-          });
-        }
-      });
-      //---------
+      if (!element.classList.contains("room-wrapper")) {
+        return;
+      }
 
-      this.elCurrentRoom.addEventListener("pointerout", (e) => {
-        const element = e.target;
+      this.state.isMoveRoom = false;
+      this.state.isMoveGift = null;
+    });
 
-        if (!element.classList.contains("room-wrapper")) {
-          return;
-        }
+    this.elCurrentRoom.addEventListener("pointerup", () => {
+      this.state.isMoveRoom = false;
+      this.state.isMoveGift = null;
+    });
 
-        this.state.isMoveRoom = false;
-        this.state.isMoveGift = null;
-      });
-
-      this.elCurrentRoom.addEventListener("pointerup", () => {
-        this.state.isMoveRoom = false;
-        this.state.isMoveGift = null;
-      });
-
-      this.elCurrentRoom.addEventListener("pointermove", (e) => {
-        console.log(e);
-        // console.log(e.offsetX, e.offsetY);
-        if (this.state.isMoveGift === null) {
-          return;
-        }
-
-        const {scale, translatex, translatey} = this.elCurrentRoom.dataset;
-        console.log(scale);
-
-        this.state.isMoveGift.parentElement.style.left = `${Math.round(
-          e.clientX,
-        )}px`;
-        this.state.isMoveGift.parentElement.style.top = `${Math.round(
-          e.clientY,
-        )}px`;
-      });
-
-      this.elCurrentRoom.addEventListener("pointerdown", (e) => {
-        console.log(e.target);
-        console.log(e.currentTarget);
-
-        const element = e.target;
-        if (element.parentElement.classList.contains("gift")) {
-          console.log("gift");
-          this.state.isMoveGift = element;
-          this.state.isMoveGift.classList.add("is-dragged");
-          this.state.isMoveGift.ondragstart = () => {
-            return false;
-          };
-        } else {
-        }
-
-        // if (
-        //   (elCurrentRoom.offsetWidth * (Number(elRange.value) / 100) >
-        //     availableWidth ||
-        //     elCurrentRoom.offsetHeight * (Number(elRange.value) / 100) >
-        //     availableHeight) &&
-        //   String(this.classList).indexOf("current")
-        // ) {
-        //   elCurrentRoom.addEventListener("mousemove", onMouseMove);
-        // }
-      });
-    }
-
-    clickRoom(e)
-    {
+    this.elCurrentRoom.addEventListener("pointermove", (e) => {
       console.log(e);
-      if (this.state.currentRoom !== null) {
+      // console.log(e.offsetX, e.offsetY);
+      if (this.state.isMoveGift === null) {
         return;
       }
 
-      const element = e.currentTarget;
-      if (!("room" in element.dataset)) {
-        return;
-      }
+      const { scale, translatex, translatey } = this.elCurrentRoom.dataset;
+      console.log(scale);
 
-      const {room} = element.dataset;
-      console.log(room);
-      this.state.currentRoom = room;
+      this.state.isMoveGift.parentElement.style.left = `${Math.round(
+        e.clientX,
+      )}px`;
+      this.state.isMoveGift.parentElement.style.top = `${Math.round(
+        e.clientY,
+      )}px`;
+    });
 
-      this.elChoice.classList.add("is-hidden");
+    this.elCurrentRoom.addEventListener("pointerdown", (e) => {
+      console.log(e.target);
+      console.log(e.currentTarget);
 
-      const arrMenuItems = this.elMenu.childNodes; // показать в меню выбор подарков
-      arrMenuItems.forEach((menuItem) => {
-        if (menuItem.nodeType === 1) {
-          menuItem.classList.remove("is-hidden");
-        }
-      });
-
-      for (let i = 1; i <= this.rooms.length + 1; i++) {
-        // Проверяем и удаляем заранее у комнаты все классы room1 room2 и т.д.
-        if (this.roomsList.classList.contains(`room${i}`)) {
-          this.roomsList.classList.remove(`room${i}`);
-        }
-      }
-
-      this.elBlockRange.classList.remove("is-hidden"); // Показываем блок с полузнком
-
-      this.roomsList.classList.remove("is-hidden");
-      this.roomsList.classList.add(`room${room}`);
-      this.roomsList.style.height = `${availableHeight}px`;
-
-      this.styleFixes();
-
-      if (window.screen.width <= 870) {
-        this.elMenu.style.width = `${window.screen.height}px`;
-      }
-
-      this.elBoardingRange.classList.add("is-visibility");
-
-      this.moveRoom();
-
-      setTimeout(() => {
-        this.elBoardingRange.classList.remove("is-visibility");
-        if (this.state.isClickBoardingGift === false) {
-          this.elBoardingMenuGift.classList.add("is-visibility");
-          this.elMenu.classList.add("z-index-max");
-        }
-      }, 2500);
-
-      setTimeout(() => {
-        this.elBoardingMenuGift.classList.remove("is-visibility");
-        if (this.state.isClickBoardingLk === false) {
-          this.elBoardingLk.classList.add("is-visibility");
-        }
-      }, 5000);
-
-      setTimeout(() => {
-        this.elBoardingLk.classList.remove("is-visibility");
-        this.elMenu.classList.remove("z-index-max");
-      }, 7500);
-
-      if (this.state.firstVisit) {
-        this.elBlockRange.classList.add("z-index-max");
-        setTimeout(() => {
-          this.elBlockRange.classList.remove("z-index-max");
-        }, 2500);
-
-        if (window.screen.width > 820) {
-          getElement(".js-onboarding-content").style.left = `${
-            this.elBlockRange.getBoundingClientRect().x +
-            this.elBlockRange.offsetHeight
-          }px`;
-          getElement(".js-onboarding-content").style.top = `${
-            this.elBlockRange.getBoundingClientRect().y
-          }px`;
-          getElement(".js-onboarding-content-gift").style.left = `${
-            this.elMenu.getBoundingClientRect().x - this.elMenu.offsetWidth
-          }px`;
-          getElement(".js-onboarding-content-gift").style.top = `${
-            this.elMenu.getBoundingClientRect().y + this.elMenu.offsetHeight
-          }px`;
-          getElement(".js-onboarding-content-lk").style.left = `${
-            this.elMenu.getBoundingClientRect().x - this.elMenu.offsetWidth / 4
-          }px`;
-          getElement(".js-onboarding-content-lk").style.top = `${
-            this.elMenu.getBoundingClientRect().y + this.elMenu.offsetHeight + 50
-          }px`;
-        }
-      }
-    }
-
-    styleFixes()
-    {
-      if (!window.navigator.userAgent.includes("Fire")) {
-        this.elBlockRange.style.width = `${
-          getElement("body").offsetHeight - topValue * 2
-        }px`; // всему блоку с ползунком присваиваем высоту подолжки модалки т.к. она всегда по высоте во весь экран
-      } else {
-        this.elBlockRange.classList.add("isMoz");
-        this.elBlockRange.style.height = `${
-          getElement("body").offsetHeight - topValue * 2
-        }px`; // всему блоку с ползункои присваиваем высоту подолжки модалки т.к. она всегда по высоте во весь экран
-        this.elBlockRange.style.top = `${
-          (availableHeight - this.elBlockRange.offsetHeight) / 2
-        }px`;
-      }
-      this.setRoomInAllWindowMobile();
-    }
-
-    /**
-     *  Функция движения комнаты
-     */
-    moveRoom()
-    {
-      // function moveAt(pageX, pageY) {
-      //   // Функция которая подставляет комнату под курсор
-      //   const scale = parseInt(elRange.value, 10) / 100;
-      //   elCurrentRoom.removeAttribute("style");
-      //   valueTranslateX = pageX - (elCurrentRoom.offsetWidth * scale) / 2;
-      //   valueTranslateY = pageY - (elCurrentRoom.offsetHeight * scale) / 2;
-      //   elCurrentRoom.setAttribute(
-      //     "style",
-      //     `margin: initial; transform: scale(${scale}) translate(${valueTranslateX}px,${valueTranslateY}px)`,
-      //   );
-      //   isMoveRoom = true;
-      //   return `${valueTranslateX} ${valueTranslateY} ${isMoveRoom}`;
-      // }
-      // function onMouseMove(event) {
-      //   moveAt(event.pageX, event.pageY);
-      // }
-      // elCurrentRoom.addEventListener("mousedown", function () {
-      //   if (
-      //     (elCurrentRoom.offsetWidth * (Number(elRange.value) / 100) >
-      //       availableWidth ||
-      //       elCurrentRoom.offsetHeight * (Number(elRange.value) / 100) >
-      //       availableHeight) &&
-      //     String(this.classList).indexOf("current")
-      //   ) {
-      //     elCurrentRoom.addEventListener("mousemove", onMouseMove);
-      //   }
-      // });
-      // elCurrentRoom.addEventListener("mouseup", () => {
-      //   elCurrentRoom.removeEventListener("mousemove", onMouseMove);
-      //   elCurrentRoom.onmouseup = null;
-      // });
-      // this.ondragstart = function () {
-      //   return false;
-      // };
-    }
-
-    callOnboarding(selector, time)
-    {
-      if (this.state.firstVisit === false) {
-        const elBoadring = getElement(selector);
-        elBoadring.classList.add("is-visibility");
-
-        elBoadring.addEventListener("click", () => {
-          elBoadring.classList.remove("is-visibility");
-        });
-
-        setTimeout(() => {
-          elBoadring.classList.remove("is-visibility");
-        }, time);
-      }
-    }
-
-    createBlock(num)
-    {
-      const elDiv = document.createElement("div");
-      let styleValueDiv;
-      let styleValueImg;
-      if (window.screen.width <= config.size.mobile) {
-        styleValueDiv = `left: ${
-          giftsObj_mobile[this.state.currentRoom - 1][num - 1].left
-        }px; top:${giftsObj_mobile[this.state.currentRoom - 1][num - 1].top}px`;
-        styleValueImg = `transform: scale(${
-          giftsObj_mobile[this.state.currentRoom - 1][num - 1].scale
-        }) rotate(${giftsObj_mobile[this.state.currentRoom - 1][num - 1].rotate}deg)`;
-      } else {
-        styleValueDiv = `left:${
-          giftsObj[this.state.currentRoom - 1][num - 1].left
-        }px; top:${giftsObj[this.state.currentRoom - 1][num - 1].top}px`;
-        styleValueImg = `transform: scale(${
-          giftsObj[this.state.currentRoom - 1][num - 1].scale
-        }) rotate(${giftsObj[this.state.currentRoom - 1][num - 1].rotate}deg)`;
-      }
-      elDiv.classList.add("gift");
-      elDiv.classList.add(`gift${num}`);
-      elDiv.classList.add("z-index-max");
-      elDiv.setAttribute("style", styleValueDiv);
-
-      const elButtons = document.createElement("ul");
-      elButtons.classList.add("gift-buttons");
-      elButtons.classList.add("js-gift-buttons");
-      elButtons.classList.add("is-hidden");
-      for (let i = 0; i < 2; i++) {
-        const elLi = document.createElement("li");
-        const elSpan = document.createElement("span");
-        elLi.classList.add("gift-buttons__item");
-        elLi.classList.add(config.contentButtonsForGift[1][i]);
-        elLi.append(elSpan);
-        elSpan.textContent = config.contentButtonsForGift[0][i];
-        elButtons.append(elLi);
-      }
-      const elImg = document.createElement("img");
-      elImg.setAttribute("style", styleValueImg);
-      elImg.classList.add("js-img");
-      elImg.src = `images/gifts/gift${num}.png`;
-      const showHideButtonsGift = function () {
-        if (this.state.time2_Ms - this.state.time1_Ms < 150) {
-          // Проверка на то, что это именно щелчок ,а не нажатие и удрежание кнопки мыши
-          const blockButtons = this.parentNode.querySelector(".js-gift-buttons");
-          const start = "gift gift".length;
-          const currentNumberGift = this.parentNode.classList
-            .toString()
-            .substr(start);
-          const excludeClass = `gift${currentNumberGift}`;
-          const arrBlockButtons = getArrayElements(".js-gift-buttons");
-          arrBlockButtons.forEach((item) => {
-            if (!item.parentNode.classList.contains(excludeClass)) {
-              item.classList.add("is-hidden");
-            }
-            blockButtons.classList.toggle("is-hidden");
-            blockButtons.removeAttribute("style");
-            const leftCoordGift = Number(
-              this.parentNode.style.left.substr(
-                0,
-                this.parentNode.style.left.indexOf("px"),
-              ),
-            );
-
-            if (window.screen.width > config.size.mobile) {
-              leftCoordGift >= blockButtons.offsetWidth
-                ? (blockButtons.style.right = "100%")
-                : (blockButtons.style.left = "100%");
-            } else if (leftCoordGift <= blockButtons.offsetWidth) {
-              blockButtons.style.left = "100%";
-              blockButtons.style.transformOrigin = "left";
-            } else {
-              blockButtons.style.right = "100%";
-              blockButtons.style.transformOrigin = "right";
-            }
-            const heightGift = Number(
-              this.parentNode.style.top.substr(
-                0,
-                this.parentNode.style.top.indexOf("px"),
-              ),
-            );
-            heightGift > 0
-              ? (blockButtons.style.top = "0")
-              : (blockButtons.style.bottom = "0");
-          });
-        }
-      };
-      elImg.addEventListener("click", showHideButtonsGift);
-      const elShadow = document.createElement("div");
-      elShadow.classList.add("js-rooms-shadow");
-      elShadow.classList.add("rooms-shadow");
-      elDiv.append(elImg);
-      elDiv.append(elButtons);
-      elDiv.append(elShadow);
-      getElement(".js-current-room").append(elDiv);
-      getElement(".js-modal-gifts").classList.remove("is-visibility");
-      //existencGift.isExist = true; // Подарок в комнате создан и переменная isExist получает true. Изначально она false
-
-      let timer = 0; // таймер показа тени под подарком. При первом визите он большой чтоб онбоардинг был виден, потом маленький
-      if (this.state.firstVisitNew) {
-        timer = 2500;
-      } else {
-        timer = 800;
-      }
-
-      setTimeout(() => {
-        elShadow.classList.add("is-hidden");
-        elShadow.parentNode.classList.remove("z-index-max");
-        this.state.firstVisitNew = false;
-      }, timer);
-    }
-
-    moveGift()
-    {
-      const elCurrentRoom = getElement(".js-current-room");
-      const arrGifts = elCurrentRoom.childNodes;
-      let shiftXItem;
-      let shiftYItem; // Смещение размеров подарка по горзионтали и вертикали из-за scale
-      let halfWidthItem;
-      let halfHeightItem; // Половина ширины и высоты подарка
-
-      arrGifts.forEach((item) => {
-        function moveAt(pageX, pageY) {
-          // Функция которая подставляет подарок под курсор
-          const scale = parseInt(getElement(".js-range").value, 10) / 100;
-          halfWidthItem = (item.offsetWidth * scale) / 2;
-          halfHeightItem = (item.offsetHeight * scale) / 2;
-          shiftXItem = (item.offsetWidth * scale - item.offsetWidth) / 2;
-          shiftYItem = (item.offsetHeight * scale - item.offsetHeight) / 2;
-
-          if (this.state.isMoveRoom === true) {
-            valueTranslateX = 0;
-            valueTranslateY = 0;
-          }
-
-          console.log(pageX, Math.round(item.getBoundingClientRect().left));
-          const newLeft =
-            pageX -
-            (availableWidth - elCurrentRoom.offsetWidth * scale) / 2 -
-            shiftXItem -
-            valueTranslateX;
-          const newTop =
-            pageY -
-            (availableHeight - elCurrentRoom.offsetHeight * scale) / 2 -
-            shiftYItem -
-            valueTranslateY;
-
-          if (newLeft <= 0) {
-            item.style.left = `${0}px`;
-          } else if (newLeft > 820 - item.offsetWidth) {
-            item.style.left = `${820 - item.offsetWidth}px`;
-          } else {
-            item.style.left = `${newLeft}px`;
-          }
-
-          if (newTop <= 0) {
-            item.style.top = `${0}px`;
-          } else if (newTop > 820 - item.offsetHeight) {
-            item.style.top = `${820 - item.offsetHeight}px`;
-          } else {
-            item.style.top = `${newTop}px`;
-          }
-        }
-
-        function onMouseMove(event) {
-          if (item.classList.contains("is-dragged")) {
-            moveAt(event.pageX, event.pageY);
-          }
-        }
-
-        item.addEventListener("mousedown", function (e) {
-          for (const gift of arrGifts) {
-            gift.classList.remove("is-dragged");
-          }
-          if (e.target.tagName !== "SPAN" && this.classList.contains("gift")) {
-            e.stopPropagation();
-            item.classList.add("is-dragged");
-            elCurrentRoom.addEventListener("mousemove", onMouseMove);
-          }
-          const time1 = new Date();
-          this.time1_Ms = time1.getTime();
-          return time1_Ms;
-        });
-        item.addEventListener("mouseup", () => {
-          item.classList.remove("is-dragged");
-          item.removeEventListener("mousemove", onMouseMove);
-          item.onmouseup = null;
-          const time2 = new Date();
-          this.time2_Ms = time2.getTime();
-          return time2_Ms;
-        });
-        item.ondragstart = function () {
+      const element = e.target;
+      if (element.parentElement.classList.contains("gift")) {
+        console.log("gift");
+        this.state.isMoveGift = element;
+        this.state.isMoveGift.classList.add("is-dragged");
+        this.state.isMoveGift.ondragstart = () => {
           return false;
         };
-        document.documentElement.addEventListener("mouseup", () => {
-          item.classList.remove("is-dragged");
-          item.removeEventListener("mousemove", onMouseMove);
-          item.onmouseup = null;
-        });
-      });
+      } else {
+      }
+
+      // if (
+      //   (elCurrentRoom.offsetWidth * (Number(elRange.value) / 100) >
+      //     availableWidth ||
+      //     elCurrentRoom.offsetHeight * (Number(elRange.value) / 100) >
+      //     availableHeight) &&
+      //   String(this.classList).indexOf("current")
+      // ) {
+      //   elCurrentRoom.addEventListener("mousemove", onMouseMove);
+      // }
+    });
+  }
+
+  clickRoom(e) {
+    console.log(e);
+    if (this.state.currentRoom !== null) {
+      return;
     }
 
-    /**
-     * Функция вызова модалки AR но только на десктопе. В других разрешениях не нужна эта модалка
-     */
-    callModallAr()
-    {
-      if (window.screen.width >= config.size.desktop) {
-        getArrayElements(".js-call-ar").forEach((item) => {
-          item.addEventListener("click", () => {
-            const indexGift = this.getIndexElementFromCollection(item);
-            getElement(
-              ".js-qr-code",
-            ).src = `images/qr-codes/qr-code${indexGift}.png`;
-            getElement(".js-qr").classList.add("is-visibility");
-          });
-        });
+    const element = e.currentTarget;
+    if (!("room" in element.dataset)) {
+      return;
+    }
+
+    const { room } = element.dataset;
+    console.log(room);
+    this.state.currentRoom = room;
+
+    this.elChoice.classList.add("is-hidden");
+
+    const arrMenuItems = this.elMenu.childNodes; // показать в меню выбор подарков
+    arrMenuItems.forEach((menuItem) => {
+      if (menuItem.nodeType === 1) {
+        menuItem.classList.remove("is-hidden");
+      }
+    });
+
+    for (let i = 1; i <= this.rooms.length + 1; i++) {
+      // Проверяем и удаляем заранее у комнаты все классы room1 room2 и т.д.
+      if (this.roomsList.classList.contains(`room${i}`)) {
+        this.roomsList.classList.remove(`room${i}`);
       }
     }
 
-    // eslint-disable-next-line class-methods-use-this
-    getIndexElementFromCollection(el)
-    {
-      return `${el.parentNode.parentNode.className}`.substr("gift gift".length);
+    this.elBlockRange.classList.remove("is-hidden"); // Показываем блок с полузнком
+
+    this.roomsList.classList.remove("is-hidden");
+    this.roomsList.classList.add(`room${room}`);
+    this.roomsList.style.height = `${availableHeight}px`;
+
+    this.styleFixes();
+
+    if (window.screen.width <= 870) {
+      this.elMenu.style.width = `${window.screen.height}px`;
     }
 
-    /**
-     * Функция удаления подарка из комнаты, которая срабатывает на кнопке Удалить в коробку
-     */
-    // eslint-disable-next-line class-methods-use-this
-    deleteGiftFromRoom()
-    {
-      getArrayElements(".js-del-gift").forEach((item) => {
-        item.addEventListener("click", () => {
-          item.parentNode.parentNode.remove();
-          const indexGift = this.getIndexElementFromCollection(item);
-          const tempGifts = getArrayElements(".gifts__item");
-          tempGifts[indexGift - 1].classList.remove("is-active");
-        });
+    this.elBoardingRange.classList.add("is-visibility");
+
+    this.moveRoom();
+
+    setTimeout(() => {
+      this.elBoardingRange.classList.remove("is-visibility");
+      if (this.state.isClickBoardingGift === false) {
+        this.elBoardingMenuGift.classList.add("is-visibility");
+        this.elMenu.classList.add("z-index-max");
+      }
+    }, 2500);
+
+    setTimeout(() => {
+      this.elBoardingMenuGift.classList.remove("is-visibility");
+      if (this.state.isClickBoardingLk === false) {
+        this.elBoardingLk.classList.add("is-visibility");
+      }
+    }, 5000);
+
+    setTimeout(() => {
+      this.elBoardingLk.classList.remove("is-visibility");
+      this.elMenu.classList.remove("z-index-max");
+    }, 7500);
+
+    if (this.state.firstVisit) {
+      this.elBlockRange.classList.add("z-index-max");
+      setTimeout(() => {
+        this.elBlockRange.classList.remove("z-index-max");
+      }, 2500);
+
+      if (window.screen.width > 820) {
+        getElement(".js-onboarding-content").style.left = `${
+          this.elBlockRange.getBoundingClientRect().x +
+          this.elBlockRange.offsetHeight
+        }px`;
+        getElement(".js-onboarding-content").style.top = `${
+          this.elBlockRange.getBoundingClientRect().y
+        }px`;
+        getElement(".js-onboarding-content-gift").style.left = `${
+          this.elMenu.getBoundingClientRect().x - this.elMenu.offsetWidth
+        }px`;
+        getElement(".js-onboarding-content-gift").style.top = `${
+          this.elMenu.getBoundingClientRect().y + this.elMenu.offsetHeight
+        }px`;
+        getElement(".js-onboarding-content-lk").style.left = `${
+          this.elMenu.getBoundingClientRect().x - this.elMenu.offsetWidth / 4
+        }px`;
+        getElement(".js-onboarding-content-lk").style.top = `${
+          this.elMenu.getBoundingClientRect().y + this.elMenu.offsetHeight + 50
+        }px`;
+      }
+    }
+  }
+
+  styleFixes() {
+    if (!window.navigator.userAgent.includes("Fire")) {
+      this.elBlockRange.style.width = `${
+        getElement("body").offsetHeight - topValue * 2
+      }px`; // всему блоку с ползунком присваиваем высоту подолжки модалки т.к. она всегда по высоте во весь экран
+    } else {
+      this.elBlockRange.classList.add("isMoz");
+      this.elBlockRange.style.height = `${
+        getElement("body").offsetHeight - topValue * 2
+      }px`; // всему блоку с ползункои присваиваем высоту подолжки модалки т.к. она всегда по высоте во весь экран
+      this.elBlockRange.style.top = `${
+        (availableHeight - this.elBlockRange.offsetHeight) / 2
+      }px`;
+    }
+    this.setRoomInAllWindowMobile();
+  }
+
+  /**
+   *  Функция движения комнаты
+   */
+  moveRoom() {
+    // function moveAt(pageX, pageY) {
+    //   // Функция которая подставляет комнату под курсор
+    //   const scale = parseInt(elRange.value, 10) / 100;
+    //   elCurrentRoom.removeAttribute("style");
+    //   valueTranslateX = pageX - (elCurrentRoom.offsetWidth * scale) / 2;
+    //   valueTranslateY = pageY - (elCurrentRoom.offsetHeight * scale) / 2;
+    //   elCurrentRoom.setAttribute(
+    //     "style",
+    //     `margin: initial; transform: scale(${scale}) translate(${valueTranslateX}px,${valueTranslateY}px)`,
+    //   );
+    //   isMoveRoom = true;
+    //   return `${valueTranslateX} ${valueTranslateY} ${isMoveRoom}`;
+    // }
+    // function onMouseMove(event) {
+    //   moveAt(event.pageX, event.pageY);
+    // }
+    // elCurrentRoom.addEventListener("mousedown", function () {
+    //   if (
+    //     (elCurrentRoom.offsetWidth * (Number(elRange.value) / 100) >
+    //       availableWidth ||
+    //       elCurrentRoom.offsetHeight * (Number(elRange.value) / 100) >
+    //       availableHeight) &&
+    //     String(this.classList).indexOf("current")
+    //   ) {
+    //     elCurrentRoom.addEventListener("mousemove", onMouseMove);
+    //   }
+    // });
+    // elCurrentRoom.addEventListener("mouseup", () => {
+    //   elCurrentRoom.removeEventListener("mousemove", onMouseMove);
+    //   elCurrentRoom.onmouseup = null;
+    // });
+    // this.ondragstart = function () {
+    //   return false;
+    // };
+  }
+
+  callOnboarding(selector, time) {
+    if (this.state.firstVisit === false) {
+      const elBoadring = getElement(selector);
+      elBoadring.classList.add("is-visibility");
+
+      elBoadring.addEventListener("click", () => {
+        elBoadring.classList.remove("is-visibility");
       });
+
+      setTimeout(() => {
+        elBoadring.classList.remove("is-visibility");
+      }, time);
+    }
+  }
+
+  createBlock(num) {
+    const elDiv = document.createElement("div");
+    let styleValueDiv;
+    let styleValueImg;
+    if (window.screen.width <= config.size.mobile) {
+      styleValueDiv = `left: ${
+        giftsObj_mobile[this.state.currentRoom - 1][num - 1].left
+      }px; top:${giftsObj_mobile[this.state.currentRoom - 1][num - 1].top}px`;
+      styleValueImg = `transform: scale(${
+        giftsObj_mobile[this.state.currentRoom - 1][num - 1].scale
+      }) rotate(${
+        giftsObj_mobile[this.state.currentRoom - 1][num - 1].rotate
+      }deg)`;
+    } else {
+      styleValueDiv = `left:${
+        giftsObj[this.state.currentRoom - 1][num - 1].left
+      }px; top:${giftsObj[this.state.currentRoom - 1][num - 1].top}px`;
+      styleValueImg = `transform: scale(${
+        giftsObj[this.state.currentRoom - 1][num - 1].scale
+      }) rotate(${giftsObj[this.state.currentRoom - 1][num - 1].rotate}deg)`;
+    }
+    elDiv.classList.add("gift");
+    elDiv.classList.add(`gift${num}`);
+    elDiv.classList.add("z-index-max");
+    elDiv.setAttribute("style", styleValueDiv);
+
+    const elButtons = document.createElement("ul");
+    elButtons.classList.add("gift-buttons");
+    elButtons.classList.add("js-gift-buttons");
+    elButtons.classList.add("is-hidden");
+    for (let i = 0; i < 2; i++) {
+      const elLi = document.createElement("li");
+      const elSpan = document.createElement("span");
+      elLi.classList.add("gift-buttons__item");
+      elLi.classList.add(config.contentButtonsForGift[1][i]);
+      elLi.append(elSpan);
+      elSpan.textContent = config.contentButtonsForGift[0][i];
+      elButtons.append(elLi);
+    }
+    const elImg = document.createElement("img");
+    elImg.setAttribute("style", styleValueImg);
+    elImg.classList.add("js-img");
+    elImg.src = `assets/images/gifts/gift${num}.png`;
+    const showHideButtonsGift = function () {
+      if (this.state.time2_Ms - this.state.time1_Ms < 150) {
+        // Проверка на то, что это именно щелчок ,а не нажатие и удрежание кнопки мыши
+        const blockButtons = this.parentNode.querySelector(".js-gift-buttons");
+        const start = "gift gift".length;
+        const currentNumberGift = this.parentNode.classList
+          .toString()
+          .substr(start);
+        const excludeClass = `gift${currentNumberGift}`;
+        const arrBlockButtons = getArrayElements(".js-gift-buttons");
+        arrBlockButtons.forEach((item) => {
+          if (!item.parentNode.classList.contains(excludeClass)) {
+            item.classList.add("is-hidden");
+          }
+          blockButtons.classList.toggle("is-hidden");
+          blockButtons.removeAttribute("style");
+          const leftCoordGift = Number(
+            this.parentNode.style.left.substr(
+              0,
+              this.parentNode.style.left.indexOf("px"),
+            ),
+          );
+
+          if (window.screen.width > config.size.mobile) {
+            leftCoordGift >= blockButtons.offsetWidth
+              ? (blockButtons.style.right = "100%")
+              : (blockButtons.style.left = "100%");
+          } else if (leftCoordGift <= blockButtons.offsetWidth) {
+            blockButtons.style.left = "100%";
+            blockButtons.style.transformOrigin = "left";
+          } else {
+            blockButtons.style.right = "100%";
+            blockButtons.style.transformOrigin = "right";
+          }
+          const heightGift = Number(
+            this.parentNode.style.top.substr(
+              0,
+              this.parentNode.style.top.indexOf("px"),
+            ),
+          );
+          heightGift > 0
+            ? (blockButtons.style.top = "0")
+            : (blockButtons.style.bottom = "0");
+        });
+      }
+    };
+    elImg.addEventListener("click", showHideButtonsGift);
+    const elShadow = document.createElement("div");
+    elShadow.classList.add("js-rooms-shadow");
+    elShadow.classList.add("rooms-shadow");
+    elDiv.append(elImg);
+    elDiv.append(elButtons);
+    elDiv.append(elShadow);
+    getElement(".js-current-room").append(elDiv);
+    getElement(".js-modal-gifts").classList.remove("is-visibility");
+    //existencGift.isExist = true; // Подарок в комнате создан и переменная isExist получает true. Изначально она false
+
+    let timer = 0; // таймер показа тени под подарком. При первом визите он большой чтоб онбоардинг был виден, потом маленький
+    if (this.state.firstVisitNew) {
+      timer = 2500;
+    } else {
+      timer = 800;
     }
 
-    /**
-     * Создание блоков для подарков в модалке подарков
-     */
-    createBlockInModalGift()
-    {
-      const elModal = getElement(".js-gifts");
-      for (let i = 0; i < giftsInModal.length; i++) {
-        const elGift = document.createElement("div");
-        elGift.classList.add("gifts__item");
-        if (giftsInModal[i].class) {
-          // если есть класс в объекте json
-          elGift.classList.add(giftsInModal[i].class);
-          elGift.addEventListener("click", () => {
-            this.createBlock(i + 1);
-          });
+    setTimeout(() => {
+      elShadow.classList.add("is-hidden");
+      elShadow.parentNode.classList.remove("z-index-max");
+      this.state.firstVisitNew = false;
+    }, timer);
+  }
+
+  moveGift() {
+    const elCurrentRoom = getElement(".js-current-room");
+    const arrGifts = elCurrentRoom.childNodes;
+    let shiftXItem;
+    let shiftYItem; // Смещение размеров подарка по горзионтали и вертикали из-за scale
+    let halfWidthItem;
+    let halfHeightItem; // Половина ширины и высоты подарка
+
+    arrGifts.forEach((item) => {
+      function moveAt(pageX, pageY) {
+        // Функция которая подставляет подарок под курсор
+        const scale = parseInt(getElement(".js-range").value, 10) / 100;
+        halfWidthItem = (item.offsetWidth * scale) / 2;
+        halfHeightItem = (item.offsetHeight * scale) / 2;
+        shiftXItem = (item.offsetWidth * scale - item.offsetWidth) / 2;
+        shiftYItem = (item.offsetHeight * scale - item.offsetHeight) / 2;
+
+        if (this.state.isMoveRoom === true) {
+          valueTranslateX = 0;
+          valueTranslateY = 0;
         }
-        const elImg = document.createElement("img");
-        elImg.src = `images/gifts/${giftsInModal[i].src}.png`;
-        const elSpan = document.createElement("span");
-        elSpan.textContent = `${i + 1}`;
-        elGift.append(elSpan);
-        elGift.append(elImg);
-        elModal.append(elGift);
+
+        console.log(pageX, Math.round(item.getBoundingClientRect().left));
+        const newLeft =
+          pageX -
+          (availableWidth - elCurrentRoom.offsetWidth * scale) / 2 -
+          shiftXItem -
+          valueTranslateX;
+        const newTop =
+          pageY -
+          (availableHeight - elCurrentRoom.offsetHeight * scale) / 2 -
+          shiftYItem -
+          valueTranslateY;
+
+        if (newLeft <= 0) {
+          item.style.left = `${0}px`;
+        } else if (newLeft > 820 - item.offsetWidth) {
+          item.style.left = `${820 - item.offsetWidth}px`;
+        } else {
+          item.style.left = `${newLeft}px`;
+        }
+
+        if (newTop <= 0) {
+          item.style.top = `${0}px`;
+        } else if (newTop > 820 - item.offsetHeight) {
+          item.style.top = `${820 - item.offsetHeight}px`;
+        } else {
+          item.style.top = `${newTop}px`;
+        }
       }
+
+      function onMouseMove(event) {
+        if (item.classList.contains("is-dragged")) {
+          moveAt(event.pageX, event.pageY);
+        }
+      }
+
+      item.addEventListener("mousedown", function (e) {
+        for (const gift of arrGifts) {
+          gift.classList.remove("is-dragged");
+        }
+        if (e.target.tagName !== "SPAN" && this.classList.contains("gift")) {
+          e.stopPropagation();
+          item.classList.add("is-dragged");
+          elCurrentRoom.addEventListener("mousemove", onMouseMove);
+        }
+        const time1 = new Date();
+        this.time1_Ms = time1.getTime();
+        return time1_Ms;
+      });
+      item.addEventListener("mouseup", () => {
+        item.classList.remove("is-dragged");
+        item.removeEventListener("mousemove", onMouseMove);
+        item.onmouseup = null;
+        const time2 = new Date();
+        this.time2_Ms = time2.getTime();
+        return time2_Ms;
+      });
+      item.ondragstart = function () {
+        return false;
+      };
+      document.documentElement.addEventListener("mouseup", () => {
+        item.classList.remove("is-dragged");
+        item.removeEventListener("mousemove", onMouseMove);
+        item.onmouseup = null;
+      });
+    });
+  }
+
+  /**
+   * Функция вызова модалки AR но только на десктопе. В других разрешениях не нужна эта модалка
+   */
+  callModallAr() {
+    if (window.screen.width >= config.size.desktop) {
+      getArrayElements(".js-call-ar").forEach((item) => {
+        item.addEventListener("click", () => {
+          const indexGift = this.getIndexElementFromCollection(item);
+          getElement(
+            ".js-qr-code",
+          ).src = `assets/images/qr-codes/qr-code${indexGift}.png`;
+          getElement(".js-qr").classList.add("is-visibility");
+        });
+      });
+    }
+  }
+
+  // eslint-disable-next-line class-methods-use-this
+  getIndexElementFromCollection(el) {
+    return `${el.parentNode.parentNode.className}`.substr("gift gift".length);
+  }
+
+  /**
+   * Функция удаления подарка из комнаты, которая срабатывает на кнопке Удалить в коробку
+   */
+  // eslint-disable-next-line class-methods-use-this
+  deleteGiftFromRoom() {
+    getArrayElements(".js-del-gift").forEach((item) => {
+      item.addEventListener("click", () => {
+        item.parentNode.parentNode.remove();
+        const indexGift = this.getIndexElementFromCollection(item);
+        const tempGifts = getArrayElements(".gifts__item");
+        tempGifts[indexGift - 1].classList.remove("is-active");
+      });
+    });
+  }
+
+  /**
+   * Создание блоков для подарков в модалке подарков
+   */
+  createBlockInModalGift() {
+    const elModal = getElement(".js-gifts");
+    for (let i = 0; i < giftsInModal.length; i++) {
+      const elGift = document.createElement("div");
+      elGift.classList.add("gifts__item");
+      if (giftsInModal[i].class) {
+        // если есть класс в объекте json
+        elGift.classList.add(giftsInModal[i].class);
+        elGift.addEventListener("click", () => {
+          this.createBlock(i + 1);
+        });
+      }
+      const elImg = document.createElement("img");
+      elImg.src = `assets/images/gifts/${giftsInModal[i].src}.png`;
+      const elSpan = document.createElement("span");
+      elSpan.textContent = `${i + 1}`;
+      elGift.append(elSpan);
+      elGift.append(elImg);
+      elModal.append(elGift);
+    }
+  }
+
+  setDefaultValueRoomRange() {
+    this.elCurrentRoom.style = "margin: auto; transform:scale(1.2)";
+    this.elRange.value = "120";
+  }
+
+  // eslint-disable-next-line class-methods-use-this
+  setRoomInAllWindowMobile() {
+    if (window.screen.width <= 820 && window.screen.width > 400) {
+      this.newScale = window.screen.width / widthMobileRoom;
+      this.roomContent.style.transform = `scale(${this.newScale})`;
+    } else {
+      this.roomContent.removeAttribute("style");
+    }
+    return this.newScale;
+  }
+
+  /**
+   * функция для равномерного выстраивания блоков с подарками в модалке подарков
+   */
+  // eslint-disable-next-line class-methods-use-this
+  setBlockGifts() {
+    if (!getElement(".js-gifts")) {
+      return;
     }
 
-    setDefaultValueRoomRange()
-    {
-      this.elCurrentRoom.style = "margin: auto; transform:scale(1.2)";
-      this.elRange.value = "120";
+    const elGifts = getElement(".js-gifts-content");
+    elGifts.removeAttribute("style");
+    const elWidth = 128;
+    const margin = 32;
+    const maxCount = 8;
+    const borderWidth = 6;
+    const scrollWidth = 4;
+    let outerPadding = 48;
+    let innerPadding = 40;
+    if (window.screen.width <= 870) {
+      outerPadding = 16;
+      innerPadding = 48;
     }
-
-    // eslint-disable-next-line class-methods-use-this
-    setRoomInAllWindowMobile()
-    {
-      if (window.screen.width <= 820 && window.screen.width > 400) {
-        this.newScale = window.screen.width / widthMobileRoom;
-        this.roomContent.style.transform = `scale(${this.newScale})`;
-      } else {
-        this.roomContent.removeAttribute("style");
-      }
-      return this.newScale;
+    const availableWidthBlock = availableWidth - outerPadding * 2;
+    const generalWidth =
+      availableWidthBlock -
+      innerPadding -
+      (innerPadding - margin - scrollWidth) -
+      borderWidth * 2;
+    let countElements = Math.trunc(generalWidth / (elWidth + margin));
+    if (countElements >= maxCount) {
+      countElements = maxCount;
     }
-
-    /**
-     * функция для равномерного выстраивания блоков с подарками в модалке подарков
-     */
-    // eslint-disable-next-line class-methods-use-this
-    setBlockGifts()
-    {
-      if (!getElement(".js-gifts")) {
-        return;
-      }
-
-      const elGifts = getElement(".js-gifts-content");
-      elGifts.removeAttribute("style");
-      const elWidth = 128;
-      const margin = 32;
-      const maxCount = 8;
-      const borderWidth = 6;
-      const scrollWidth = 4;
-      let outerPadding = 48;
-      let innerPadding = 40;
-      if (window.screen.width <= 870) {
-        outerPadding = 16;
-        innerPadding = 48;
-      }
-      const availableWidthBlock = availableWidth - outerPadding * 2;
-      const generalWidth =
-        availableWidthBlock -
-        innerPadding -
-        (innerPadding - margin - scrollWidth) -
-        borderWidth * 2;
-      let countElements = Math.trunc(generalWidth / (elWidth + margin));
-      if (countElements >= maxCount) {
-        countElements = maxCount;
-      }
-      let newWidth;
-      if (window.navigator.userAgent.indexOf("Fire")) {
-        newWidth =
-          margin * (countElements - 1) +
-          countElements * elWidth +
-          innerPadding * 2 +
-          borderWidth * 2 +
-          8;
-      } else {
-        newWidth =
-          margin * (countElements - 1) +
-          countElements * elWidth +
-          innerPadding * 2 +
-          borderWidth * 2 +
-          scrollWidth;
-      }
-      elGifts.style.width = `${newWidth}px`;
+    let newWidth;
+    if (window.navigator.userAgent.indexOf("Fire")) {
+      newWidth =
+        margin * (countElements - 1) +
+        countElements * elWidth +
+        innerPadding * 2 +
+        borderWidth * 2 +
+        8;
+    } else {
+      newWidth =
+        margin * (countElements - 1) +
+        countElements * elWidth +
+        innerPadding * 2 +
+        borderWidth * 2 +
+        scrollWidth;
     }
+    elGifts.style.width = `${newWidth}px`;
+  }
 
-    // Функция перетаскивания подарков по комнате
-    /* function moveGift() {
+  // Функция перетаскивания подарков по комнате
+  /* function moveGift() {
         let elCurrentRoom = getElement('.js-current-room');
         let arrGifts = elCurrentRoom.childNodes;
         const elRange = getElement('.js-range');
@@ -1021,12 +1012,11 @@ class RoomsApp {
             }
         })
     } */
-  }
+}
 
-  window.addEventListener("load", () => {
-  const
-  a = new RoomsApp();
-  if(!a) {
-    throw new Error("App creation error");}
-})
-;
+window.addEventListener("load", () => {
+  const a = new RoomsApp();
+  if (!a) {
+    throw new Error("App creation error");
+  }
+});
