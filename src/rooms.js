@@ -17,6 +17,10 @@ const availableHeight = document.documentElement.scrollHeight;
 // FIXME: вытащить в конфиг?
 const topValue = 160;
 const widthMobileRoom = 400;
+const heightTitleInModalGift = 104;
+const paddingTopInModalGift = 88;
+const paddingInnerInModalGift = 48;
+const borderWidthInModalGift = 6;
 
 class RoomsApp {
   constructor() {
@@ -24,7 +28,7 @@ class RoomsApp {
 
     this.state = {
       firstVisit: true,
-      firstVisitNew: true,
+      firstVisitNew: false,
       time1MS: 0,
       time2MS: 0,
 
@@ -98,12 +102,17 @@ class RoomsApp {
     this.elOnboardingContentLk = getElement('.js-onboarding-content-lk');
     this.elOnboardingWrapperGift = getElement('.js-onboarding-wrapper-gift');
 
+    this.modalGiftsContentMobile = 0;
+
     this.resize = this.resize.bind(this);
     this.clickRoom = this.clickRoom.bind(this);
     this.initListeners();
     this.setBlockGifts();
     this.setDefaultValueRoomRange();
     this.showSecondOnboarding();
+    this.callModallAr();
+    this.deleteGiftFromRoom();
+    this.setHeightModalWithGifts();
 
     // Онбоардинг который появляется перед выбором комнаты
     if(this.state.firstVisit) {
@@ -113,92 +122,9 @@ class RoomsApp {
         this.elOnboardingChoice.classList.remove('is-visibility');
       }, 2500)
     }
-
-    // Остлеживание изменения переменной isExist твечающей за наличие подарков в комнате и запуск нужных функций
-    // const existencGift = { _isGift: false };
-    // Object.defineProperty(existencGift, "isExist", {
-    //   get() {
-    //     return this._isGift;
-    //   },
-    //   set(value) {
-    //     this._isGift = value;
-    //     this.moveGift();
-    //     this.deleteGiftFromRoom();
-    //     this.callModallAr();
-    //   },
-    // });
-
-    // Функция создает подарок в комнате используя данные из gifts[], параметр num - это номер текущей комнаты
-    // if (getElement(".js-rooms")) {
-    //   const elRoom = getElement(".js-rooms");
-    //   let elMenu = getElement(".js-menu");
-    //
-    //   const elCurrentRoom = getElement(".js-current-room");
-    //
-    //   this.callOnboarding(".js-onboarding-choice", 2500);
-    //
-    //   const countRooms = 3;
-    //
-    //   // goRoom();
-    //
-    //   const elRange = getElement(".js-range");
-    //   elCurrentRoom.style.transform = `scale(${
-    //     parseInt(elRange.value, 10) / 100
-    //   })`; // при загрузке сначала сразу ставим scale 1.2
-    //
-
-    //
-
-
-    // Обращаемся к блоку с подарками в модалке , собираем там все подарки в массив и по клику на элемента модалку закрываем,
-    // куда кликнули ставим класс is-active и рисуем подарок в комнате
-    //   const blockGifts = getElement(".js-gifts");
-    //   const gifts = blockGifts.childNodes;
-    //   const arrItems = [];
-    //   for (const jtem of gifts) {
-    //     if (jtem.nodeType === 1) {
-    //       arrItems.push(jtem);
-    //     }
-    //   }
-    //   arrItems.forEach((item, index) => {
-    //     item.addEventListener("click", () => {
-    //       if (
-    //         item.classList.contains("is-can-get") &&
-    //         !item.classList.contains("is-active")
-    //       ) {
-    //         item.classList.add("is-active");
-    //         getElement(".js-modal-gifts").classList.remove("is-visibility");
-    //         this.createBlock(index + 1);
-    //         if (this.state.firstVisitNew) {
-    //           const elDiv = document.createElement("div");
-    //           const elContent = document.createElement("div");
-    //           elDiv.setAttribute("class", "onboarding");
-    //           elDiv.classList.add("onboarding-room");
-    //           elDiv.classList.add("z-index-max");
-    //           const elSpan = document.createElement("span");
-    //           elSpan.textContent =
-    //             "Кликни, чтобы перейти в ar или убрать в коробку";
-    //           const elImg = document.createElement("img");
-    //           elImg.src = "images/finger2.svg";
-    //           elContent.append(elSpan);
-    //           elContent.append(elImg);
-    //           elDiv.append(elContent);
-    //           if (elCurrentRoom.childNodes.length === 1) {
-    //             elCurrentRoom.childNodes[0].append(elDiv);
-    //           }
-    //
-    //           setTimeout(() => {
-    //             elDiv.remove();
-    //           }, 2500);
-    //         }
-    //       }
-    //     });
-    //   });
-    // }
   }
 
   resize() {
-    //console.log("resize");
     this.setBlockGifts();
     this.setRoomInAllWindowMobile();
   }
@@ -338,12 +264,13 @@ class RoomsApp {
       if(this.state.firstVisit) {
         this.elOnboardingGift.classList.add('is-visibility');
 
-        this.elOnboardingWrapperGift.style.left = (availableWidth - this.elGifts.offsetWidth) / 2 + 'px';
-        console.log(availableHeight, this.elGiftsContent.offsetHeight);
-        if (screen.width > 820) {
+        if (screen.width > 870) {
+          this.elOnboardingWrapperGift.style.left = (availableWidth - this.elGifts.offsetWidth) / 2 + 'px';
           this.elOnboardingWrapperGift.style.top = (availableHeight - this.elGiftsContent.offsetHeight) / 2 + 40 + 6 + 'px';
-        } else {
-          this.elOnboardingWrapperGift.style.top = (availableHeight - this.elGiftsContent.offsetHeight) / 2 + 40 + 6 + 139 + 'px';
+        }
+        else {
+          this.elOnboardingWrapperGift.style.top =  paddingTopInModalGift + heightTitleInModalGift + borderWidthInModalGift + paddingInnerInModalGift + 'px';
+          this.elOnboardingWrapperGift.style.left = (screen.width -  this.elGiftsContent.offsetWidth) /2 + paddingInnerInModalGift + borderWidthInModalGift + 'px';
         }
         setTimeout(() => {
           this.showSecondOnboarding()
@@ -391,13 +318,14 @@ class RoomsApp {
     this.elCallGiftModal.addEventListener('click', () => {
       if(this.state.firstVisit) {
         this.elOnboardingGift.classList.add('is-visibility');
-
         this.elOnboardingWrapperGift.style.left = (availableWidth - this.elGifts.offsetWidth) / 2 + 'px';
-        console.log(availableHeight, this.elGiftsContent.offsetHeight);
-        if (screen.width > 820) {
+        if (screen.width > 870) {
+          this.elOnboardingWrapperGift.style.left = (availableWidth - this.elGifts.offsetWidth) / 2 + 'px';
           this.elOnboardingWrapperGift.style.top = (availableHeight - this.elGiftsContent.offsetHeight) / 2 + 40 + 6 + 'px';
-        } else {
-          this.elOnboardingWrapperGift.style.top = (availableHeight - this.elGiftsContent.offsetHeight) / 2 + 40 + 6 + 139 + 'px';
+        }
+        else {
+          this.elOnboardingWrapperGift.style.top =  paddingTopInModalGift + heightTitleInModalGift + borderWidthInModalGift + paddingInnerInModalGift + 'px';
+          this.elOnboardingWrapperGift.style.left = (screen.width -  this.elGiftsContent.offsetWidth) /2 + paddingInnerInModalGift + borderWidthInModalGift + 'px';
         }
         setTimeout(() => {
           this.showSecondOnboarding()
@@ -439,20 +367,26 @@ class RoomsApp {
     });
 
     this.elCurrentRoom.addEventListener("pointerup", () => {
+      const time2 = new Date;
+      this.state.time2Ms = time2.getTime();
       this.state.isMoveRoom = false;
       this.state.isMoveGift = null;
     });
 
     this.elCurrentRoom.addEventListener("pointermove", (e) => {
+      if(e.target === e.currentTarget) {
+        this.elCurrentRoom.style.margin = 'initial';
+        this.elCurrentRoom.style.left = e.clientX + 'px';
+      }
+
       if (this.state.isMoveGift === null) {
         return;
       }
 
-      //console.log(e.target);
-      // console.log(e.offsetX, e.offsetY);
+      const buttons = getElement('.js-gift-buttons', e.target.parentElement);
+      buttons.classList.add('is-hidden');
 
       const { scale, translatex, translatey } = this.elCurrentRoom.dataset;
-      // console.log(scale);
 
       const { coordX, coordY, offsetX, offsetY } =
         this.state.isMoveGift.dataset;
@@ -466,9 +400,14 @@ class RoomsApp {
     });
 
     this.elCurrentRoom.addEventListener("pointerdown", (e) => {
+      const time1 = new Date;
+      this.state.time1Ms = time1.getTime();
       const element = e.target;
+      if(e.target === e.currentTarget) {//Если нажали не на подарок
+        this.elCurrentRoom.dataset.coordX = e.clientX;
+        this.elCurrentRoom.dataset.coordY = e.clientY;
+      }
       if (element.parentElement.classList.contains("gift")) {
-        //console.log("gift");
         this.state.isMoveGift = element;
         this.state.isMoveGift.classList.add("is-dragged");
         element.dataset.coordX = parseInt(element.parentElement.style.left, 10);
@@ -484,134 +423,9 @@ class RoomsApp {
       } else {
         this.state.isMoveRoom = true;
       }
-
-      // if (
-      //   (elCurrentRoom.offsetWidth * (Number(elRange.value) / 100) >
-      //     availableWidth ||
-      //     elCurrentRoom.offsetHeight * (Number(elRange.value) / 100) >
-      //     availableHeight) &&
-      //   String(this.classList).indexOf("current")
-      // ) {
-      //   elCurrentRoom.addEventListener("mousemove", onMouseMove);
-      // }
     });
   }
 
-  clickRoom(e) {
-    //console.log(e);
-    if (this.state.currentRoom !== null) {
-      return;
-    }
-
-    const element = e.currentTarget;
-    if (!("room" in element.dataset)) {
-      return;
-    }
-
-    const { room } = element.dataset;
-    //console.log(room);
-    this.state.currentRoom = room;
-
-    this.elChoice.classList.add("is-hidden");
-
-    const arrMenuItems = this.elMenu.childNodes; // показать в меню выбор подарков
-    arrMenuItems.forEach((menuItem) => {
-      if (menuItem.nodeType === 1) {
-        menuItem.classList.remove("is-hidden");
-      }
-    });
-
-    for (let i = 1; i <= this.rooms.length + 1; i++) {
-      // Проверяем и удаляем заранее у комнаты все классы room1 room2 и т.д.
-      if (this.roomsList.classList.contains(`room${i}`)) {
-        this.roomsList.classList.remove(`room${i}`);
-      }
-    }
-
-    this.elBlockRange.classList.remove("is-hidden"); // Показываем блок с полузнком
-
-    this.roomsList.classList.remove("is-hidden");
-    this.roomsList.classList.add(`room${room}`);
-    this.roomsList.style.height = `${availableHeight}px`;
-
-    this.styleFixes();
-    if (window.screen.width <= 870) {
-      this.elMenu.style.width = `${window.screen.height}px`;
-    }
-    this.elBoardingRange.classList.add("is-visibility");
-
-    this.moveRoom();
-
-    setTimeout(() => {
-      this.elBoardingRange.classList.remove("is-visibility");
-      if (this.state.isClickBoardingGift === false) {
-        this.elBoardingMenuGift.classList.add("is-visibility");
-        this.elMenu.classList.add("z-index-max");
-      }
-    }, 2500);
-
-    setTimeout(() => {
-      this.elBoardingMenuGift.classList.remove("is-visibility");
-      if (this.state.isClickBoardingLk === false) {
-        this.elBoardingLk.classList.add("is-visibility");
-      }
-    }, 5000);
-
-    setTimeout(() => {
-      this.elBoardingLk.classList.remove("is-visibility");
-      this.elMenu.classList.remove("z-index-max");
-    }, 7500);
-
-    if (this.state.firstVisit) {
-      this.elBlockRange.classList.add("z-index-max");
-      setTimeout(() => {
-        this.elBlockRange.classList.remove("z-index-max");
-      }, 2500);
-
-      if (window.screen.width > 820) {
-        this.elOnboardingContent.style.left = `${
-          this.elBlockRange.getBoundingClientRect().x +
-          this.elBlockRange.offsetHeight
-        }px`;
-        this.elOnboardingContent.style.top = `${
-          this.elBlockRange.getBoundingClientRect().y - this.elOnboardingContent.offsetHeight
-        }px`;
-        this.elOnboardingContentGift.style.left = `${
-          this.elMenu.getBoundingClientRect().x - this.elMenu.offsetWidth
-        }px`;
-        this.elOnboardingContentGift.style.top = `${
-          this.elMenu.getBoundingClientRect().y + this.elMenu.offsetHeight
-        }px`;
-        this.elOnboardingContentLk.style.left = `${
-          this.elMenu.getBoundingClientRect().x - this.elMenu.offsetWidth / 4
-        }px`;
-        this.elOnboardingContentLk.style.top = `${
-          this.elMenu.getBoundingClientRect().y + this.elMenu.offsetHeight + 50
-        }px`;
-      }
-    }
-  }
-
-  styleFixes() {
-    if (!window.navigator.userAgent.includes("Fire")) {
-      this.elBlockRange.style.width = `${
-        getElement("body").offsetHeight - topValue * 2
-      }px`; // всему блоку с ползунком присваиваем высоту подолжки модалки т.к. она всегда по высоте во весь экран
-    } else {
-      this.elBlockRange.classList.add("isMoz");
-      this.elBlockRange.style.height = `${
-        getElement("body").offsetHeight - topValue * 2
-      }px`; // всему блоку с ползункои присваиваем высоту подолжки модалки т.к. она всегда по высоте во весь экран
-      this.elBlockRange.style.top = `${
-        (availableHeight - this.elBlockRange.offsetHeight) / 2
-      }px`;
-    }
-    this.setRoomInAllWindowMobile();
-  }
-
-  /**
-   *  Функция движения комнаты
-   */
   moveRoom() {
     // function moveAt(pageX, pageY) {
     //   // Функция которая подставляет комнату под курсор
@@ -649,6 +463,132 @@ class RoomsApp {
     // };
   }
 
+  // Установка высоты модалки с подарками
+  setHeightModalWithGifts() {
+    if(screen.width <= 870) {
+      const paddingBottom = 50
+      const valueHeight = screen.height - paddingTopInModalGift - heightTitleInModalGift - paddingBottom;
+      this.elGiftsContent.style.height = valueHeight + 'px';
+      this.modalGiftsContentMobile = valueHeight - paddingInnerInModalGift * 2 - borderWidthInModalGift * 2
+      getElement('.modal-gifts-content').style.height = this.modalGiftsContentMobile + 'px';
+    }
+  }
+
+  // Переход в команту
+  clickRoom(e) {
+    if (this.state.currentRoom !== null) {
+      return;
+    }
+
+    const element = e.currentTarget;
+    if (!("room" in element.dataset)) {
+      return;
+    }
+
+    const { room } = element.dataset;
+    this.state.currentRoom = room;
+    this.elChoice.classList.add("is-hidden");
+
+    const arrMenuItems = this.elMenu.childNodes; // показать в меню выбор подарков
+    arrMenuItems.forEach((menuItem) => {
+      if (menuItem.nodeType === 1) {
+        menuItem.classList.remove("is-hidden");
+      }
+    });
+
+    for (let i = 1; i <= this.rooms.length + 1; i++) {
+      // Проверяем и удаляем заранее у комнаты все классы room1 room2 и т.д.
+      if (this.roomsList.classList.contains(`room${i}`)) {
+        this.roomsList.classList.remove(`room${i}`);
+      }
+    }
+
+    this.elBlockRange.classList.remove("is-hidden"); // Показываем блок с полузнком
+
+    this.roomsList.classList.remove("is-hidden");
+    this.roomsList.classList.add(`room${room}`);
+    if(screen.width <= 1100) {
+      this.roomsList.style.height = `${screen.height}px`;
+    }
+    else {
+      this.roomsList.style.height = `${availableHeight}px`;
+    }
+
+
+    this.styleFixes();
+    if (window.screen.width <= 870) {
+      this.elMenu.style.width = `${window.screen.height}px`;
+    }
+
+    if (this.state.firstVisit) {
+      this.elBoardingRange.classList.add("is-visibility");
+      this.elBlockRange.classList.add("z-index-max");
+      setTimeout(() => {
+        this.elBlockRange.classList.remove("z-index-max");
+      }, 2500);
+
+      setTimeout(() => {
+        this.elBoardingRange.classList.remove("is-visibility");
+        if (this.state.isClickBoardingGift === false) {
+          this.elBoardingMenuGift.classList.add("is-visibility");
+          this.elMenu.classList.add("z-index-max");
+        }
+      }, 2500);
+
+      setTimeout(() => {
+        this.elBoardingMenuGift.classList.remove("is-visibility");
+        if (this.state.isClickBoardingLk === false) {
+          this.elBoardingLk.classList.add("is-visibility");
+        }
+      }, 5000);
+
+      setTimeout(() => {
+        this.elBoardingLk.classList.remove("is-visibility");
+        this.elMenu.classList.remove("z-index-max");
+      }, 7500);
+
+      if (window.screen.width > 820) {
+        this.elOnboardingContent.style.left = `${
+          this.elBlockRange.getBoundingClientRect().x +
+          this.elBlockRange.offsetHeight
+        }px`;
+        this.elOnboardingContent.style.top = `${
+          this.elBlockRange.getBoundingClientRect().y - this.elOnboardingContent.offsetHeight
+        }px`;
+        this.elOnboardingContentGift.style.left = `${
+          this.elMenu.getBoundingClientRect().x - this.elMenu.offsetWidth
+        }px`;
+        this.elOnboardingContentGift.style.top = `${
+          this.elMenu.getBoundingClientRect().y + this.elMenu.offsetHeight
+        }px`;
+        this.elOnboardingContentLk.style.left = `${
+          this.elMenu.getBoundingClientRect().x - this.elMenu.offsetWidth / 4
+        }px`;
+        this.elOnboardingContentLk.style.top = `${
+          this.elMenu.getBoundingClientRect().y + this.elMenu.offsetHeight + 50
+        }px`;
+      }
+    }
+  }
+
+  styleFixes() {
+    if (!window.navigator.userAgent.includes("Fire")) {
+      this.elBlockRange.style.width = `${
+        getElement("body").offsetHeight - topValue * 2
+      }px`; // всему блоку с ползунком присваиваем высоту подолжки модалки т.к. она всегда по высоте во весь экран
+    }
+    else {
+      this.elBlockRange.classList.add("isMoz");
+      this.elBlockRange.style.height = `${
+        getElement("body").offsetHeight - topValue * 2
+      }px`; // всему блоку с ползункои присваиваем высоту подолжки модалки т.к. она всегда по высоте во весь экран
+      this.elBlockRange.style.top = `${
+        (availableHeight - this.elBlockRange.offsetHeight) / 2
+      }px`;
+    }
+    this.setRoomInAllWindowMobile();
+  }
+
   callOnboarding(selector, time) {
     if (this.state.firstVisit === false) {
       const elBoadring = getElement(selector);
@@ -662,217 +602,6 @@ class RoomsApp {
         elBoadring.classList.remove("is-visibility");
       }, time);
     }
-  }
-
-  createBlock(num) {
-    const elDiv = document.createElement("div");
-    let styleValueDiv;
-    let styleValueImg;
-    if (window.screen.width <= config.size.mobile) {
-      styleValueDiv = `left: ${
-        giftsObj_mobile[this.state.currentRoom - 1][num - 1].left
-      }px; top:${giftsObj_mobile[this.state.currentRoom - 1][num - 1].top}px`;
-      styleValueImg = `transform: scale(${
-        giftsObj_mobile[this.state.currentRoom - 1][num - 1].scale
-      }) rotate(${
-        giftsObj_mobile[this.state.currentRoom - 1][num - 1].rotate
-      }deg)`;
-    } else {
-      styleValueDiv = `left:${
-        giftsObj[this.state.currentRoom - 1][num - 1].left
-      }px; top:${giftsObj[this.state.currentRoom - 1][num - 1].top}px`;
-      styleValueImg = `transform: scale(${
-        giftsObj[this.state.currentRoom - 1][num - 1].scale
-      }) rotate(${giftsObj[this.state.currentRoom - 1][num - 1].rotate}deg)`;
-    }
-    elDiv.classList.add("gift");
-    elDiv.classList.add(`gift${num}`);
-    elDiv.classList.add("z-index-max");
-    elDiv.setAttribute("style", styleValueDiv);
-
-    const elButtons = document.createElement("ul");
-    elButtons.classList.add("gift-buttons");
-    elButtons.classList.add("js-gift-buttons");
-    elButtons.classList.add("is-hidden");
-    for (let i = 0; i < 2; i++) {
-      const elLi = document.createElement("li");
-      const elSpan = document.createElement("span");
-      elLi.classList.add("gift-buttons__item");
-      elLi.classList.add(config.contentButtonsForGift[1][i]);
-      elLi.append(elSpan);
-      elSpan.textContent = config.contentButtonsForGift[0][i];
-      elButtons.append(elLi);
-    }
-    const elImg = document.createElement("img");
-    elImg.setAttribute("style", styleValueImg);
-    elImg.classList.add("js-img");
-    elImg.src = `assets/images/gifts/gift${num}.png`;
-    const showHideButtonsGift = function () {
-      if (this.state.time2_Ms - this.state.time1_Ms < 150) {
-        // Проверка на то, что это именно щелчок ,а не нажатие и удрежание кнопки мыши
-        const blockButtons = this.parentNode.querySelector(".js-gift-buttons");
-        const start = "gift gift".length;
-        const currentNumberGift = this.parentNode.classList
-          .toString()
-          .substr(start);
-        const excludeClass = `gift${currentNumberGift}`;
-        const arrBlockButtons = getArrayElements(".js-gift-buttons");
-        arrBlockButtons.forEach((item) => {
-          if (!item.parentNode.classList.contains(excludeClass)) {
-            item.classList.add("is-hidden");
-          }
-          blockButtons.classList.toggle("is-hidden");
-          blockButtons.removeAttribute("style");
-          const leftCoordGift = Number(
-            this.parentNode.style.left.substr(
-              0,
-              this.parentNode.style.left.indexOf("px"),
-            ),
-          );
-
-          if (window.screen.width > config.size.mobile) {
-            leftCoordGift >= blockButtons.offsetWidth
-              ? (blockButtons.style.right = "100%")
-              : (blockButtons.style.left = "100%");
-          } else if (leftCoordGift <= blockButtons.offsetWidth) {
-            blockButtons.style.left = "100%";
-            blockButtons.style.transformOrigin = "left";
-          } else {
-            blockButtons.style.right = "100%";
-            blockButtons.style.transformOrigin = "right";
-          }
-          const heightGift = Number(
-            this.parentNode.style.top.substr(
-              0,
-              this.parentNode.style.top.indexOf("px"),
-            ),
-          );
-          heightGift > 0
-            ? (blockButtons.style.top = "0")
-            : (blockButtons.style.bottom = "0");
-        });
-      }
-    };
-    elImg.addEventListener("click", showHideButtonsGift);
-    const elShadow = document.createElement("div");
-    const delBoarding =  () => {
-      if(this.state.firstVisit) {
-        getElement('.onboarding-room').remove();
-        getElement('.js-rooms-shadow').classList.add('is-hidden');
-        this.state.firstVisit = false;
-      }
-    }
-    elShadow.addEventListener('click', delBoarding);
-    elShadow.classList.add("js-rooms-shadow");
-    elShadow.classList.add("rooms-shadow");
-    elDiv.append(elImg);
-    elDiv.append(elButtons);
-    elDiv.append(elShadow);
-    getElement(".js-current-room").append(elDiv);
-    getElement(".js-modal-gifts").classList.remove("is-visibility");
-    //existencGift.isExist = true; // Подарок в комнате создан и переменная isExist получает true. Изначально она false
-
-    let timer = 0; // таймер показа тени под подарком. При первом визите он большой чтоб онбоардинг был виден, потом маленький
-    if (this.state.firstVisitNew) {
-      timer = 2500;
-    } else {
-      timer = 800;
-    }
-
-    setTimeout(() => {
-      elShadow.classList.add("is-hidden");
-      elShadow.parentNode.classList.remove("z-index-max");
-      this.state.firstVisitNew = false;
-    }, timer);
-  }
-
-  moveGift() {
-    const elCurrentRoom = getElement(".js-current-room");
-    const arrGifts = elCurrentRoom.childNodes;
-    let shiftXItem;
-    let shiftYItem; // Смещение размеров подарка по горзионтали и вертикали из-за scale
-    let halfWidthItem;
-    let halfHeightItem; // Половина ширины и высоты подарка
-
-    arrGifts.forEach((item) => {
-      function moveAt(pageX, pageY) {
-        // Функция которая подставляет подарок под курсор
-        const scale = parseInt(getElement(".js-range").value, 10) / 100;
-        halfWidthItem = (item.offsetWidth * scale) / 2;
-        halfHeightItem = (item.offsetHeight * scale) / 2;
-        shiftXItem = (item.offsetWidth * scale - item.offsetWidth) / 2;
-        shiftYItem = (item.offsetHeight * scale - item.offsetHeight) / 2;
-
-        if (this.state.isMoveRoom === true) {
-          valueTranslateX = 0;
-          valueTranslateY = 0;
-        }
-
-        //console.log(pageX, Math.round(item.getBoundingClientRect().left));
-        const newLeft =
-          pageX -
-          (availableWidth - elCurrentRoom.offsetWidth * scale) / 2 -
-          shiftXItem -
-          valueTranslateX;
-        const newTop =
-          pageY -
-          (availableHeight - elCurrentRoom.offsetHeight * scale) / 2 -
-          shiftYItem -
-          valueTranslateY;
-
-        if (newLeft <= 0) {
-          item.style.left = `${0}px`;
-        } else if (newLeft > 820 - item.offsetWidth) {
-          item.style.left = `${820 - item.offsetWidth}px`;
-        } else {
-          item.style.left = `${newLeft}px`;
-        }
-
-        if (newTop <= 0) {
-          item.style.top = `${0}px`;
-        } else if (newTop > 820 - item.offsetHeight) {
-          item.style.top = `${820 - item.offsetHeight}px`;
-        } else {
-          item.style.top = `${newTop}px`;
-        }
-      }
-
-      function onMouseMove(event) {
-        if (item.classList.contains("is-dragged")) {
-          moveAt(event.pageX, event.pageY);
-        }
-      }
-
-      item.addEventListener("mousedown", function (e) {
-        for (const gift of arrGifts) {
-          gift.classList.remove("is-dragged");
-        }
-        if (e.target.tagName !== "SPAN" && this.classList.contains("gift")) {
-          e.stopPropagation();
-          item.classList.add("is-dragged");
-          elCurrentRoom.addEventListener("mousemove", onMouseMove);
-        }
-        const time1 = new Date();
-        this.time1_Ms = time1.getTime();
-        return time1_Ms;
-      });
-      item.addEventListener("mouseup", () => {
-        item.classList.remove("is-dragged");
-        item.removeEventListener("mousemove", onMouseMove);
-        item.onmouseup = null;
-        const time2 = new Date();
-        this.time2_Ms = time2.getTime();
-        return time2_Ms;
-      });
-      item.ondragstart = function () {
-        return false;
-      };
-      document.documentElement.addEventListener("mouseup", () => {
-        item.classList.remove("is-dragged");
-        item.removeEventListener("mousemove", onMouseMove);
-        item.onmouseup = null;
-      });
-    });
   }
 
   /**
@@ -912,6 +641,136 @@ class RoomsApp {
     });
   }
 
+  createBlock(num) {
+    const elDiv = document.createElement("div");
+    let styleValueDiv;
+    let styleValueImg;
+    if (window.screen.width <= config.size.mobile) {
+      styleValueDiv = `left: ${
+        giftsObjMobile[this.state.currentRoom - 1][num - 1].left
+      }px; top:${giftsObjMobile[this.state.currentRoom - 1][num - 1].top}px`;
+      styleValueImg = `transform: scale(${
+        giftsObjMobile[this.state.currentRoom - 1][num - 1].scale
+      }) rotate(${
+        giftsObjMobile[this.state.currentRoom - 1][num - 1].rotate
+      }deg)`;
+    } else {
+      styleValueDiv = `left:${
+        giftsObj[this.state.currentRoom - 1][num - 1].left
+      }px; top:${giftsObj[this.state.currentRoom - 1][num - 1].top}px`;
+      styleValueImg = `transform: scale(${
+        giftsObj[this.state.currentRoom - 1][num - 1].scale
+      }) rotate(${giftsObj[this.state.currentRoom - 1][num - 1].rotate}deg)`;
+    }
+    elDiv.classList.add("gift");
+    elDiv.classList.add(`gift${num}`);
+    elDiv.classList.add("z-index-max");
+    elDiv.setAttribute("style", styleValueDiv);
+
+    const elButtons = document.createElement("ul");
+    elButtons.classList.add("gift-buttons");
+    elButtons.classList.add("js-gift-buttons");
+    elButtons.classList.add("is-hidden");
+    for (let i = 0; i < 2; i++) {
+      const elLi = document.createElement("li");
+      const elSpan = document.createElement("span");
+      elLi.classList.add("gift-buttons__item");
+      elLi.classList.add(config.contentButtonsForGift[1][i]);
+      elLi.append(elSpan);
+      elSpan.textContent = config.contentButtonsForGift[0][i];
+      elButtons.append(elLi);
+    }
+    const elImg = document.createElement("img");
+    elImg.setAttribute("style", styleValueImg);
+    elImg.classList.add("js-img");
+    elImg.src = `assets/images/gifts/gift${num}.png`;
+    const showHideButtonsGift = (e) => {
+      if (this.state.time2Ms - this.state.time1Ms < 150) {// Проверка на то, что это именно щелчок ,а не нажатие и удрежание кнопки мыши
+        const currentBlockButtons = e.target.parentElement.querySelector(".js-gift-buttons");
+        const start = "gift gift".length;
+        const currentNumberGift = e.target.parentElement.classList
+          .toString()
+          .substr(start);
+        const excludeClass = `gift${currentNumberGift}`;
+        const arrBlockButtons = getArrayElements(".js-gift-buttons");
+        const _arrBlockButtons = arrBlockButtons;
+        _arrBlockButtons.forEach((item,index) => {
+          if(item.parentElement.classList.contains(excludeClass)){
+            _arrBlockButtons.splice(index, 1)
+          }
+        })
+        for(let blockButtons of _arrBlockButtons) {
+          blockButtons.classList.add('is-hidden');
+        }
+        currentBlockButtons.classList.toggle("is-hidden");
+        currentBlockButtons.removeAttribute("style");
+        const leftCoordGift = Number(
+          e.target.parentElement.style.left.substr(
+            0,
+            e.target.parentElement.style.left.indexOf("px"),
+          ),
+        );
+
+        if (window.screen.width > config.size.mobile) {
+          leftCoordGift >= currentBlockButtons.offsetWidth
+            ? (currentBlockButtons.style.right = "100%")
+            : (currentBlockButtons.style.left = "100%");
+        }
+        else if (leftCoordGift <= currentBlockButtons.offsetWidth) {
+          currentBlockButtons.style.left = "100%";
+          currentBlockButtons.style.transformOrigin = "left";
+        }
+        else {
+          currentBlockButtons.style.right = "100%";
+          currentBlockButtons.style.transformOrigin = "right";
+        }
+        const heightGift = Number(
+          e.target.parentElement.style.top.substr(
+            0,
+            e.target.parentElement.style.top.indexOf("px"),
+          ),
+        );
+        heightGift > 0
+          ? (currentBlockButtons.style.top = "0")
+          : (currentBlockButtons.style.bottom = "0");
+      }
+    };
+    elImg.addEventListener("click", showHideButtonsGift);
+    const elShadow = document.createElement("div");
+    const delBoarding =  () => {
+      if(this.state.firstVisit) {
+        getElement('.onboarding-room').remove();
+        getElement('.js-rooms-shadow').classList.add('is-hidden');
+        this.state.firstVisit = false;
+      }
+    }
+    elShadow.addEventListener('click', delBoarding);
+    elShadow.classList.add("js-rooms-shadow");
+    elShadow.classList.add("rooms-shadow");
+    elDiv.append(elImg);
+    elDiv.append(elButtons);
+    elDiv.append(elShadow);
+    getElement(".js-current-room").append(elDiv);
+    getElement(".js-modal-gifts").classList.remove("is-visibility");
+    //existencGift.isExist = true; // Подарок в комнате создан и переменная isExist получает true. Изначально она false
+
+    this.callModallAr();
+    this.deleteGiftFromRoom();
+    let timer = 0; // таймер показа тени под подарком. При первом визите он большой чтоб онбоардинг был виден, потом маленький
+    if (this.state.firstVisit) {
+      timer = 2500;
+    }
+    else {
+      timer = 800;
+    }
+
+    setTimeout(() => {
+      elShadow.classList.add("is-hidden");
+      elShadow.parentNode.classList.remove("z-index-max");
+      this.state.firstVisitNew = false;
+    }, timer);
+  }
+
   /**
    * Создание блоков для подарков в модалке подарков
    */
@@ -924,6 +783,9 @@ class RoomsApp {
         // если есть класс в объекте json
         elGift.classList.add(giftsInModal[i].class);
         elGift.addEventListener("click", () => {
+          if(!elGift.classList.contains('is-active') && elGift.classList.contains('is-can-get')){
+            elGift.classList.add('is-active');
+          }
           this.createBlock(i + 1);
           if (this.state.firstVisit) {
             const elDiv = document.createElement("div");
@@ -983,7 +845,6 @@ class RoomsApp {
         this.elOnboardingGift.classList.remove('is-added');
       }, 1500);
     }
-    //return this.state.firstVisit = false;
   }
 
   // eslint-disable-next-line class-methods-use-this
@@ -1047,83 +908,6 @@ class RoomsApp {
     }
     elGifts.style.width = `${newWidth}px`;
   }
-
-  // Функция перетаскивания подарков по комнате
-  /* function moveGift() {
-        let elCurrentRoom = getElement('.js-current-room');
-        let arrGifts = elCurrentRoom.childNodes;
-        const elRange = getElement('.js-range');
-        let scale =  parseInt(getElement('.js-range').value, 10) / 100;
-        let shiftXItem, shiftYItem ,halfXItem, halfYItem, posMouseX, posMouseY, newLeft, newTop, limiterLeft ,limiterRight, limiterTop, limiterBottom;
-        arrGifts.forEach((item) => {
-            item.addEventListener('mousedown', function (event){
-                if(event.target.tagName !== 'SPAN' && this.classList.contains('gift')) {
-                    event.stopPropagation();
-                    document.body.append(item);//Элемент вытаскиваем из комнаты и вставляем в body
-                    scale =  parseInt(getElement('.js-range').value, 10) / 100; // коэффициент увеличения
-                    item.style.transform = `scale(${elRange.value/100})`;
-
-                    //Всей комнате сбрасываем трансорфм и ставим размеры в рх с учетом scale
-                    elCurrentRoom.style.transform = 'none';
-                    elCurrentRoom.style.width = 820 * scale + 'px';
-                    elCurrentRoom.style.height = 820 * scale + 'px';
-
-                    //Так как сбросили трансформ то приподнимаем вверх комнату на половину от добавленной величины к высоте
-                    elCurrentRoom.style.top = (availableHeight - elCurrentRoom.offsetHeight) / 2 + 'px';
-
-                    //Так как сбросили трансформ то двигаем влево комнату на половину от добавленной величины к ширине
-                    //elCurrentRoom.style.left = (document.documentElement.scrollWidth - elCurrentRoom.offsetWidth) / 2 + 'px';
-
-                    moveAt(event.pageX, event.pageY);
-
-                    // Функция которая подставляет подарок под курсорв
-                    function moveAt(pageX, pageY) {
-                        posMouseX = pageX;
-                        posMouseY = pageY;
-                        shiftXItem = (item.offsetWidth * scale - item.offsetWidth) / 2; //Насколько расширился элемент вправо и влево при scale
-                        shiftYItem = (item.offsetHeight * scale - item.offsetHeight) / 2;//Насколько расширился элемент вверх и вниз при scale
-                        halfXItem = item.offsetWidth * scale / 2; // Половина ширины элемента
-                        halfYItem = item.offsetHeight * scale / 2;// Половина высоты элемента
-
-                        limiterLeft = elCurrentRoom.getBoundingClientRect().left + halfXItem + shiftXItem;
-                        limiterRight = elCurrentRoom.getBoundingClientRect().right - halfXItem - shiftXItem;
-                        limiterTop = elCurrentRoom.getBoundingClientRect().top + halfYItem + shiftYItem;
-                        limiterBottom = elCurrentRoom.getBoundingClientRect().bottom - halfYItem - shiftYItem;
-
-
-                        newTop = pageY + shiftYItem// - halfYItem;
-                        newLeft = pageX + shiftXItem //- halfXItem;
-                        item.style.left = newLeft + 'px'
-                        item.style.top = newTop + 'px';
-                    }
-
-                    function onMouseMove(event) {
-                        moveAt(event.pageX, event.pageY);
-                    }
-
-                    document.addEventListener('mousemove', onMouseMove);
-
-                    item.onmouseup = function(pageX, pageY) {
-                        elCurrentRoom.append(item);
-                        item.style.transform = 'scale(1)';
-                        item.style.left = posMouseX - (availableWidth - elCurrentRoom.offsetWidth) / 2 + 'px';
-                        item.style.top = posMouseY - (availableHeight - elCurrentRoom.offsetHeight) / 2 + 'px';
-
-                        //Возвращаем координаты и размеры по умолчанию и scale
-                        elCurrentRoom.style.width = 820 + 'px';
-                        elCurrentRoom.style.height = 820 + 'px';
-                        elCurrentRoom.style.top = 'initial';
-                        elCurrentRoom.style.transform = `scale(${scale})`;
-                        document.removeEventListener('mousemove', onMouseMove);
-                        item.onmouseup = null;
-                    };
-                }
-            })
-            item.ondragstart = function () {
-                return false;
-            }
-        })
-    } */
 }
 
 window.addEventListener("load", () => {
