@@ -27,12 +27,13 @@ class RoomsApp {
     // super();
 
     this.state = {
-      firstVisit: true,
+      firstVisit: false,
       firstVisitNew: false,
       time1MS: 0,
       time2MS: 0,
 
       isMoveRoom: false,
+      movedRoom: null,
 
       isMoveGift: null,
 
@@ -183,7 +184,8 @@ class RoomsApp {
         this.elCurrentRoom.style = `margin: initial; transform: scale(${scale}) translate(${valueTranslateX}px,${valueTranslateY}px)`;
         this.elCurrentRoom.dataset.translatex = valueTranslateX;
         this.elCurrentRoom.dataset.translatey = valueTranslateY;
-      } else {
+      }
+      else {
         this.elCurrentRoom.style.transform = `margin: auto; scale(${scale})`;
       }
     });
@@ -363,30 +365,43 @@ class RoomsApp {
       }
 
       this.state.isMoveRoom = false;
+      this.state.movedRoom = null;
       this.state.isMoveGift = null;
     });
 
     this.elCurrentRoom.addEventListener("pointerup", () => {
       const time2 = new Date;
       this.state.time2Ms = time2.getTime();
-      this.state.isMoveRoom = false;
+      this.state.movedRoom = null;
       this.state.isMoveGift = null;
+      this.state.isMoveRoom = true;
     });
 
     this.elCurrentRoom.addEventListener("pointermove", (e) => {
-      if(e.target === e.currentTarget) {
-        this.elCurrentRoom.style.margin = 'initial';
-        this.elCurrentRoom.style.left = e.clientX + 'px';
-      }
+      const {scale, translatex, translatey, coordXRoom, coordYRoom} = this.elCurrentRoom.dataset;
 
       if (this.state.isMoveGift === null) {
+        if(this.state.movedRoom) {
+          console.log(Math.round(e.clientX), Math.round(Number(coordXRoom)));
+          this.state.movedRoom.style.margin = 'initial';
+          this.state.movedRoom.style.left = e.clientX - this.elCurrentRoom.offsetWidth/2 + 'px';//Math.round(e.clientX - Number(coordXRoom)) + 'px';
+          this.state.movedRoom.style.top = e.clientY - this.elCurrentRoom.offsetHeight/2 + 'px';//Math.round(e.clientY - Number(coordYRoom)) + 'px';
+        }
+        else {
+          return;
+        }
         return;
+      }
+      else {
+        if(this.state.movedRoom) {
+          this.state.movedRoom.style.margin = 'initial';
+          this.state.movedRoom.style.left = e.clientX - coordXRoom + 'px';
+          this.state.movedRoom.style.top = e.clientY - coordYRoom + 'px';
+        }
       }
 
       const buttons = getElement('.js-gift-buttons', e.target.parentElement);
       buttons.classList.add('is-hidden');
-
-      const { scale, translatex, translatey } = this.elCurrentRoom.dataset;
 
       const { coordX, coordY, offsetX, offsetY } =
         this.state.isMoveGift.dataset;
@@ -404,8 +419,9 @@ class RoomsApp {
       this.state.time1Ms = time1.getTime();
       const element = e.target;
       if(e.target === e.currentTarget) {//Если нажали не на подарок
-        this.elCurrentRoom.dataset.coordX = e.clientX;
-        this.elCurrentRoom.dataset.coordY = e.clientY;
+        this.state.movedRoom = this.elCurrentRoom;
+        this.elCurrentRoom.dataset.coordXRoom = e.clientX;
+        this.elCurrentRoom.dataset.coordYRoom = e.clientY;
       }
       if (element.parentElement.classList.contains("gift")) {
         this.state.isMoveGift = element;
