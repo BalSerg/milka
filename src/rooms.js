@@ -7,6 +7,7 @@ import "slick-carousel";
 import config from "./config";
 import { getElement, getArrayElements } from "./utils";
 import { giftsObjMobile, giftsObj, giftsInModal } from "./data/data";
+//import {stat} from "copy-webpack-plugin/types/utils";
 
 let valueTranslateX;
 let valueTranslateY;
@@ -27,6 +28,7 @@ class RoomsApp {
     // super();
 
     this.state = {
+
       firstVisit: false,
       firstVisitNew: false,
       time1MS: 0,
@@ -45,20 +47,6 @@ class RoomsApp {
       currentRoom: null,
       newScale: 0, // Переменная для скейлинга в мобилке.
     };
-
-    this.gifts = [];
-    // this.gifts.push({
-    //   element: HTMLElement,
-    //   position: { x: 0, y: 0 },
-    //   scale: 1,
-    // });
-
-    // const toSave = [];
-    // this.gifts.forEach((gift) => {
-    //   toSave.push({ position: gift.position, scale: gift.scale });
-    // });
-    // JSON.stringify(toSave);
-    // сброс к начальным значениям стилей комнаты и ползунка
 
     // Карусель в модалке
     $(".js-choice-slick").slick({
@@ -102,6 +90,7 @@ class RoomsApp {
     this.elOnboardingContentGift = getElement('.js-onboarding-content-gift');
     this.elOnboardingContentLk = getElement('.js-onboarding-content-lk');
     this.elOnboardingWrapperGift = getElement('.js-onboarding-wrapper-gift');
+    this.elLinkSave = getElement('.js-link-save');
 
     this.modalGiftsContentMobile = 0;
 
@@ -343,6 +332,42 @@ class RoomsApp {
       });
     });
 
+    // Обработка нажатия кнопки Сохранить
+    this.elLinkSave.addEventListener('click', () => {
+      if(this.state.currentRoom && this.elCurrentRoom.childNodes.length !== 0) {
+        const gifts = this.elCurrentRoom.childNodes
+        gifts.forEach((item) => {
+          if(item.nodeType === 1) {
+            const start = item.classList.toString().indexOf('gift gift') + 'gift gift'.length;
+            const index = item.classList.toString().substr(start);
+            if (window.screen.width <= config.size.mobile) {
+              giftsObj[this.state.currentRoom-1][index-1].left = parseInt(item.style.left.substring(0, item.style.left.indexOf('px')), 10);
+              giftsObj[this.state.currentRoom-1][index-1].top = parseInt(item.style.top.substring(0, item.style.top.indexOf('px')), 10);
+            }
+            else {
+              giftsObjMobile[this.state.currentRoom-1][index-1].left = parseInt(item.style.left.substring(0, item.style.left.indexOf('px')), 10);
+              giftsObjMobile[this.state.currentRoom-1][index-1].top = parseInt(item.style.top.substring(0, item.style.top.indexOf('px')), 10);
+            }
+          }
+        })
+        const toserver = JSON.stringify(giftsObj);
+
+        this.elModalLk.classList.remove('is-visibility');
+
+        // this.gifts.push({
+        //   element: HTMLElement,
+        //   position: { x: 0, y: 0 },
+        //   scale: 1,
+        // });
+
+        // const toSave = [];
+        // this.gifts.forEach((gift) => {
+        //   toSave.push({ position: gift.position, scale: gift.scale });
+        // });
+        // JSON.stringify(toSave);
+      }
+    })
+
     // Закрытие модалок по кнопке Esc
     window.addEventListener("keypress", (e) => {
       if (this.state.isModal === false) {
@@ -382,7 +407,6 @@ class RoomsApp {
 
       if (this.state.isMoveGift === null) {
         if(this.state.movedRoom) {
-          console.log(Math.round(e.clientX), Math.round(Number(coordXRoom)));
           this.state.movedRoom.style.margin = 'initial';
           this.state.movedRoom.style.left = e.clientX - this.elCurrentRoom.offsetWidth/2 + 'px';//Math.round(e.clientX - Number(coordXRoom)) + 'px';
           this.state.movedRoom.style.top = e.clientY - this.elCurrentRoom.offsetHeight/2 + 'px';//Math.round(e.clientY - Number(coordYRoom)) + 'px';
@@ -407,14 +431,34 @@ class RoomsApp {
         this.state.isMoveGift.dataset;
 
       // INFO: https://jsfiddle.net/laurence/YNMEX/
-      const left = parseInt(coordX, 10) + e.clientX - parseInt(offsetX, 10);
-      const top = parseInt(coordY, 10) + e.clientY - parseInt(offsetY, 10);
+        console.log(coordX, e.clientX, offsetX);
 
-      this.state.isMoveGift.parentElement.style.left = `${Math.round(left)}px`;
-      this.state.isMoveGift.parentElement.style.top = `${Math.round(top)}px`;
+        const left = parseInt(coordX, 10) + e.clientX - parseInt(offsetX, 10);
+        const top = parseInt(coordY, 10) + e.clientY - parseInt(offsetY, 10);
+
+        if(left < 0) {
+          this.state.isMoveGift.parentElement.style.left = '0px'
+        }
+        else if(left > this.elCurrentRoom.offsetWidth - this.state.isMoveGift.parentElement.offsetWidth) {
+          this.state.isMoveGift.parentElement.style.left = `${this.elCurrentRoom.offsetWidth - this.state.isMoveGift.parentElement.offsetWidth}px`
+        }
+        else {
+          this.state.isMoveGift.parentElement.style.left = `${Math.round(left)}px`;
+        }
+
+        if(top < 0) {
+          this.state.isMoveGift.parentElement.style.top = '0px'
+        }
+        else if(top > this.elCurrentRoom.offsetHeight - this.state.isMoveGift.parentElement.offsetHeight) {
+          this.state.isMoveGift.parentElement.style.top = `${this.elCurrentRoom.offsetHeight - this.state.isMoveGift.parentElement.offsetHeight}px`
+        }
+        else {
+          this.state.isMoveGift.parentElement.style.top = `${Math.round(top)}px`;
+        }
     });
 
     this.elCurrentRoom.addEventListener("pointerdown", (e) => {
+      const scale = Number(this.elCurrentRoom.dataset.scale);
       const time1 = new Date;
       this.state.time1Ms = time1.getTime();
       const element = e.target;
@@ -426,6 +470,7 @@ class RoomsApp {
       if (element.parentElement.classList.contains("gift")) {
         this.state.isMoveGift = element;
         this.state.isMoveGift.classList.add("is-dragged");
+
         element.dataset.coordX = parseInt(element.parentElement.style.left, 10);
         element.dataset.coordY = parseInt(element.parentElement.style.top, 10);
         element.dataset.offsetX = e.clientX;
@@ -440,43 +485,6 @@ class RoomsApp {
         this.state.isMoveRoom = true;
       }
     });
-  }
-
-  moveRoom() {
-    // function moveAt(pageX, pageY) {
-    //   // Функция которая подставляет комнату под курсор
-    //   const scale = parseInt(elRange.value, 10) / 100;
-    //   elCurrentRoom.removeAttribute("style");
-    //   valueTranslateX = pageX - (elCurrentRoom.offsetWidth * scale) / 2;
-    //   valueTranslateY = pageY - (elCurrentRoom.offsetHeight * scale) / 2;
-    //   elCurrentRoom.setAttribute(
-    //     "style",
-    //     `margin: initial; transform: scale(${scale}) translate(${valueTranslateX}px,${valueTranslateY}px)`,
-    //   );
-    //   isMoveRoom = true;
-    //   return `${valueTranslateX} ${valueTranslateY} ${isMoveRoom}`;
-    // }
-    // function onMouseMove(event) {
-    //   moveAt(event.pageX, event.pageY);
-    // }
-    // elCurrentRoom.addEventListener("mousedown", function () {
-    //   if (
-    //     (elCurrentRoom.offsetWidth * (Number(elRange.value) / 100) >
-    //       availableWidth ||
-    //       elCurrentRoom.offsetHeight * (Number(elRange.value) / 100) >
-    //       availableHeight) &&
-    //     String(this.classList).indexOf("current")
-    //   ) {
-    //     elCurrentRoom.addEventListener("mousemove", onMouseMove);
-    //   }
-    // });
-    // elCurrentRoom.addEventListener("mouseup", () => {
-    //   elCurrentRoom.removeEventListener("mousemove", onMouseMove);
-    //   elCurrentRoom.onmouseup = null;
-    // });
-    // this.ondragstart = function () {
-    //   return false;
-    // };
   }
 
   // Установка высоты модалки с подарками
