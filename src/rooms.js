@@ -382,6 +382,9 @@ class RoomsApp {
     });
     //---------
 
+    //Функция перетаскивания подарков по комнате
+
+    /*
     this.elCurrentRoom.addEventListener("pointerout", (e) => {
       const element = e.target;
 
@@ -485,6 +488,66 @@ class RoomsApp {
         this.state.isMoveRoom = true;
       }
     });
+
+     */
+  }
+
+  moveGift() {
+    let elCurrentRoom = getElement('.js-current-room');
+    let arrGifts = elCurrentRoom.childNodes;
+    let scale =  parseInt(getElement('.js-range').value, 10) / 100;
+    let shiftXItem, shiftYItem ,halfXItem, halfYItem, posMouseX, posMouseY, newLeft, newTop;
+    arrGifts.forEach((item) => {
+      if(item.nodeType === 1){
+        item.addEventListener('mousedown', function (event){
+          if(event.target.tagName !== 'SPAN' && this.classList.contains('gift')) {
+            event.stopPropagation();
+            scale =  parseInt(getElement('.js-range').value, 10) / 100; // коэффициент увеличения
+            shiftXItem = (item.offsetWidth * scale - item.offsetWidth) / 2; //Насколько расширился элемент вправо и влево при scale
+            shiftYItem = (item.offsetHeight * scale - item.offsetHeight) / 2;//Насколько расширился элемент вверх и вниз при scale
+            halfXItem = item.offsetWidth * scale / 2; // Половина ширины элемента
+            halfYItem = item.offsetHeight * scale / 2;// Половина высоты элемента
+            document.body.append(item);//Элемент вытаскиваем из комнаты и вставляем в body
+            item.style.transform = `scale(${scale})`;
+
+            moveAt(event.pageX, event.pageY);
+
+            // Функция которая подставляет подарок под курсорв
+            function moveAt(pageX, pageY) {
+              posMouseX = pageX;
+              posMouseY = pageY;
+              console.log(posMouseX);
+
+              newTop = pageY - halfYItem + shiftYItem;
+              newLeft = pageX - halfXItem + shiftXItem;
+
+              item.style.left = newLeft + 'px'
+              item.style.top = newTop + 'px';
+            }
+
+            function onMouseMove(event) {
+              moveAt(event.pageX, event.pageY);
+            }
+
+            document.addEventListener('mousemove', onMouseMove);
+
+            item.onmouseup = function(pageX, pageY) {
+
+              item.style.transform = 'scale(1)';
+              console.log(posMouseX, availableWidth, elCurrentRoom.offsetWidth*scale, (availableWidth - elCurrentRoom.offsetWidth*scale)/2);
+              item.style.left = (posMouseX - (availableWidth - elCurrentRoom.offsetWidth*scale)/2  ) / scale - halfXItem +  shiftXItem+ 'px';//
+              item.style.top = (posMouseY - (availableHeight - elCurrentRoom.offsetHeight*scale)/2)  / scale - halfYItem + shiftYItem + 'px';//
+              elCurrentRoom.append(item);
+              document.removeEventListener('mousemove', onMouseMove);
+              item.onmouseup = null;
+            };
+          }
+        })
+        item.ondragstart = function () {
+          return false;
+        }
+      }
+    })
   }
 
   // Установка высоты модалки с подарками
@@ -777,7 +840,7 @@ class RoomsApp {
     getElement(".js-current-room").append(elDiv);
     getElement(".js-modal-gifts").classList.remove("is-visibility");
     //existencGift.isExist = true; // Подарок в комнате создан и переменная isExist получает true. Изначально она false
-
+    this.moveGift();
     this.callModallAr();
     this.deleteGiftFromRoom();
     let timer = 0; // таймер показа тени под подарком. При первом визите он большой чтоб онбоардинг был виден, потом маленький
