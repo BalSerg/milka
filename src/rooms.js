@@ -171,7 +171,7 @@ class RoomsApp {
       this.elCurrentRoom.dataset.scale = `${scale}`;
 
       // Проверяем если есть смещение, то его добавляем в style
-      if (this.state.isMoveRoom === true) {
+      if (isShiftRoom) {
         this.elCurrentRoom.style = `margin: initial; transform: scale(${scale}) translate(${valueTranslateX}px,${valueTranslateY}px)`;
         this.elCurrentRoom.dataset.translatex = valueTranslateX;
         this.elCurrentRoom.dataset.translatey = valueTranslateY;
@@ -204,7 +204,7 @@ class RoomsApp {
         if (Math.trunc(scale / 10) % 2 === 0) {
           this.elRange.value = valueScale;
           this.elCurrentRoom.dataset.scale = (valueScale / 100).toString();
-          this.elCurrentRoom.style.transform = `scale(${this.elCurrentRoom.dataset.scale})`;
+          this.elCurrentRoom.style.transform = `scale(${this.elCurrentRoom.dataset.scale}) translate(${this.elCurrentRoom.dataset.translateX}px, ${this.elCurrentRoom.dataset.translateY}px)`;
         }
         else {
           this.elRange.value = valueScale + additionToEven;
@@ -568,8 +568,7 @@ class RoomsApp {
           }
           else {
             console.log(elCurrentRoom.dataset.translateX);
-            item.style.left = (posMouseX
-              - (availableWidth - elCurrentRoom.offsetWidth * scale) / 2) / scale
+            item.style.left = (posMouseX - Math.round(elCurrentRoom.getBoundingClientRect().left)) / scale
               - halfXItem
               + shiftXItem
               + elCurrentRoom.dataset.translateX * scale
