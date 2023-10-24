@@ -508,6 +508,7 @@ class RoomsApp {
             halfXItem = item.offsetWidth * scale / 2; // Половина ширины элемента
             halfYItem = item.offsetHeight * scale / 2;// Половина высоты элемента
             document.body.append(item);//Элемент вытаскиваем из комнаты и вставляем в body
+            item.classList.add('is-dragged');
             item.style.transform = `scale(${scale})`;
 
             moveAt(event.pageX, event.pageY);
@@ -520,9 +521,10 @@ class RoomsApp {
 
               newTop = pageY - halfYItem + shiftYItem;
               newLeft = pageX - halfXItem + shiftXItem;
-
-              item.style.left = newLeft + 'px'
-              item.style.top = newTop + 'px';
+              if(item.classList.contains('is-dragged')) {
+                item.style.left = newLeft + 'px'
+                item.style.top = newTop + 'px';
+              }
             }
 
             function onMouseMove(event) {
@@ -538,6 +540,7 @@ class RoomsApp {
               item.style.left = (posMouseX - (availableWidth - elCurrentRoom.offsetWidth*scale)/2  ) / scale - halfXItem +  shiftXItem+ 'px';//
               item.style.top = (posMouseY - (availableHeight - elCurrentRoom.offsetHeight*scale)/2)  / scale - halfYItem + shiftYItem + 'px';//
               elCurrentRoom.append(item);
+              item.classList.remove('is-dragged');
               document.removeEventListener('mousemove', onMouseMove);
               item.onmouseup = null;
             };
