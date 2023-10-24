@@ -434,8 +434,6 @@ class RoomsApp {
         this.state.isMoveGift.dataset;
 
       // INFO: https://jsfiddle.net/laurence/YNMEX/
-        console.log(coordX, e.clientX, offsetX);
-
         const left = parseInt(coordX, 10) + e.clientX - parseInt(offsetX, 10);
         const top = parseInt(coordY, 10) + e.clientY - parseInt(offsetY, 10);
 
@@ -499,10 +497,10 @@ class RoomsApp {
     let shiftXItem, shiftYItem ,halfXItem, halfYItem, posMouseX, posMouseY, newLeft, newTop;
     arrGifts.forEach((item) => {
       if(item.nodeType === 1){
-        item.addEventListener('mousedown', function (event){
+        item.addEventListener('pointerdown', function (event){
           if(event.target.tagName !== 'SPAN' && this.classList.contains('gift')) {
             event.stopPropagation();
-            scale =  parseInt(getElement('.js-range').value, 10) / 100; // коэффициент увеличения
+            scale = parseInt(getElement('.js-range').value, 10) / 100; // коэффициент увеличения
             shiftXItem = (item.offsetWidth * scale - item.offsetWidth) / 2; //Насколько расширился элемент вправо и влево при scale
             shiftYItem = (item.offsetHeight * scale - item.offsetHeight) / 2;//Насколько расширился элемент вверх и вниз при scale
             halfXItem = item.offsetWidth * scale / 2; // Половина ширины элемента
@@ -517,11 +515,28 @@ class RoomsApp {
             function moveAt(pageX, pageY) {
               posMouseX = pageX;
               posMouseY = pageY;
-              console.log(posMouseX);
 
-              newTop = pageY - halfYItem + shiftYItem;
-              newLeft = pageX - halfXItem + shiftXItem;
-              if(item.classList.contains('is-dragged')) {
+              if(pageX <= elCurrentRoom.getBoundingClientRect().left + halfXItem) {
+                newLeft = elCurrentRoom.getBoundingClientRect().left + shiftXItem;
+              }
+              else if(pageX >= elCurrentRoom.getBoundingClientRect().right - halfXItem) {
+                newLeft = elCurrentRoom.getBoundingClientRect().right - halfXItem*2 + shiftXItem;
+              }
+              else {
+                newLeft = pageX - halfXItem + shiftXItem;
+              }
+
+              if(pageY <= elCurrentRoom.getBoundingClientRect().top + halfYItem) {
+                newTop = elCurrentRoom.getBoundingClientRect().top;
+              }
+              else if(pageY >= elCurrentRoom.getBoundingClientRect().bottom - halfYItem) {
+                newTop = elCurrentRoom.getBoundingClientRect().bottom - halfYItem*2 + shiftYItem;
+              }
+              else {
+                newTop = pageY - halfYItem + shiftYItem;
+              }
+
+              if (item.classList.contains('is-dragged')) {
                 item.style.left = newLeft + 'px'
                 item.style.top = newTop + 'px';
               }
@@ -531,19 +546,24 @@ class RoomsApp {
               moveAt(event.pageX, event.pageY);
             }
 
-            document.addEventListener('mousemove', onMouseMove);
+            document.addEventListener('pointermove', onMouseMove);
 
-            item.onmouseup = function(pageX, pageY) {
-
+            item.addEventListener('pointerup', () => {
               item.style.transform = 'scale(1)';
-              console.log(posMouseX, availableWidth, elCurrentRoom.offsetWidth*scale, (availableWidth - elCurrentRoom.offsetWidth*scale)/2);
-              item.style.left = (posMouseX - (availableWidth - elCurrentRoom.offsetWidth*scale)/2  ) / scale - halfXItem +  shiftXItem+ 'px';//
-              item.style.top = (posMouseY - (availableHeight - elCurrentRoom.offsetHeight*scale)/2)  / scale - halfYItem + shiftYItem + 'px';//
+              if(posMouseX <= elCurrentRoom.getBoundingClientRect().left + halfXItem){
+                console.log(posMouseX, elCurrentRoom.getBoundingClientRect().left, elCurrentRoom.getBoundingClientRect().left + halfXItem);
+                item.style.left = '0px';
+              }
+              else {
+                item.style.left = (posMouseX - (availableWidth - elCurrentRoom.offsetWidth * scale) / 2) / scale - halfXItem + shiftXItem + 'px';//
+              }
+
+              item.style.top = (posMouseY - (availableHeight - elCurrentRoom.offsetHeight * scale) / 2) / scale - halfYItem + shiftYItem + 'px';//
               elCurrentRoom.append(item);
               item.classList.remove('is-dragged');
               document.removeEventListener('mousemove', onMouseMove);
               item.onmouseup = null;
-            };
+            })
           }
         })
         item.ondragstart = function () {
