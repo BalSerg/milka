@@ -22,6 +22,8 @@ const heightTitleInModalGift = 104;
 const paddingTopInModalGift = 88;
 const paddingInnerInModalGift = 48;
 const borderWidthInModalGift = 6;
+let isShiftRoom = false;
+let timer1, timer2;
 
 class RoomsApp {
   constructor() {
@@ -382,6 +384,7 @@ class RoomsApp {
     });
     //---------
 
+    /*
     this.elCurrentRoom.addEventListener("pointerout", (e) => {
       const element = e.target;
 
@@ -485,6 +488,8 @@ class RoomsApp {
         this.state.isMoveRoom = true;
       }
     });
+
+    */
   }
 
   // Установка высоты модалки с подарками
@@ -498,8 +503,138 @@ class RoomsApp {
     }
   }
 
+  moveGift() {
+    let elCurrentRoom = getElement('.js-current-room');
+    let arrGifts = elCurrentRoom.childNodes;
+    let scale =  parseInt(getElement('.js-range').value, 10) / 100;
+    let shiftXItem, shiftYItem ,halfXItem, halfYItem, posMouseX, posMouseY, newLeft, newTop;
+    arrGifts.forEach((item) => {
+      if(item.nodeType === 1){
+        // Функция которая подставляет подарок под курсорв
+        function moveAt(pageX, pageY) {
+          posMouseX = pageX;
+          posMouseY = pageY;
+
+          if(pageX <= elCurrentRoom.getBoundingClientRect().left + halfXItem) {
+            newLeft = elCurrentRoom.getBoundingClientRect().left + shiftXItem;
+          }
+          else if(pageX >= elCurrentRoom.getBoundingClientRect().right - halfXItem) {
+            newLeft = elCurrentRoom.getBoundingClientRect().right - halfXItem*2 + shiftXItem;
+          }
+          else {
+            newLeft = pageX - halfXItem + shiftXItem;
+          }
+
+          if(pageY <= elCurrentRoom.getBoundingClientRect().top + halfYItem) {
+            newTop = elCurrentRoom.getBoundingClientRect().top;
+          }
+          else if(pageY >= elCurrentRoom.getBoundingClientRect().bottom - halfYItem) {
+            newTop = elCurrentRoom.getBoundingClientRect().bottom - halfYItem*2 + shiftYItem;
+          }
+          else {
+            newTop = pageY - halfYItem + shiftYItem;
+          }
+
+          if (item.classList.contains('is-dragged')) {
+            item.style.left = newLeft + 'px'
+            item.style.top = newTop + 'px';
+          }
+        }
+        function onMouseMove(event) {
+          moveAt(event.pageX, event.pageY);
+        }
+        item.addEventListener('pointerdown', function (event){
+          if(event.target.tagName !== 'SPAN' && this.classList.contains('gift')) {
+            event.stopPropagation();
+            scale = parseInt(getElement('.js-range').value, 10) / 100; // коэффициент увеличения
+            shiftXItem = (item.offsetWidth * scale - item.offsetWidth) / 2; //Насколько расширился элемент вправо и влево при scale
+            shiftYItem = (item.offsetHeight * scale - item.offsetHeight) / 2;//Насколько расширился элемент вверх и вниз при scale
+            halfXItem = item.offsetWidth * scale / 2; // Половина ширины элемента
+            halfYItem = item.offsetHeight * scale / 2;// Половина высоты элемента
+            document.body.append(item);//Элемент вытаскиваем из комнаты и вставляем в body
+            item.classList.add('is-dragged');
+            item.style.transform = `scale(${scale})`;
+            const time1 = new Date;
+            timer1 = time1.getTime();
+
+            moveAt(event.pageX, event.pageY);
+          }
+        })
+
+        item.addEventListener('pointerup', () => {
+          item.style.transform = 'scale(1)';
+          if(posMouseX <= elCurrentRoom.getBoundingClientRect().left + halfXItem){
+            item.style.left = '0px';
+          }
+          else {
+            console.log(elCurrentRoom.dataset.translateX);
+            item.style.left = (posMouseX
+              - (availableWidth - elCurrentRoom.offsetWidth * scale) / 2) / scale
+              - halfXItem
+              + shiftXItem
+              + elCurrentRoom.dataset.translateX * scale
+              + 'px';
+          }
+
+          item.style.top = (posMouseY - (availableHeight - elCurrentRoom.offsetHeight * scale) / 2) / scale - halfYItem + shiftYItem + 'px';
+          elCurrentRoom.append(item);
+          item.classList.remove('is-dragged');
+          document.removeEventListener('mousemove', onMouseMove);
+          const time2 = new Date;
+          timer2 = time2.getTime();
+          item.onmouseup = null;
+        })
+
+        document.addEventListener('pointermove', onMouseMove);
+        item.ondragstart = function () {
+          return false;
+        }
+      }
+    })
+  }
+
+  moveRoom() {
+    function moveAt(pageX, pageY) {
+      const elCurrentRoom = getElement('.js-current-room');
+      const elRange = getElement('.js-range');
+      // Функция которая подставляет комнату под курсор;
+      const scale = parseInt(elRange.value, 10) / 100;
+      elCurrentRoom.removeAttribute("style");
+      const shiftRoomX = (elCurrentRoom.offsetWidth - elCurrentRoom.offsetWidth * scale) / 2;
+      const shiftRoomY = (elCurrentRoom.offsetHeight - elCurrentRoom.offsetHeight * scale) / 2;
+      valueTranslateX = Math.round(pageX - (elCurrentRoom.offsetWidth * scale) / 2);
+      valueTranslateY = Math.round(pageY - (elCurrentRoom.offsetHeight * scale) / 2 - shiftRoomY*2);
+      elCurrentRoom.setAttribute(
+        "style",
+        `margin: initial; transform: scale(${scale}) translate(${valueTranslateX}px,${valueTranslateY}px)`,
+      );
+      elCurrentRoom.dataset.translateX = valueTranslateX;
+      elCurrentRoom.dataset.translateY = valueTranslateY;
+
+      return `${valueTranslateX}, ${valueTranslateY}`;
+    }
+    function onMouseMove(event) {
+      moveAt(event.pageX, event.pageY);
+      isShiftRoom = true;
+    }
+    this.elCurrentRoom.addEventListener("pointerdown", () => {
+      if ((this.elCurrentRoom.offsetWidth * (Number(this.elRange.value) / 100) > availableWidth ||
+        this.elCurrentRoom.offsetHeight * (Number(this.elRange.value) / 100) > availableHeight) &&
+        String(this.classList).indexOf("current")
+      ) {this.elCurrentRoom.addEventListener("pointermove", onMouseMove);}
+    });
+    this.elCurrentRoom.addEventListener("pointerup", () => {
+      this.elCurrentRoom.removeEventListener("pointermove", onMouseMove);
+      this.elCurrentRoom.onmouseup = null;
+    });
+    this.ondragstart = function () {
+      return false;
+    };
+  }
+
   // Переход в команту
   clickRoom(e) {
+    this.moveRoom();
     if (this.state.currentRoom !== null) {
       return;
     }
@@ -709,7 +844,7 @@ class RoomsApp {
     elImg.classList.add("js-img");
     elImg.src = `assets/images/gifts/gift${num}.png`;
     const showHideButtonsGift = (e) => {
-      if (this.state.time2Ms - this.state.time1Ms < 150) {// Проверка на то, что это именно щелчок ,а не нажатие и удрежание кнопки мыши
+      if (timer1 < 150) {// Проверка на то, что это именно щелчок ,а не нажатие и удрежание кнопки мыши
         const currentBlockButtons = e.target.parentElement.querySelector(".js-gift-buttons");
         const start = "gift gift".length;
         const currentNumberGift = e.target.parentElement.classList
@@ -759,7 +894,7 @@ class RoomsApp {
           : (currentBlockButtons.style.bottom = "0");
       }
     };
-    elImg.addEventListener("click", showHideButtonsGift);
+    elImg.addEventListener("pointerdown", showHideButtonsGift);
     const elShadow = document.createElement("div");
     const delBoarding =  () => {
       if(this.state.firstVisit) {
@@ -780,6 +915,7 @@ class RoomsApp {
 
     this.callModallAr();
     this.deleteGiftFromRoom();
+    this.moveGift();
     let timer = 0; // таймер показа тени под подарком. При первом визите он большой чтоб онбоардинг был виден, потом маленький
     if (this.state.firstVisit) {
       timer = 2500;
