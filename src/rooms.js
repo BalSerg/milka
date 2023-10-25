@@ -944,8 +944,9 @@ class RoomsApp {
         elGift.addEventListener("click", () => {
           if(!elGift.classList.contains('is-active') && elGift.classList.contains('is-can-get')){
             elGift.classList.add('is-active');
+            this.createBlock(i + 1);
           }
-          this.createBlock(i + 1);
+
           if (this.state.firstVisit) {
             const elDiv = document.createElement("div");
             const elContent = document.createElement("div");
