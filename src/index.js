@@ -16,6 +16,6 @@ elButtonLk.addEventListener("click", () => {
 getElement('.js-call-modal').addEventListener('click', ()=> {
   getElement('[class*= "js-modal"]').classList.add('is-visibility');
 })
-getElement('.js-cross').addEventListener('click', function () {
+getElement('.js-cross').addEventListener('click', () => {
   getElement('[class*= "js-modal"]').classList.remove('is-visibility');
 })
