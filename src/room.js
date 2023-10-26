@@ -53,13 +53,13 @@ class RoomApp extends BaseRoomApp {
     });
 
     this.gifts = {};
+    this.room = null;
 
     this.roomsList = getElement(".js-rooms");
     this.rooms = getArrayElements(".choice__item", this.elChoice);
     // this.elCurrentRoom = getElement(".js-current-room");
     this.elRange = getElement(".js-range");
-    this.elBlockRange = getElement(".js-range").parentNode;
-    this.arrButtonsRange = getArrayElements("[class *= 'js-range-button']");
+    // this.arrButtonsRange = getArrayElements("[class *= 'js-range-button']");
     this.arrModals = getArrayElements('[class *= "js-modal"]');
     this.arrButtonsCallModal = getArrayElements('[class *= "js-call-modal"]');
     this.arrCross = getArrayElements(".js-cross");
@@ -112,22 +112,60 @@ class RoomApp extends BaseRoomApp {
     );
     this.stage.addChild(this.sprites.bg);
 
-    this.sprites.room = new PIXI.Sprite(this.resources.room.texture);
-    this.sprites.room.anchor.set(0.5, 0.5);
-    this.sprites.room.position.set(this.width / 2, this.height / 2);
-    this.sprites.room.scale.set(
-      Math.min(
-        this.width / this.sprites.room.width,
-        this.height / this.sprites.room.height,
-      ),
+    // TEST
+    const onSaveClick = () => {
+      this.saveGifts();
+    };
+
+    this.sprites.btnSave = new PIXI.TilingSprite(
+      this.resources.sprites.textures["pixel_green.png"],
+      50,
+      50,
     );
-    this.sprites.room.defaultScale = this.sprites.room.scale.x;
-    this.sprites.room.interactive = true;
-    this.stage.addChild(this.sprites.room);
+    this.sprites.btnSave.anchor.set(0, 0);
+    this.sprites.btnSave.position.set(0, 0);
+    this.sprites.btnSave.interactive = true;
+    this.sprites.btnSave.buttonMode = true;
+    this.sprites.btnSave.on("click", onSaveClick).on("tap", onSaveClick);
+    this.stage.addChild(this.sprites.btnSave);
+    //-------
+
+    this.styleFixes();
+
+    this.createRoom();
+    this.initListeners();
+
+    setTimeout(() => {
+      this.putGift(1);
+    }, 2000);
+
+    setTimeout(() => {
+      // this.removeGift(1);
+      // this.clearRoom();
+    }, 10000);
+
+    setInterval(() => {
+      this.putGift(Object.keys(this.gifts).length + 1);
+    }, 5000);
+  }
+
+  createRoom() {
+    this.room = new PIXI.Sprite(this.resources.room.texture);
+    this.room.anchor.set(0.5, 0.5);
+    this.room.position.set(this.width / 2, this.height / 2);
+    this.room.scale.set(
+      Math.min(this.width / this.room.width, this.height / this.room.height),
+    );
+    this.room.defaultScale = this.room.scale.x;
+    this.room.interactive = true;
+    this.stage.addChild(this.room);
+
+    this.reScaleRoom();
 
     const onRoomDragStart = (e) => {
       this.state.dragData = e.data;
 
+      // eslint-disable-next-line no-prototype-builtins
       if (e.target.hasOwnProperty("type") && e.target.type === "gift") {
         this.state.draggingGift = true;
         this.state.dragGift = e.target;
@@ -178,7 +216,7 @@ class RoomApp extends BaseRoomApp {
 
       if (this.state.draggingRoom === true) {
         const newPosition = this.state.dragData.getLocalPosition(
-          this.sprites.room.parent,
+          this.room.parent,
         );
 
         if (newPosition.x < 100 || newPosition > this.width - 100) {
@@ -189,8 +227,8 @@ class RoomApp extends BaseRoomApp {
           return;
         }
 
-        this.sprites.room.x = newPosition.x;
-        this.sprites.room.y = newPosition.y;
+        this.room.x = newPosition.x;
+        this.room.y = newPosition.y;
       }
     };
     const onRoomDragEnd = (e) => {
@@ -200,46 +238,81 @@ class RoomApp extends BaseRoomApp {
       this.state.dragGift = null;
     };
 
-    this.sprites.room
+    this.room
       .on("pointerdown", onRoomDragStart)
       .on("pointerup", onRoomDragEnd)
       .on("pointerupoutside", onRoomDragEnd)
       .on("pointermove", onRoomDragMove);
-
-    setTimeout(() => {
-      this.putGift(1);
-    }, 2000);
-
-    setInterval(() => {
-      this.putGift(Object.keys(this.gifts).length + 1);
-    }, 5000);
   }
 
-  putGift(num = 1) {
+  removeGift(num = 1) {
+    // eslint-disable-next-line no-prototype-builtins
+    if (!this.gifts.hasOwnProperty(`gift${num}`)) {
+      console.log("No gift with num", num);
+      return;
+    }
+
+    this.room.removeChild(this.gifts[`gift${num}`]);
+    delete this.gifts[`gift${num}`];
+
+    console.log(this.gifts);
+  }
+
+  clearRoom() {
+    const keys = Object.keys(this.gifts);
+    keys.forEach((key) => {
+      this.removeGift(`${key}`.replace("gift", ""));
+    });
+
+    console.log(this.gifts);
+  }
+
+  putGift(...args) {
+    console.log(args);
+
+    if (args.length === 0) {
+      return;
+    }
+
+    const data = giftsObj[0][args[0]];
+
+    const [
+      num,
+      x = data.x,
+      y = data.y,
+      scale = data.scale,
+      rotation = data.rotation,
+      name = null,
+    ] = args;
+
+    const spriteName = name === null ? `gift${num}` : name;
+
+    // eslint-disable-next-line no-prototype-builtins
     if (this.gifts.hasOwnProperty(`gift${num}`)) {
       return;
     }
 
+    // eslint-disable-next-line no-prototype-builtins
     if (!this.resources.gifts.textures.hasOwnProperty(`gift${num}.png`)) {
       console.log("no gift with num", num);
       return;
     }
 
-    const pos = giftsObj[0][num - 1];
-    console.log(pos);
-
-    console.log("putGift", num);
     const g = new PIXI.Sprite(this.resources.gifts.textures[`gift${num}.png`]);
-    g.scale.set(pos.scale);
     g.anchor.set(0.5, 0.5);
-    g.angle = pos.rotate;
-    g.position.set(pos.left, pos.top);
+    g.scale.set(scale);
+    g.angle = rotation;
+    g.position.set(x, y);
+
+    g.num = num;
+    g.name = spriteName;
+
     g.interactive = true;
     g.type = "gift";
-    this.sprites.room.addChild(g);
+    this.room.addChild(g);
 
-    this.sprites[`gift${num}`] = g;
-    this.gifts[`gift${num}`] = g;
+    this.sprites[spriteName] = g;
+    this.gifts[spriteName] = g;
   }
 
   spritesResize() {
@@ -253,17 +326,19 @@ class RoomApp extends BaseRoomApp {
       );
     }
 
-    if (this.sprites.room) {
-      this.sprites.room.position.set(this.width / 2, this.height / 2);
-      // this.sprites.room.scale.set(
-      //   Math.min(
-      //     this.width / this.sprites.room.width,
-      //     this.height / this.sprites.room.height,
-      //     this.sprites.room.width / this.width,
-      //     this.sprites.room.height / this.height,
-      //   ),
-      // );
+    if (this.room) {
+      this.stage.removeChild(this.room);
+      this.room.removeChildren();
+      this.room.destroy();
+      this.room = null;
     }
+
+    this.createRoom();
+
+    const keys = Object.keys(this.gifts);
+    keys.forEach((key) => {
+      this.room.addChild(this.gifts[key]);
+    });
   }
 
   //
@@ -276,80 +351,101 @@ class RoomApp extends BaseRoomApp {
     this.roomsList.classList.add(`room${roomNumber}`);
   }
 
+  reScaleRoom() {
+    if (!this.room) {
+      return;
+    }
+
+    console.log(this.state.scale, this.elRange.value);
+
+    if (this.state.scale < 1) {
+      this.state.scale = 1;
+    }
+
+    if (this.state.scale > 2) {
+      this.state.scale = 2;
+    }
+
+    this.room.scale.set(this.room.defaultScale * this.state.scale);
+  }
+
+  saveGifts() {
+    const objToSave = [];
+    const keys = Object.keys(this.gifts);
+    keys.forEach((key) => {
+      const g = this.gifts[key];
+      objToSave.push({
+        name: g.name,
+        num: g.num,
+        x: g.x,
+        y: g.y,
+        scale: g.scale.x,
+        rotation: g.angle,
+      });
+    });
+
+    console.log(JSON.stringify(objToSave));
+  }
+
+  loadGifts(data = []) {
+    if (data.length === 0) {
+      console.log("no data");
+      return;
+    }
+
+    data.forEach(({ name, num, x, y, scale, rotation }) => {
+      console.log(name, num, x, y, scale, rotation);
+      this.putGift(num, x, y, scale, rotation, name);
+    });
+  }
+
   initListeners() {
     /**
      * Вешаем события на кнопки комнат
      */
 
     // Отключааем онбоардинги по клику
-    if (this.state.firstVisit) {
-      this.elBoardingRange.addEventListener("click", () => {
-        this.elBoardingRange.classList.remove("is-visibility");
-        this.elBoardingMenuGift.classList.add("is-visibility");
-        this.elMenu.classList.add("z-index-max");
-      });
+    // if (this.state.firstVisit) {
+    //   this.elBoardingRange.addEventListener("click", () => {
+    //     this.elBoardingRange.classList.remove("is-visibility");
+    //     this.elBoardingMenuGift.classList.add("is-visibility");
+    //     this.elMenu.classList.add("z-index-max");
+    //   });
+    //
+    //   this.elBoardingMenuGift.addEventListener("click", () => {
+    //     this.elBoardingMenuGift.classList.remove("is-visibility");
+    //     this.elBoardingLk.classList.add("is-visibility");
+    //     this.state.isClickBoardingGift = true;
+    //   });
+    //
+    //   this.elBoardingLk.addEventListener("click", () => {
+    //     this.elBoardingLk.classList.remove("is-visibility");
+    //     this.elMenu.classList.remove("z-index-max");
+    //     this.state.isClickBoardingLk = true;
+    //   });
+    // }
 
-      this.elBoardingMenuGift.addEventListener("click", () => {
-        this.elBoardingMenuGift.classList.remove("is-visibility");
-        this.elBoardingLk.classList.add("is-visibility");
-        this.state.isClickBoardingGift = true;
-      });
-
-      this.elBoardingLk.addEventListener("click", () => {
-        this.elBoardingLk.classList.remove("is-visibility");
-        this.elMenu.classList.remove("z-index-max");
-        this.state.isClickBoardingLk = true;
-      });
-    }
-
-    // Изменение скейлинга по полузнку
-    this.elRange.addEventListener("input", () => {
-      const scale = parseInt(this.elRange.value, 10) / 100;
-      this.state.scale = scale;
-      this.elCurrentRoom.style.transform = `scale(${scale})`;
-      this.elCurrentRoom.dataset.scale = `${scale}`;
-
-      // Проверяем если есть смещение, то его добавляем в style
-      if (isShiftRoom) {
-        this.elCurrentRoom.style = `margin: initial; transform: scale(${scale}) translate(${valueTranslateX}px,${valueTranslateY}px)`;
-        this.elCurrentRoom.dataset.translatex = valueTranslateX;
-        this.elCurrentRoom.dataset.translatey = valueTranslateY;
-      } else {
-        this.elCurrentRoom.style.transform = `margin: auto; scale(${scale})`;
-      }
+    // Изменение скейлинга по ползунку
+    this.elRange.addEventListener("input", (e) => {
+      this.state.scale = parseInt(e.target.value, 10) / 100;
+      this.reScaleRoom();
     });
 
-    // нажатие на кнопки + -
-    this.arrButtonsRange.forEach((item) => {
-      item.addEventListener("click", () => {
-        const enlarger = 20;
-        let additionToEven;
-        let valueScale;
-        const scale = parseInt(this.elRange.value, 10);
-        valueScale = Math.trunc(scale / 10) * 10; // Сделано, чтоб на конце всегда был 0, например вместо 165 было 160
-        if (`${item.classList.toString()}`.includes("top")) {
-          additionToEven = 10;
-          if (valueScale < 200) {
-            valueScale += enlarger;
-          }
-        } else {
-          additionToEven = -10;
-          if (valueScale > 100) {
-            valueScale -= enlarger;
-          }
-        }
-        if (Math.trunc(scale / 10) % 2 === 0) {
-          this.elRange.value = valueScale;
-          this.elCurrentRoom.dataset.scale = (valueScale / 100).toString();
-          this.elCurrentRoom.style.transform = `scale(${this.elCurrentRoom.dataset.scale}) translate(${this.elCurrentRoom.dataset.translatex}px, ${this.elCurrentRoom.dataset.translatey}px)`;
-        } else {
-          this.elRange.value = valueScale + additionToEven;
-          this.elCurrentRoom.dataset.scale = (
-            this.elRange.value / 100
-          ).toString();
-          this.elCurrentRoom.style.transform = `scale(${this.elCurrentRoom.dataset.scale})`;
-        }
-      });
+    const rangeBtnTop = getElement(".range-top");
+    const rangeBtnBottom = getElement(".range-bottom");
+
+    rangeBtnTop.addEventListener("click", () => {
+      this.elRange.value = parseInt(this.elRange.value, 10) + 10;
+      this.state.scale = parseInt(this.elRange.value, 10) / 100;
+
+      this.reScaleRoom();
+    });
+
+    rangeBtnBottom.addEventListener("click", () => {
+      this.elRange.value = parseInt(this.elRange.value, 10) - 10;
+      this.state.scale = parseInt(this.elRange.value, 10) / 100;
+
+      this.reScaleRoom();
     });
 
     this.arrButtonsCallModal.forEach((item, index) => {
@@ -366,102 +462,102 @@ class RoomApp extends BaseRoomApp {
     });
 
     // Нажатие на пункт Мои подарки в Модалке ЛК
-    this.elLinkGift.addEventListener("click", () => {
-      if (this.arrGiftsInModal.length === 0) {
-        this.createBlockInModalGift();
-      }
-      this.elModalLk.classList.remove("is-visibility");
-      this.elModalGifts.classList.add("is-visibility");
-      if (this.state.firstVisit) {
-        this.elOnboardingGift.classList.add("is-visibility");
-
-        if (screen.width > 870) {
-          this.elOnboardingWrapperGift.style.left = `${
-            (availableWidth - this.elGifts.offsetWidth) / 2
-          }px`;
-          this.elOnboardingWrapperGift.style.top = `${
-            (availableHeight - this.elGiftsContent.offsetHeight) / 2 + 40 + 6
-          }px`;
-        } else {
-          this.elOnboardingWrapperGift.style.top = `${
-            paddingTopInModalGift +
-            heightTitleInModalGift +
-            borderWidthInModalGift +
-            paddingInnerInModalGift
-          }px`;
-          this.elOnboardingWrapperGift.style.left = `${
-            (screen.width - this.elGiftsContent.offsetWidth) / 2 +
-            paddingInnerInModalGift +
-            borderWidthInModalGift
-          }px`;
-        }
-        setTimeout(() => {
-          this.showSecondOnboarding();
-        }, 2500);
-      }
-    });
+    // this.elLinkGift.addEventListener("click", () => {
+    //   if (this.arrGiftsInModal.length === 0) {
+    //     this.createBlockInModalGift();
+    //   }
+    //   this.elModalLk.classList.remove("is-visibility");
+    //   this.elModalGifts.classList.add("is-visibility");
+    //   if (this.state.firstVisit) {
+    //     this.elOnboardingGift.classList.add("is-visibility");
+    //
+    //     if (screen.width > 870) {
+    //       this.elOnboardingWrapperGift.style.left = `${
+    //         (availableWidth - this.elGifts.offsetWidth) / 2
+    //       }px`;
+    //       this.elOnboardingWrapperGift.style.top = `${
+    //         (availableHeight - this.elGiftsContent.offsetHeight) / 2 + 40 + 6
+    //       }px`;
+    //     } else {
+    //       this.elOnboardingWrapperGift.style.top = `${
+    //         paddingTopInModalGift +
+    //         heightTitleInModalGift +
+    //         borderWidthInModalGift +
+    //         paddingInnerInModalGift
+    //       }px`;
+    //       this.elOnboardingWrapperGift.style.left = `${
+    //         (screen.width - this.elGiftsContent.offsetWidth) / 2 +
+    //         paddingInnerInModalGift +
+    //         borderWidthInModalGift
+    //       }px`;
+    //     }
+    //     setTimeout(() => {
+    //       this.showSecondOnboarding();
+    //     }, 2500);
+    //   }
+    // });
 
     // Скрытие онбоардинга в модалке с подарками по нажатию
-    this.elOnboardingGift.addEventListener("click", () => {
-      this.showSecondOnboarding();
-    });
+    // this.elOnboardingGift.addEventListener("click", () => {
+    //   this.showSecondOnboarding();
+    // });
 
     // Обработка нажатия на кнопку Сменить комнату
-    this.elLinkChoice.addEventListener("click", () => {
-      this.elModalLk.classList.remove("is-visibility");
-
-      // Удалить все из комнаты и убрать в коробку
-      const arrGifts = this.elCurrentRoom.childNodes;
-      for (let i = arrGifts.length - 1; i >= 0; i--) {
-        // Обратный порядок перебора массива, чтоб в массиве элементы по индексу не смещались
-        arrGifts[i].remove();
-      }
-
-      // При смене комнаты убираем в модалке подарков класс is-active у всех подарков
-      for (let i = 0; i < this.arrGiftsInModal.length; i++) {
-        if (this.arrGiftsInModal[i].nodeType === 1) {
-          this.arrGiftsInModal[i].classList.remove("is-active");
-        }
-      }
-
-      this.elCallLkModal.classList.remove("is-hidden");
-      this.elCallGiftModal.classList.add("is-hidden");
-      this.setDefaultValueRoomRange();
-      this.state.currentRoom = null;
-    });
+    // this.elLinkChoice.addEventListener("click", () => {
+    //   this.elModalLk.classList.remove("is-visibility");
+    //
+    //   // Удалить все из комнаты и убрать в коробку
+    //   const arrGifts = this.elCurrentRoom.childNodes;
+    //   for (let i = arrGifts.length - 1; i >= 0; i--) {
+    //     // Обратный порядок перебора массива, чтоб в массиве элементы по индексу не смещались
+    //     arrGifts[i].remove();
+    //   }
+    //
+    //   // При смене комнаты убираем в модалке подарков класс is-active у всех подарков
+    //   for (let i = 0; i < this.arrGiftsInModal.length; i++) {
+    //     if (this.arrGiftsInModal[i].nodeType === 1) {
+    //       this.arrGiftsInModal[i].classList.remove("is-active");
+    //     }
+    //   }
+    //
+    //   this.elCallLkModal.classList.remove("is-hidden");
+    //   this.elCallGiftModal.classList.add("is-hidden");
+    //   this.setDefaultValueRoomRange();
+    //   this.state.currentRoom = null;
+    // });
 
     // Обработка нажатия на кнопку Подарки в меню
-    this.elCallGiftModal.addEventListener("click", () => {
-      if (this.state.firstVisit) {
-        this.elOnboardingGift.classList.add("is-visibility");
-        this.elOnboardingWrapperGift.style.left = `${
-          (availableWidth - this.elGifts.offsetWidth) / 2
-        }px`;
-        if (screen.width > 870) {
-          this.elOnboardingWrapperGift.style.left = `${
-            (availableWidth - this.elGifts.offsetWidth) / 2
-          }px`;
-          this.elOnboardingWrapperGift.style.top = `${
-            (availableHeight - this.elGiftsContent.offsetHeight) / 2 + 40 + 6
-          }px`;
-        } else {
-          this.elOnboardingWrapperGift.style.top = `${
-            paddingTopInModalGift +
-            heightTitleInModalGift +
-            borderWidthInModalGift +
-            paddingInnerInModalGift
-          }px`;
-          this.elOnboardingWrapperGift.style.left = `${
-            (screen.width - this.elGiftsContent.offsetWidth) / 2 +
-            paddingInnerInModalGift +
-            borderWidthInModalGift
-          }px`;
-        }
-        setTimeout(() => {
-          this.showSecondOnboarding();
-        }, 2500);
-      }
-    });
+    // this.elCallGiftModal.addEventListener("click", () => {
+    //   if (this.state.firstVisit) {
+    //     this.elOnboardingGift.classList.add("is-visibility");
+    //     this.elOnboardingWrapperGift.style.left = `${
+    //       (availableWidth - this.elGifts.offsetWidth) / 2
+    //     }px`;
+    //     if (screen.width > 870) {
+    //       this.elOnboardingWrapperGift.style.left = `${
+    //         (availableWidth - this.elGifts.offsetWidth) / 2
+    //       }px`;
+    //       this.elOnboardingWrapperGift.style.top = `${
+    //         (availableHeight - this.elGiftsContent.offsetHeight) / 2 + 40 + 6
+    //       }px`;
+    //     } else {
+    //       this.elOnboardingWrapperGift.style.top = `${
+    //         paddingTopInModalGift +
+    //         heightTitleInModalGift +
+    //         borderWidthInModalGift +
+    //         paddingInnerInModalGift
+    //       }px`;
+    //       this.elOnboardingWrapperGift.style.left = `${
+    //         (screen.width - this.elGiftsContent.offsetWidth) / 2 +
+    //         paddingInnerInModalGift +
+    //         borderWidthInModalGift
+    //       }px`;
+    //     }
+    //     setTimeout(() => {
+    //       this.showSecondOnboarding();
+    //     }, 2500);
+    //   }
+    // });
 
     // Закрытие модалки по крестику
     this.arrCross.forEach((item) => {
@@ -472,52 +568,52 @@ class RoomApp extends BaseRoomApp {
     });
 
     // Обработка нажатия кнопки Сохранить
-    this.elLinkSave.addEventListener("click", () => {
-      if (roomNumber && this.elCurrentRoom.childNodes.length !== 0) {
-        const gifts = this.elCurrentRoom.childNodes;
-        gifts.forEach((item) => {
-          if (item.nodeType === 1) {
-            const start =
-              item.classList.toString().indexOf("gift gift") +
-              "gift gift".length;
-            const index = item.classList.toString().substr(start);
-            if (window.screen.width <= config.size.mobile) {
-              giftsObj[roomNumber - 1][index - 1].left = parseInt(
-                item.style.left.substring(0, item.style.left.indexOf("px")),
-                10,
-              );
-              giftsObj[roomNumber - 1][index - 1].top = parseInt(
-                item.style.top.substring(0, item.style.top.indexOf("px")),
-                10,
-              );
-            } else {
-              giftsObjMobile[roomNumber - 1][index - 1].left = parseInt(
-                item.style.left.substring(0, item.style.left.indexOf("px")),
-                10,
-              );
-              giftsObjMobile[roomNumber - 1][index - 1].top = parseInt(
-                item.style.top.substring(0, item.style.top.indexOf("px")),
-                10,
-              );
-            }
-          }
-        });
-        const toserver = JSON.stringify(giftsObj);
-
-        // this.gifts.push({
-        //   element: HTMLElement,
-        //   position: { x: 0, y: 0 },
-        //   scale: 1,
-        // });
-
-        // const toSave = [];
-        // this.gifts.forEach((gift) => {
-        //   toSave.push({ position: gift.position, scale: gift.scale });
-        // });
-        // JSON.stringify(toSave);
-      }
-      this.elModalLk.classList.remove("is-visibility");
-    });
+    // this.elLinkSave.addEventListener("click", () => {
+    //   if (roomNumber && this.elCurrentRoom.childNodes.length !== 0) {
+    //     const gifts = this.elCurrentRoom.childNodes;
+    //     gifts.forEach((item) => {
+    //       if (item.nodeType === 1) {
+    //         const start =
+    //           item.classList.toString().indexOf("gift gift") +
+    //           "gift gift".length;
+    //         const index = item.classList.toString().substr(start);
+    //         if (window.screen.width <= config.size.mobile) {
+    //           giftsObj[roomNumber - 1][index - 1].left = parseInt(
+    //             item.style.left.substring(0, item.style.left.indexOf("px")),
+    //             10,
+    //           );
+    //           giftsObj[roomNumber - 1][index - 1].top = parseInt(
+    //             item.style.top.substring(0, item.style.top.indexOf("px")),
+    //             10,
+    //           );
+    //         } else {
+    //           giftsObjMobile[roomNumber - 1][index - 1].left = parseInt(
+    //             item.style.left.substring(0, item.style.left.indexOf("px")),
+    //             10,
+    //           );
+    //           giftsObjMobile[roomNumber - 1][index - 1].top = parseInt(
+    //             item.style.top.substring(0, item.style.top.indexOf("px")),
+    //             10,
+    //           );
+    //         }
+    //       }
+    //     });
+    //     const toserver = JSON.stringify(giftsObj);
+    //
+    //     // this.gifts.push({
+    //     //   element: HTMLElement,
+    //     //   position: { x: 0, y: 0 },
+    //     //   scale: 1,
+    //     // });
+    //
+    //     // const toSave = [];
+    //     // this.gifts.forEach((gift) => {
+    //     //   toSave.push({ position: gift.position, scale: gift.scale });
+    //     // });
+    //     // JSON.stringify(toSave);
+    //   }
+    //   this.elModalLk.classList.remove("is-visibility");
+    // });
 
     // Закрытие модалок по кнопке Esc
     window.addEventListener("keypress", (e) => {
@@ -888,21 +984,27 @@ class RoomApp extends BaseRoomApp {
     }
   }
 
+  // eslint-disable-next-line class-methods-use-this
   styleFixes() {
+    const elBlockRange = getElement(".js-range").parentNode;
+
     if (!window.navigator.userAgent.includes("Fire")) {
-      this.elBlockRange.style.width = `${
+      elBlockRange.style.width = `${
         getElement("body").offsetHeight - topValue * 2
       }px`; // всему блоку с ползунком присваиваем высоту подолжки модалки т.к. она всегда по высоте во весь экран
     } else {
-      this.elBlockRange.classList.add("isMoz");
-      this.elBlockRange.style.height = `${
+      elBlockRange.classList.add("isMoz");
+      elBlockRange.style.height = `${
         getElement("body").offsetHeight - topValue * 2
-      }px`; // всему блоку с ползункои присваиваем высоту подолжки модалки т.к. она всегда по высоте во весь экран
-      this.elBlockRange.style.top = `${
-        (availableHeight - this.elBlockRange.offsetHeight) / 2
+      }px`;
+
+      // всему блоку с ползункои присваиваем высоту подолжки модалки т.к. она всегда по высоте во весь экран
+      elBlockRange.style.top = `${
+        (availableHeight - elBlockRange.offsetHeight) / 2
       }px`;
     }
-    this.setRoomInAllWindowMobile();
+
+    // this.setRoomInAllWindowMobile();
   }
 
   /**
