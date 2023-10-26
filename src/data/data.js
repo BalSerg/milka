@@ -55,6 +55,7 @@ const giftsObj = [
     { left: 380, top: 305, scale: 0.6, rotate: 0 },
     { left: 620, top: 25, scale: 0.8, rotate: 0 },
     { left: 165, top: -75, scale: 0.45, rotate: -80 },
+    { left: 165, top: -75, scale: 0.45, rotate: -80 },
   ],
   [
     { left: 335, top: 50, scale: 0.8, rotate: 0 },

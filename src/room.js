@@ -1,10 +1,11 @@
 import "./scss/main.scss";
 
-
+import * as PIXI from "pixi.js";
 
 import { getElement, getArrayElements } from "./utils";
 import config from "./config";
 import { giftsObjMobile, giftsObj, giftsInModal } from "./data/data";
+import BaseRoomApp from "./BaseRoomApp";
 
 const topValue = 160;
 const widthMobileRoom = 400;
@@ -12,7 +13,7 @@ const heightTitleInModalGift = 104;
 const paddingTopInModalGift = 88;
 const paddingInnerInModalGift = 48;
 const borderWidthInModalGift = 6;
-const roomNumber = 1
+const roomNumber = 1;
 let isShiftRoom = false;
 let timer1;
 let timer2;
@@ -22,16 +23,21 @@ let valueTranslateY;
 const availableWidth = document.documentElement.scrollWidth;
 const availableHeight = document.documentElement.scrollHeight;
 
+const devicePixelRatio = Math.min(window.devicePixelRatio, 2);
 
-class RoomApp {
+class RoomApp extends BaseRoomApp {
   constructor() {
-    this.state = {
+    super();
+
+    this.state = Object.assign(this.state, {
       firstVisit: false,
       time1MS: 0,
       time2MS: 0,
 
-      isMoveRoom: false,
-      movedRoom: null,
+      draggingGift: false,
+      dragGift: null,
+      draggingRoom: false,
+      dragData: null,
 
       isMoveGift: null,
 
@@ -42,13 +48,15 @@ class RoomApp {
       isClickBoardingGift: false, // флаг щелчка на онбоардинге кнопки подарка в меню
       isClickBoardingLk: false, // флаг щелчка на онбоардинге кнопки ЛК в меню
 
-      currentRoom: null,
+      currentRoom: 1,
       newScale: 0, // Переменная для скейлинга в мобилке.
-    };
+    });
+
+    this.gifts = {};
 
     this.roomsList = getElement(".js-rooms");
     this.rooms = getArrayElements(".choice__item", this.elChoice);
-    this.elCurrentRoom = getElement(".js-current-room");
+    // this.elCurrentRoom = getElement(".js-current-room");
     this.elRange = getElement(".js-range");
     this.elBlockRange = getElement(".js-range").parentNode;
     this.arrButtonsRange = getArrayElements("[class *= 'js-range-button']");
@@ -66,9 +74,9 @@ class RoomApp {
     this.arrGiftsInModal = this.elGifts.childNodes;
     this.roomContent = getElement(".room-content");
     this.elBoardingRange = getElement(".js-onboarding-range");
-    this.elOnboardingContent = getElement(".js-onboarding-content");
-    this.elOnboardingContentGift = getElement(".js-onboarding-content-gift");
-    this.elOnboardingContentLk = getElement(".js-onboarding-content-lk");
+    // this.elOnboardingContent = getElement(".js-onboarding-content");
+    // this.elOnboardingContentGift = getElement(".js-onboarding-content-gift");
+    // this.elOnboardingContentLk = getElement(".js-onboarding-content-lk");
     this.elOnboardingWrapperGift = getElement(".js-onboarding-wrapper-gift");
     this.elBoardingMenuGift = getElement(".js-onboarding-menu-gift");
     this.elBoardingLk = getElement(".js-onboarding-lk");
@@ -77,23 +85,192 @@ class RoomApp {
 
     this.modalGiftsContentMobile = 0;
 
-    this.resize = this.resize.bind(this);
-    this.initListeners();
-    this.setBlockGifts();
-    this.showSecondOnboarding();
-    this.callModallAr();
-    this.deleteGiftFromRoom();
-    this.setHeightModalWithGifts();
-    this.moveRoom();
-    this.styleFixes();
-    this.setNumberRoom();
-    this.setDefaultValueRoomRange
+    // this.resize = this.resize.bind(this);
+    // this.initListeners();
+    // this.setBlockGifts();
+    // this.showSecondOnboarding();
+    // this.callModallAr();
+    // this.deleteGiftFromRoom();
+    // this.setHeightModalWithGifts();
+    // this.moveRoom();
+    // this.styleFixes();
+    // this.setNumberRoom();
+    // this.setDefaultValueRoomRange();
+
+    this.loader();
   }
 
-  resize() {
-    this.setBlockGifts();
-    this.setRoomInAllWindowMobile();
+  main() {
+    this.sprites.bg = new PIXI.Sprite(this.resources.bg.texture);
+    this.sprites.bg.anchor.set(0.5, 0);
+    this.sprites.bg.position.set(this.width / 2, 0);
+    this.sprites.bg.scale.set(
+      Math.max(
+        this.width / this.sprites.bg.width,
+        this.height / this.sprites.bg.height,
+      ),
+    );
+    this.stage.addChild(this.sprites.bg);
+
+    this.sprites.room = new PIXI.Sprite(this.resources.room.texture);
+    this.sprites.room.anchor.set(0.5, 0.5);
+    this.sprites.room.position.set(this.width / 2, this.height / 2);
+    this.sprites.room.scale.set(
+      Math.min(
+        this.width / this.sprites.room.width,
+        this.height / this.sprites.room.height,
+      ),
+    );
+    this.sprites.room.defaultScale = this.sprites.room.scale.x;
+    this.sprites.room.interactive = true;
+    this.stage.addChild(this.sprites.room);
+
+    const onRoomDragStart = (e) => {
+      this.state.dragData = e.data;
+
+      if (e.target.hasOwnProperty("type") && e.target.type === "gift") {
+        this.state.draggingGift = true;
+        this.state.dragGift = e.target;
+      }
+
+      if (this.state.draggingGift === true) {
+        return;
+      }
+
+      this.state.draggingRoom = true;
+    };
+
+    const onRoomDragMove = (e) => {
+      if (this.state.draggingGift === true) {
+        const newPosition = this.state.dragData.getLocalPosition(
+          this.state.dragGift.parent,
+        );
+
+        //
+        // console.log(
+        //   newPosition.x,
+        //   newPosition.y,
+        //   this.state.dragGift.parent.width,
+        //   this.state.dragGift.parent.height,
+        // );
+
+        if (
+          newPosition.x <
+            0 - this.state.dragGift.parent.width * devicePixelRatio ||
+          newPosition.x > this.state.dragGift.parent.width * devicePixelRatio
+        ) {
+          return;
+        }
+
+        if (
+          newPosition.y <
+            0 - this.state.dragGift.parent.height * devicePixelRatio ||
+          newPosition.y > this.state.dragGift.parent.height * devicePixelRatio
+        ) {
+          return;
+        }
+
+        this.state.dragGift.x = newPosition.x;
+        this.state.dragGift.y = newPosition.y;
+
+        return;
+      }
+
+      if (this.state.draggingRoom === true) {
+        const newPosition = this.state.dragData.getLocalPosition(
+          this.sprites.room.parent,
+        );
+
+        if (newPosition.x < 100 || newPosition > this.width - 100) {
+          return;
+        }
+
+        if (newPosition.y < 100 || newPosition > this.height - 100) {
+          return;
+        }
+
+        this.sprites.room.x = newPosition.x;
+        this.sprites.room.y = newPosition.y;
+      }
+    };
+    const onRoomDragEnd = (e) => {
+      this.state.dragData = null;
+      this.state.draggingRoom = false;
+      this.state.draggingGift = false;
+      this.state.dragGift = null;
+    };
+
+    this.sprites.room
+      .on("pointerdown", onRoomDragStart)
+      .on("pointerup", onRoomDragEnd)
+      .on("pointerupoutside", onRoomDragEnd)
+      .on("pointermove", onRoomDragMove);
+
+    setTimeout(() => {
+      this.putGift(1);
+    }, 2000);
+
+    setInterval(() => {
+      this.putGift(Object.keys(this.gifts).length + 1);
+    }, 5000);
   }
+
+  putGift(num = 1) {
+    if (this.gifts.hasOwnProperty(`gift${num}`)) {
+      return;
+    }
+
+    if (!this.resources.gifts.textures.hasOwnProperty(`gift${num}.png`)) {
+      console.log("no gift with num", num);
+      return;
+    }
+
+    const pos = giftsObj[0][num - 1];
+    console.log(pos);
+
+    console.log("putGift", num);
+    const g = new PIXI.Sprite(this.resources.gifts.textures[`gift${num}.png`]);
+    g.scale.set(pos.scale);
+    g.anchor.set(0.5, 0.5);
+    g.angle = pos.rotate;
+    g.position.set(pos.left, pos.top);
+    g.interactive = true;
+    g.type = "gift";
+    this.sprites.room.addChild(g);
+
+    this.sprites[`gift${num}`] = g;
+    this.gifts[`gift${num}`] = g;
+  }
+
+  spritesResize() {
+    if (this.sprites.bg) {
+      this.sprites.bg.position.set(this.width / 2, 0);
+      this.sprites.bg.scale.set(
+        Math.max(
+          this.width / this.sprites.bg.width,
+          this.height / this.sprites.bg.height,
+        ),
+      );
+    }
+
+    if (this.sprites.room) {
+      this.sprites.room.position.set(this.width / 2, this.height / 2);
+      // this.sprites.room.scale.set(
+      //   Math.min(
+      //     this.width / this.sprites.room.width,
+      //     this.height / this.sprites.room.height,
+      //     this.sprites.room.width / this.width,
+      //     this.sprites.room.height / this.height,
+      //   ),
+      // );
+    }
+  }
+
+  //
+  // resize() {
+  //   this.setBlockGifts();
+  //   this.setRoomInAllWindowMobile();
+  // }
 
   setNumberRoom() {
     this.roomsList.classList.add(`room${roomNumber}`);
@@ -165,10 +342,11 @@ class RoomApp {
           this.elRange.value = valueScale;
           this.elCurrentRoom.dataset.scale = (valueScale / 100).toString();
           this.elCurrentRoom.style.transform = `scale(${this.elCurrentRoom.dataset.scale}) translate(${this.elCurrentRoom.dataset.translatex}px, ${this.elCurrentRoom.dataset.translatey}px)`;
-        }
-        else {
+        } else {
           this.elRange.value = valueScale + additionToEven;
-          this.elCurrentRoom.dataset.scale = (this.elRange.value / 100).toString();
+          this.elCurrentRoom.dataset.scale = (
+            this.elRange.value / 100
+          ).toString();
           this.elCurrentRoom.style.transform = `scale(${this.elCurrentRoom.dataset.scale})`;
         }
       });
@@ -178,14 +356,14 @@ class RoomApp {
       item.addEventListener("click", (e) => {
         // Показ модалки
         this.arrModals[index].classList.add("is-visibility");
-      })
+      });
 
       if (this.arrModals[index].classList.contains("js-modal-gifts")) {
         if (this.arrGiftsInModal.length === 0) {
           this.createBlockInModalGift();
         }
       }
-    })
+    });
 
     // Нажатие на пункт Мои подарки в Модалке ЛК
     this.elLinkGift.addEventListener("click", () => {
@@ -313,22 +491,18 @@ class RoomApp {
                 10,
               );
             } else {
-              giftsObjMobile[roomNumber - 1][index - 1].left =
-                parseInt(
-                  item.style.left.substring(0, item.style.left.indexOf("px")),
-                  10,
-                );
-              giftsObjMobile[roomNumber - 1][index - 1].top =
-                parseInt(
-                  item.style.top.substring(0, item.style.top.indexOf("px")),
-                  10,
-                );
+              giftsObjMobile[roomNumber - 1][index - 1].left = parseInt(
+                item.style.left.substring(0, item.style.left.indexOf("px")),
+                10,
+              );
+              giftsObjMobile[roomNumber - 1][index - 1].top = parseInt(
+                item.style.top.substring(0, item.style.top.indexOf("px")),
+                10,
+              );
             }
           }
         });
         const toserver = JSON.stringify(giftsObj);
-
-
 
         // this.gifts.push({
         //   element: HTMLElement,
@@ -606,7 +780,7 @@ class RoomApp {
           item.style.top = `${
             (posMouseY -
               (availableHeight - elCurrentRoom.offsetHeight * scale) / 2) /
-            scale -
+              scale -
             halfYItem +
             shiftYItem -
             parseInt(elCurrentRoom.dataset.translatey, 10)
@@ -684,7 +858,7 @@ class RoomApp {
         (this.elCurrentRoom.offsetWidth * (Number(this.elRange.value) / 100) >
           availableWidth ||
           this.elCurrentRoom.offsetHeight * (Number(this.elRange.value) / 100) >
-          availableHeight) &&
+            availableHeight) &&
         String(this.classList).indexOf("current")
       ) {
         this.elCurrentRoom.addEventListener("pointermove", onMouseMove);
@@ -776,13 +950,11 @@ class RoomApp {
       }px; top:${giftsObjMobile[this.state.currentRoom - 1][num - 1].top}px`;
       styleValueImg = `transform: scale(${
         giftsObjMobile[roomNumber - 1][num - 1].scale
-      }) rotate(${
-        giftsObjMobile[roomNumber - 1][num - 1].rotate
-      }deg)`;
+      }) rotate(${giftsObjMobile[roomNumber - 1][num - 1].rotate}deg)`;
     } else {
-      styleValueDiv = `left:${
-        giftsObj[roomNumber - 1][num - 1].left
-      }px; top:${giftsObj[roomNumber - 1][num - 1].top}px`;
+      styleValueDiv = `left:${giftsObj[roomNumber - 1][num - 1].left}px; top:${
+        giftsObj[roomNumber - 1][num - 1].top
+      }px`;
       styleValueImg = `transform: scale(${
         giftsObj[roomNumber - 1][num - 1].scale
       }) rotate(${giftsObj[roomNumber - 1][num - 1].rotate}deg)`;
@@ -1052,4 +1224,3 @@ window.addEventListener("load", () => {
     throw new Error("App creation error");
   }
 });
-

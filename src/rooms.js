@@ -43,7 +43,9 @@ class RoomsApp {
     this.elLinkChoice = getElement(".js-link-choice");
     this.elOnboardingChoice = getElement(".js-onboarding-choice");
     this.elLinkSave = getElement(".js-link-save");
-    this.arrRooms = getArrayElements('.js-go-room');
+    this.arrRooms = getArrayElements(".js-go-room");
+
+    this.resize = this.resize.bind(this);
 
     this.initListeners();
 
@@ -57,6 +59,8 @@ class RoomsApp {
     }
   }
 
+  resize() {}
+
   initListeners() {
     /**
      * RESIZE events
@@ -67,10 +71,10 @@ class RoomsApp {
 
     // Переход в комнату
     this.arrRooms.forEach((item) => {
-      item.addEventListener('click', () => {
-        window.location.href = 'room.html';
-      })
-    })
+      item.addEventListener("click", () => {
+        window.location.href = "room.html";
+      });
+    });
 
     // Отключааем онбоардинги по клику
     if (this.state.firstVisit) {
@@ -97,7 +101,7 @@ class RoomsApp {
     // Обработка нажатия на кнопку Сменить комнату
     this.elLinkChoice.addEventListener("click", () => {
       this.elCallLkModal.classList.remove("is-hidden");
-      this.elModalLk.classList.remove('is-visibility');
+      this.elModalLk.classList.remove("is-visibility");
     });
 
     // Закрытие модалки по крестику
