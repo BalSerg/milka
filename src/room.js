@@ -1,6 +1,7 @@
 import "./scss/main.scss";
 
 import * as PIXI from "pixi.js";
+import * as particles from "@pixi/particle-emitter";
 
 import { getElement, getArrayElements } from "./utils";
 import config from "./config";
@@ -135,18 +136,18 @@ class RoomApp extends BaseRoomApp {
     this.createRoom();
     this.initListeners();
 
-    setTimeout(() => {
-      this.putGift(1);
-    }, 2000);
-
-    setTimeout(() => {
-      // this.removeGift(1);
-      // this.clearRoom();
-    }, 10000);
-
-    setInterval(() => {
-      this.putGift(Object.keys(this.gifts).length + 1);
-    }, 5000);
+    // setTimeout(() => {
+    //   this.putGift(1);
+    // }, 2000);
+    //
+    // setTimeout(() => {
+    //   // this.removeGift(1);
+    //   // this.clearRoom();
+    // }, 10000);
+    //
+    // setInterval(() => {
+    //   this.putGift(Object.keys(this.gifts).length + 1);
+    // }, 5000);
   }
 
   createRoom() {
@@ -271,6 +272,12 @@ class RoomApp extends BaseRoomApp {
     console.log(args);
 
     if (args.length === 0) {
+      console.log("args length = 0");
+      return;
+    }
+
+    if (giftsObj[0].length < args[0]) {
+      console.log("outer limit", giftsObj[0].length, args[0]);
       return;
     }
 
@@ -289,6 +296,7 @@ class RoomApp extends BaseRoomApp {
 
     // eslint-disable-next-line no-prototype-builtins
     if (this.gifts.hasOwnProperty(`gift${num}`)) {
+      console.log("already created");
       return;
     }
 
@@ -1178,6 +1186,7 @@ class RoomApp extends BaseRoomApp {
     for (let i = 0; i < giftsInModal.length; i++) {
       const elGift = document.createElement("div");
       elGift.classList.add("gifts__item");
+      elGift.dataset.id = i + 1;
       if (giftsInModal[i].class) {
         // если есть класс в объекте json
         elGift.classList.add(giftsInModal[i].class);
@@ -1187,7 +1196,9 @@ class RoomApp extends BaseRoomApp {
             elGift.classList.contains("is-can-get")
           ) {
             elGift.classList.add("is-active");
-            this.createBlock(i + 1);
+            this.putGift(i + 1);
+            return;
+            // this.createBlock(i + 1);
           }
 
           if (this.state.firstVisit) {
