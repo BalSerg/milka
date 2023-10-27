@@ -30,7 +30,7 @@ const giftsInModal = [
 const giftsObj = [
   [
     { x: 0, y: 0, scale: 1.0, rotation: 0 }, // ЭТО МОЖНО НЕ ТРОГАТЬ
-    { x: 0, y: 30, scale: 0.8, rotation: 0 }, // Это подарок 1 =)
+    { x: 0, y: -830, scale: 0.45, rotation: 0 }, // Это подарок 1 =)
     { x: 0, y: 130, scale: 0.5, rotation: 0 },
     { x: 675, y: 30, scale: 0.8, rotation: 0 },
     { x: 700, y: 190, scale: 0.45, rotation: 0 },
