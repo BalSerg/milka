@@ -53,13 +53,13 @@ export default class BaseRoomApp {
     PIXI.utils.skipHello();
     this.app = new PIXI.Application({
       resizeTo: window,
-      transparent: false,
+      transparent: true,
       backgroundAlpha: 1,
       autoResize: true,
       antialias: true,
       view: this.pixifeed,
       resolution: devicePixelRatio,
-      backgroundColor: 0xff0000,
+      // backgroundColor: 0xff0000,
       // backgroundColor: 0x7d69ac,
       powerPreference: "high-performance",
     });
