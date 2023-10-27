@@ -30,91 +30,90 @@ const giftsInModal = [
 const giftsObj = [
   [
     { x: 0, y: 0, scale: 1.0, rotation: 0 }, // ЭТО МОЖНО НЕ ТРОГАТЬ
-    { x: 0, y: -830, scale: 0.45, rotation: 0 }, // Это подарок 1 =)
-    { x: 0, y: 130, scale: 0.5, rotation: 0 },
-    { x: 675, y: 30, scale: 0.8, rotation: 0 },
-    { x: 700, y: 190, scale: 0.45, rotation: 0 },
-    { x: 650, y: 205, scale: 0.4, rotation: 90 },
-    { x: 190, y: 415, scale: 0.8, rotation: 0 },
-    { x: 630, y: 255, scale: 0.5, rotation: 0 },
-    { x: 250, y: 500, scale: 1, rotation: 0 },
-    { x: 385, y: 175, scale: 0.5, rotation: 0 },
-    { x: 60, y: 15, scale: 0.8, rotation: 0 },
-    { x: 255, y: 370, scale: 0.6, rotation: 0 },
-    { x: 235, y: 265, scale: 0.9, rotation: 0 },
-    { x: 600, y: 360, scale: 0.6, rotation: 0 },
-    { x: 105, y: 190, scale: 0.6, rotation: 0 },
-    { x: 385, y: 235, scale: 0.5, rotation: 0 },
-    { x: 190, y: 160, scale: 0.8, rotation: 0 },
-    { x: 280, y: 225, scale: 0.6, rotation: 0 },
-    { x: 290, y: -75, scale: 0.6, rotation: 45 },
-    { x: 120, y: 425, scale: 0.7, rotation: 0 },
-    { x: 320, y: 155, scale: 0.7, rotation: 0 },
-    { x: 650, y: 125, scale: 0.6, rotation: 0 },
-    { x: 325, y: 340, scale: 0.5, rotation: 0 },
-    { x: 125, y: -70, scale: 0.35, rotation: 45 },
-    { x: 380, y: 305, scale: 0.6, rotation: 0 },
-    { x: 620, y: 25, scale: 0.8, rotation: 0 },
-    { x: 165, y: -75, scale: 0.45, rotation: -80 },
-    { x: 165, y: -75, scale: 0.45, rotation: -80 },
+    { x: 30, y: -730, scale: 0.35, rotation: 0 }, // Это подарок 1 =)
+    { x: -650, y: -580, scale: 0.15, rotation: 0 },
+    { x: 700, y: -820, scale: 0.25 , rotation: 0 },
+    { x: 730, y: -560, scale: 0.12, rotation: 0 },
+    { x: 670, y: -540, scale: 0.1, rotation: 90 },
+    { x: -480, y: 180, scale: 0.25, rotation: 0 },
+    { x: 720, y: -230, scale: 0.2, rotation: 0 },  //7
+    { x: -185, y: 405, scale: 0.4, rotation: 0 },
+    {  x: 30, y: -280, scale: 0.15, rotation: 0 },
+    { x: -760, y: -825, scale: 0.2, rotation: 0 },// 10
+    { x: -250, y: -15, scale: 0.15, rotation: 0 },
+    { x: -400, y: -220, scale: 0.2, rotation: 0 },
+    { x: 630, y: 85, scale: 0.2, rotation: 0 },
+    { x: -620, y: -410, scale: 0.15, rotation: 0 },// 14
+    { x: 30, y: -450, scale: 0.13, rotation: 0 },
+    { x: -480, y: -520, scale: 0.15, rotation: 0 },// 16
+    { x: -170, y: -270, scale: 0.2, rotation: 0 },
+    { x: -110, y: -910, scale: 0.3, rotation: 45 },// 18
+    { x: -620, y: 240, scale: 0.2, rotation: 0 },
+    { x: -120, y: -520, scale: 0.2, rotation: 0 },
+    { x: 700, y: -400, scale: 0.13, rotation: 0 },// 21
+    { x: -100, y: -50, scale: 0.15, rotation: -20 },
+    { x: -500, y: -850, scale: 0.3, rotation: 55 },
+    { x: 30, y: -120, scale: 0.17, rotation: 0 },
+    { x: 580, y: -820, scale: 0.2, rotation: 0 },// 25
+    { x: -360, y: -850, scale: 0.2, rotation: -80 },
   ],
   [
     { x: 0, y: 0, scale: 1.0, rotation: 0 }, // ЭТО МОЖНО НЕ ТРОГАТЬ
-    { x: 335, y: 50, scale: 0.8, rotation: 0 },
-    { x: 435, y: 95, scale: 0.5, rotation: 0 },
-    { x: 515, y: 545, scale: 0.8, rotation: 0 },
-    { x: 50, y: 300, scale: 0.5, rotation: 0 },
-    { x: 440, y: 340, scale: 0.45, rotation: 80 },
-    { x: 280, y: 490, scale: 0.8, rotation: 0 },
-    { x: 345, y: 175, scale: 0.5, rotation: 0 },
-    { x: 360, y: 550, scale: 1, rotation: 0 },
-    { x: 365, y: 245, scale: 0.45, rotation: 0 },
-    { x: 70, y: 40, scale: 0.7, rotation: 0 },
-    { x: 270, y: 370, scale: 0.7, rotation: 0 },
-    { x: 655, y: 475, scale: 0.8, rotation: 0 },
-    { x: 200, y: 245, scale: 0.6, rotation: 0 },
-    { x: 100, y: 295, scale: 0.6, rotation: 0 },
-    { x: 485, y: 280, scale: 0.6, rotation: 0 },
-    { x: 170, y: 160, scale: 0.8, rotation: 0 },
-    { x: 270, y: 225, scale: 0.6, rotation: 0 },
-    { x: 420, y: 325, scale: 0.55, rotation: 0 },
-    { x: 155, y: 415, scale: 0.6, rotation: 0 },
-    { x: 315, y: 170, scale: 0.6, rotation: 0 },
-    { x: 435, y: 220, scale: 0.6, rotation: 0 },
-    { x: 330, y: 340, scale: 0.45, rotation: 0 },
-    { x: 200, y: -70, scale: 0.4, rotation: 50 },
-    { x: 360, y: 300, scale: 0.5, rotation: 0 },
-    { x: 160, y: 20, scale: 0.8, rotation: 0 },
-    { x: 50, y: 95, scale: 0.5, rotation: -14 },
+    { x: -25, y: -695, scale: 0.35, rotation: 0 }, // Это подарок 1 =)
+    { x: 185, y: -670, scale: 0.15, rotation: 0 },
+    { x: 330, y: 480, scale: 0.25 , rotation: 0 },
+    { x: -840, y: -100, scale: 0.12, rotation: 0 },
+    { x: 135, y: -30, scale: 0.1, rotation: 90 },
+    { x: -215 , y: 370, scale: 0.25, rotation: 0 },
+    { x: -18, y: -430, scale: 0.2, rotation: 0 },  //7
+    { x: 110, y: 455, scale: 0.3, rotation: 0 },
+    {  x: -15, y: -275, scale: 0.15, rotation: 0 },
+    { x: -690, y: -785, scale: 0.2, rotation: 0 },// 10
+    { x: -235, y: 5, scale: 0.15, rotation: 0 },
+    { x: 640, y: 307, scale: 0.2, rotation: 0 },
+    { x: -383, y: -190, scale: 0.2, rotation: 0 },
+    { x: -620, y: -157, scale: 0.15, rotation: 0 },// 14
+    { x: 255, y: -170, scale: 0.13, rotation: 0 },
+    { x: -497, y: -510, scale: 0.15, rotation: 0 },// 16
+    { x: -223, y: -270, scale: 0.2, rotation: 0 },
+    { x: 185, y: 45, scale: 0.3, rotation: 0 },// 18
+    { x: -485, y: 185, scale: 0.2, rotation: 0 },
+    { x: -135, y: -470, scale: 0.2, rotation: 0 },
+    { x: 188, y: -320, scale: 0.13, rotation: 0 },// 21
+    { x: -115, y: -20, scale: 0.1, rotation: -20 },
+    { x: -325, y: -845, scale: 0.3, rotation: 55 },
+    { x: -15, y: -140, scale: 0.13, rotation: 0 },
+    { x: -525, y: -825, scale: 0.2, rotation: 0 },// 25
+    { x: -735, y: -385, scale: 0.2, rotation: 0 },
   ],
   [
     { x: 0, y: 0, scale: 1.0, rotation: 0 }, // ЭТО МОЖНО НЕ ТРОГАТЬ
-    { x: 550, y: 450, scale: 1.1, rotation: 0 },
-    { x: 385, y: 60, scale: 0.5, rotation: 0 },
-    { x: 435, y: 205, scale: 0.6, rotation: 0 },
-    { x: 30, y: 275, scale: 0.45, rotation: 0 },
-    { x: 630, y: 345, scale: 0.45, rotation: 80 },
-    { x: 280, y: 405, scale: 0.8, rotation: 0 },
-    { x: 345, y: 315, scale: 0.5, rotation: 0 },
-    { x: 390, y: 595, scale: 1, rotation: 15 },
-    { x: 640, y: 215, scale: 0.4, rotation: 0 },
-    { x: 85, y: 85, scale: 0.6, rotation: 0 },
-    { x: 170, y: 410, scale: 0.7, rotation: 0 },
-    { x: 165, y: 290, scale: 1, rotation: 0 },
-    { x: 0, y: 125, scale: 0.5, rotation: 0 },
-    { x: 45, y: 300, scale: 0.5, rotation: 0 },
-    { x: 620, y: 125, scale: 0.8, rotation: 0 },
-    { x: 180, y: 185, scale: 0.8, rotation: 0 },
-    { x: 175, y: 285, scale: 0.6, rotation: 0 },
-    { x: 140, y: -15, scale: 0.5, rotation: 0 },
-    { x: 40, y: 355, scale: 0.45, rotation: 0 },
-    { x: 575, y: 190, scale: 0.6, rotation: 0 },
-    { x: 615, y: 275, scale: 0.45, rotation: 0 },
-    { x: 70, y: 235, scale: 0.5, rotation: 0 },
-    { x: 445, y: 375, scale: 0.4, rotation: -10 },
-    { x: 620, y: 395, scale: 0.5, rotation: 0 },
-    { x: 240, y: 70, scale: 0.9, rotation: 0 },
-    { x: 115, y: 405, scale: 0.45, rotation: 0 },
+    { x: 475, y: 271, scale: 0.45, rotation: 0 }, // Это подарок 1 =)
+    { x: 90, y: -760, scale: 0.15, rotation: 0 },
+    { x: 135, y: -385, scale: 0.18, rotation: 0 },
+    { x: -875, y: -165, scale: 0.12, rotation: 0 },
+    { x: 625, y: -25, scale: 0.1, rotation: 90 },
+    { x: -250, y: 140, scale: 0.25, rotation: 0 },
+    { x: 7, y: -72, scale: 0.2, rotation: 0 },  //7
+    { x: 95, y: 545, scale: 0.3, rotation: 0 },
+    {  x: 640, y: -355, scale: 0.15, rotation: 0 },
+    { x: -668, y: -696, scale: 0.2, rotation: 0 },// 10
+    { x: -455, y: 85, scale: 0.15, rotation: 0 },
+    { x: -580, y: -140, scale: 0.2, rotation: 0 },
+    { x: -848, y: -504, scale: 0.2, rotation: 0 },
+    { x: -740, y: -150, scale: 0.15, rotation: 0 },// 14
+    { x: 650, y: -515, scale: 0.13, rotation: 0 },
+    { x: -480, y: -520, scale: 0.15, rotation: 0 },// 16
+    { x: -430, y: -130, scale: 0.2, rotation: 0 },
+    { x: -490, y: -780, scale: 0.3, rotation: 0 },// 18
+    { x: -740, y: 27, scale: 0.2, rotation: 0 },
+    { x: 515, y: -415, scale: 0.2, rotation: 0 },
+    { x: 625, y: -212, scale: 0.13, rotation: 0 },// 21
+    { x: -755, y: -310, scale: 0.12, rotation: -20 },
+    { x: 225, y: 265, scale: 0.25, rotation: 15 },
+    { x: 625, y: 95, scale: 0.13, rotation: 0 },
+    { x: -350, y: -765, scale: 0.2, rotation: 0 },// 25
+    { x: -575, y: 325, scale: 0.2, rotation: 0 },
   ],
 ];
 
