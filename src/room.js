@@ -205,27 +205,25 @@ class RoomApp extends BaseRoomApp {
         this.elMenu.classList.remove("z-index-max");
       }, 750000);
 
-      if (window.screen.width > 820) {
-        this.elOnboardingContent.style.left = `${
-          this.elBlockRange.getBoundingClientRect().x +
-          this.elBlockRange.offsetHeight
-        }px`;
-        this.elOnboardingContent.style.top = `${
-          this.elBlockRange.getBoundingClientRect().y - this.elOnboardingContent.offsetHeight
-        }px`;
-        this.elOnboardingContentGift.style.left = `${
-          this.elMenu.getBoundingClientRect().x - this.elMenu.offsetWidth
-        }px`;
-        this.elOnboardingContentGift.style.top = `${
-          this.elMenu.getBoundingClientRect().y + this.elMenu.offsetHeight
-        }px`;
-        this.elOnboardingContentLk.style.left = `${
-          this.elMenu.getBoundingClientRect().x - this.elMenu.offsetWidth / 4
-        }px`;
-        this.elOnboardingContentLk.style.top = `${
-          this.elMenu.getBoundingClientRect().y + this.elMenu.offsetHeight + 50
-        }px`;
-      }
+
+      this.elOnboardingContent.style.left = `${
+        this.elBlockRange.getBoundingClientRect().x +
+        this.elBlockRange.offsetHeight
+      }px`;
+      this.elOnboardingContent.style.top = `50px`; // 50px - костыль
+      this.elOnboardingContentGift.style.left = `${
+        this.elMenu.getBoundingClientRect().x - this.elMenu.offsetWidth
+      }px`;
+      this.elOnboardingContentGift.style.top = `${
+        this.elMenu.getBoundingClientRect().y + this.elMenu.offsetHeight
+      }px`;
+      this.elOnboardingContentLk.style.left = `${
+        this.elMenu.getBoundingClientRect().x - this.elMenu.offsetWidth / 4
+      }px`;
+      this.elOnboardingContentLk.style.top = `${
+        this.elMenu.getBoundingClientRect().y + this.elMenu.offsetHeight + 50
+      }px`;
+
     }
   }
 
