@@ -43,8 +43,11 @@ class RoomsApp {
     this.elOnboardingChoice = getElement(".js-onboarding-choice");
     this.elLinkSave = getElement(".js-link-save");
     this.arrRooms = getArrayElements(".js-go-room");
+    this.arrMobileButtons = getArrayElements('.js-mobile-button')
 
     this.resize = this.resize.bind(this);
+
+    this.setWidthMobileButton();
 
     this.initListeners();
 
@@ -59,6 +62,12 @@ class RoomsApp {
   }
 
   resize() {}
+
+  setWidthMobileButton() {
+    this.arrMobileButtons.forEach((item) => {
+      item.style.width = this.arrRooms[this.arrRooms.length -1].offsetWidth + 'px';
+    })
+  }
 
   initListeners() {
     /**

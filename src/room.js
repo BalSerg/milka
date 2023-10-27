@@ -61,6 +61,8 @@ class RoomApp extends BaseRoomApp {
     this.roomsList = getElement(".js-rooms");
     this.rooms = getArrayElements(".choice__item", this.elChoice);
     this.elRange = getElement(".js-range");
+    this.elBlockRange = this.elRange.parentNode;
+    this.elMenu = getElement('.js-menu');
     this.arrModals = getArrayElements('[class *= "js-modal"]');
     this.arrButtonsCallModal = getArrayElements('[class *= "js-call-modal"]');
     this.arrCross = getArrayElements(".js-cross");
@@ -82,9 +84,13 @@ class RoomApp extends BaseRoomApp {
     this.elBoardingLk = getElement(".js-onboarding-lk");
     this.elOnboardingGift = getElement(".js-onboarding-gift");
     this.elLinkSave = getElement(".js-link-save");
+
     // this.elLoader = getElement(".js-loader");
 
     this.modalGiftsContentMobile = 0;
+
+    this.showTutorial();
+    this.setWidthMobileButton(); // Назначаем ширину кнопке У меня есть комната, Войти
 
     // this.resize = this.resize.bind(this);
     // this.initListeners();
@@ -99,6 +105,8 @@ class RoomApp extends BaseRoomApp {
     // this.setDefaultValueRoomRange();
 
     this.loader();
+
+
   }
 
   main() {
@@ -168,6 +176,58 @@ class RoomApp extends BaseRoomApp {
     // setInterval(() => {
     //   this.putGift(Object.keys(this.gifts).length + 1);
     // }, 5000);
+  }
+
+  showTutorial() {
+    if (this.state.firstVisit) {
+      this.elBoardingRange.classList.add("is-visibility");
+      this.elBlockRange.classList.add("z-index-max");
+      setTimeout(() => {
+        this.elBlockRange.classList.remove("z-index-max");
+      }, 250000);
+
+      setTimeout(() => {
+        this.elBoardingRange.classList.remove("is-visibility");
+        if (this.state.isClickBoardingGift === false) {
+          this.elBoardingMenuGift.classList.add("is-visibility");
+          this.elMenu.classList.add("z-index-max");
+        }
+      }, 250000);
+
+      setTimeout(() => {
+        this.elBoardingMenuGift.classList.remove("is-visibility");
+        if (this.state.isClickBoardingLk === false) {
+          this.elBoardingLk.classList.add("is-visibility");
+        }
+      }, 500000);
+
+      setTimeout(() => {
+        this.elBoardingLk.classList.remove("is-visibility");
+        this.elMenu.classList.remove("z-index-max");
+      }, 750000);
+
+      if (window.screen.width > 820) {
+        this.elOnboardingContent.style.left = `${
+          this.elBlockRange.getBoundingClientRect().x +
+          this.elBlockRange.offsetHeight
+        }px`;
+        this.elOnboardingContent.style.top = `${
+          this.elBlockRange.getBoundingClientRect().y - this.elOnboardingContent.offsetHeight
+        }px`;
+        this.elOnboardingContentGift.style.left = `${
+          this.elMenu.getBoundingClientRect().x - this.elMenu.offsetWidth
+        }px`;
+        this.elOnboardingContentGift.style.top = `${
+          this.elMenu.getBoundingClientRect().y + this.elMenu.offsetHeight
+        }px`;
+        this.elOnboardingContentLk.style.left = `${
+          this.elMenu.getBoundingClientRect().x - this.elMenu.offsetWidth / 4
+        }px`;
+        this.elOnboardingContentLk.style.top = `${
+          this.elMenu.getBoundingClientRect().y + this.elMenu.offsetHeight + 50
+        }px`;
+      }
+    }
   }
 
   createRoom() {
