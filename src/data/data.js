@@ -29,8 +29,9 @@ const giftsInModal = [
 
 const giftsObj = [
   [
-    { x: 360, y: 30, scale: 0.8, rotation: 0 },
-    { x: 65, y: 130, scale: 0.5, rotation: 0 },
+    { x: 0, y: 0, scale: 1.0, rotation: 0 }, // ЭТО МОЖНО НЕ ТРОГАТЬ
+    { x: 0, y: 30, scale: 0.8, rotation: 0 }, // Это подарок 1 =)
+    { x: 0, y: 130, scale: 0.5, rotation: 0 },
     { x: 675, y: 30, scale: 0.8, rotation: 0 },
     { x: 700, y: 190, scale: 0.45, rotation: 0 },
     { x: 650, y: 205, scale: 0.4, rotation: 90 },
@@ -58,6 +59,7 @@ const giftsObj = [
     { x: 165, y: -75, scale: 0.45, rotation: -80 },
   ],
   [
+    { x: 0, y: 0, scale: 1.0, rotation: 0 }, // ЭТО МОЖНО НЕ ТРОГАТЬ
     { x: 335, y: 50, scale: 0.8, rotation: 0 },
     { x: 435, y: 95, scale: 0.5, rotation: 0 },
     { x: 515, y: 545, scale: 0.8, rotation: 0 },
@@ -86,6 +88,7 @@ const giftsObj = [
     { x: 50, y: 95, scale: 0.5, rotation: -14 },
   ],
   [
+    { x: 0, y: 0, scale: 1.0, rotation: 0 }, // ЭТО МОЖНО НЕ ТРОГАТЬ
     { x: 550, y: 450, scale: 1.1, rotation: 0 },
     { x: 385, y: 60, scale: 0.5, rotation: 0 },
     { x: 435, y: 205, scale: 0.6, rotation: 0 },
