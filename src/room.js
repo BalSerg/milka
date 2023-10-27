@@ -90,7 +90,6 @@ class RoomApp extends BaseRoomApp {
     this.modalGiftsContentMobile = 0;
 
     this.showTutorial();
-    this.setWidthMobileButton(); // Назначаем ширину кнопке У меня есть комната, Войти
 
     // this.resize = this.resize.bind(this);
     // this.initListeners();
