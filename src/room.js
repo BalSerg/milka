@@ -83,6 +83,8 @@ class RoomApp extends BaseRoomApp {
     this.elBoardingLk = getElement(".js-onboarding-lk");
     this.elOnboardingGift = getElement(".js-onboarding-gift");
     this.elLinkSave = getElement(".js-link-save");
+    this.elLoader = getElement(".js-loader");
+
 
     this.modalGiftsContentMobile = 0;
 
@@ -103,7 +105,7 @@ class RoomApp extends BaseRoomApp {
 
   main() {
     // ЗДЕСЬ УСТАНАВЛИВАЕМ ФОН
-    //
+    this.roomsList.classList.add(`room${this.state.currentRoom}`);
 
     // this.sprites.bg = new PIXI.Sprite(this.resources.bg.texture);
     // this.sprites.bg.anchor.set(0.5, 0);
@@ -1203,15 +1205,13 @@ class RoomApp extends BaseRoomApp {
         // если есть класс в объекте json
         elGift.classList.add(giftsInModal[i].class);
         elGift.addEventListener("click", () => {
-          if (
-            !elGift.classList.contains("is-active") &&
-            elGift.classList.contains("is-can-get")
-          ) {
+          if (!elGift.classList.contains("is-active") && elGift.classList.contains("is-can-get")) {
             elGift.classList.add("is-active");
             this.putGift(i + 1);
-            /**
-             * ЗДЕСЬ ДОБАВЛЯЕМ ЗАКРЫТИЕ МОДАЛКИ
-             */
+
+            // ЗДЕСЬ ДОБАВЛЯЕМ ЗАКРЫТИЕ МОДАЛКИ
+            this.elModalGifts.classList.remove('is-visibility');
+
             return;
             // this.createBlock(i + 1);
           }
