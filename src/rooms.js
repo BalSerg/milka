@@ -17,8 +17,7 @@ class RoomsApp {
     // super();
 
     this.state = {
-      firstVisit: false,
-      firstVisitNew: false,
+      firstVisit: true,
 
       isModal: false,
     };
@@ -50,7 +49,7 @@ class RoomsApp {
     this.initListeners();
 
     // Онбоардинг который появляется перед выбором комнаты
-    if (this.state.firstVisit) {
+    if (this.state.firstVisit === true) {
       this.elOnboardingChoice.classList.add("is-visibility");
 
       setTimeout(() => {
