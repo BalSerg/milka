@@ -102,16 +102,19 @@ class RoomApp extends BaseRoomApp {
   }
 
   main() {
-    this.sprites.bg = new PIXI.Sprite(this.resources.bg.texture);
-    this.sprites.bg.anchor.set(0.5, 0);
-    this.sprites.bg.position.set(this.width / 2, 0);
-    this.sprites.bg.scale.set(
-      Math.max(
-        this.width / this.sprites.bg.width,
-        this.height / this.sprites.bg.height,
-      ),
-    );
-    this.stage.addChild(this.sprites.bg);
+    // ЗДЕСЬ УСТАНАВЛИВАЕМ ФОН
+    //
+
+    // this.sprites.bg = new PIXI.Sprite(this.resources.bg.texture);
+    // this.sprites.bg.anchor.set(0.5, 0);
+    // this.sprites.bg.position.set(this.width / 2, 0);
+    // this.sprites.bg.scale.set(
+    //   Math.max(
+    //     this.width / this.sprites.bg.width,
+    //     this.height / this.sprites.bg.height,
+    //   ),
+    // );
+    // this.stage.addChild(this.sprites.bg);
 
     // TEST
     const onSaveClick = () => {
@@ -151,6 +154,11 @@ class RoomApp extends BaseRoomApp {
   }
 
   createRoom() {
+    if (this.room) {
+      this.stage.removeChild(this.room);
+      this.room = null;
+    }
+
     this.room = new PIXI.Sprite(this.resources.room.texture);
     this.room.anchor.set(0.5, 0.5);
     this.room.position.set(this.width / 2, this.height / 2);
@@ -277,11 +285,15 @@ class RoomApp extends BaseRoomApp {
     }
 
     if (giftsObj[0].length < args[0]) {
-      console.log("outer limit", giftsObj[0].length, args[0]);
+      console.log(
+        "outer limit",
+        giftsObj[this.state.currentRoom - 1].length,
+        args[0],
+      );
       return;
     }
 
-    const data = giftsObj[0][args[0]];
+    const data = giftsObj[this.state.currentRoom - 1][args[0]];
 
     const [
       num,
@@ -324,15 +336,15 @@ class RoomApp extends BaseRoomApp {
   }
 
   spritesResize() {
-    if (this.sprites.bg) {
-      this.sprites.bg.position.set(this.width / 2, 0);
-      this.sprites.bg.scale.set(
-        Math.max(
-          this.width / this.sprites.bg.width,
-          this.height / this.sprites.bg.height,
-        ),
-      );
-    }
+    // if (this.sprites.bg) {
+    //   this.sprites.bg.position.set(this.width / 2, 0);
+    //   this.sprites.bg.scale.set(
+    //     Math.max(
+    //       this.width / this.sprites.bg.width,
+    //       this.height / this.sprites.bg.height,
+    //     ),
+    //   );
+    // }
 
     if (this.room) {
       this.stage.removeChild(this.room);
@@ -1197,6 +1209,9 @@ class RoomApp extends BaseRoomApp {
           ) {
             elGift.classList.add("is-active");
             this.putGift(i + 1);
+            /**
+             * ЗДЕСЬ ДОБАВЛЯЕМ ЗАКРЫТИЕ МОДАЛКИ
+             */
             return;
             // this.createBlock(i + 1);
           }

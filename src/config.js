@@ -13,7 +13,7 @@ export default {
   preload: [
     ["sprites", "assets/sprites.json"],
     ["gifts", "assets/gifts.json"],
-    ["bg", "assets/for-room1.png"],
+    // ["bg", "assets/for-room1.png"],
     ["room", "assets/room1.png"],
   ],
 };
