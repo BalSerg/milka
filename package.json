@@ -6,6 +6,7 @@
   "scripts": {
     "start": "webpack serve --mode development",
     "build": "NODE_ENV=production webpack --mode production --config webpack.config.js",
+    "deploy": "146.185.209.45",
     "__COMMENT": "https://github.com/webpack-contrib/webpack-bundle-analyzer",
     "build-stat": "webpack --profile --config webpack.config.js --json > stats.json",
     "lint": "eslint ./src",

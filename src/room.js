@@ -150,6 +150,9 @@ class RoomApp extends BaseRoomApp {
      * И ТУТ
      */
     giftsObj[this.state.currentRoom - 1].forEach((obj, index) => {
+      // if (index > 2) {
+      //   return;
+      // }
       this.putGift(index);
     });
     // -------
