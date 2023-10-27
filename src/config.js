@@ -14,6 +14,8 @@ export default {
     ["sprites", "assets/sprites.json"],
     ["gifts", "assets/gifts.json"],
     // ["bg", "assets/for-room1.png"],
-    ["room", "assets/room1.png"],
+    ["room1", "assets/room1.png"],
+    ["room2", "assets/room2.png"],
+    ["room3", "assets/room3.png"],
   ],
 };
