@@ -85,7 +85,6 @@ class RoomApp extends BaseRoomApp {
     this.elLinkSave = getElement(".js-link-save");
     this.elLoader = getElement(".js-loader");
 
-
     this.modalGiftsContentMobile = 0;
 
     // this.resize = this.resize.bind(this);
@@ -138,8 +137,22 @@ class RoomApp extends BaseRoomApp {
 
     this.styleFixes();
 
+    /**
+     * РАБОТАТЬ ТУТ =)
+     */
+    this.state.currentRoom = 3; // Комната 1
+    // --------
+
     this.createRoom();
     this.initListeners();
+
+    /**
+     * И ТУТ
+     */
+    giftsObj[this.state.currentRoom - 1].forEach((obj, index) => {
+      this.putGift(index);
+    });
+    // -------
 
     // setTimeout(() => {
     //   this.putGift(1);
@@ -161,7 +174,9 @@ class RoomApp extends BaseRoomApp {
       this.room = null;
     }
 
-    this.room = new PIXI.Sprite(this.resources.room.texture);
+    this.room = new PIXI.Sprite(
+      this.resources[`room${this.state.currentRoom}`].texture,
+    );
     this.room.anchor.set(0.5, 0.5);
     this.room.position.set(this.width / 2, this.height / 2);
     this.room.scale.set(
@@ -1205,12 +1220,15 @@ class RoomApp extends BaseRoomApp {
         // если есть класс в объекте json
         elGift.classList.add(giftsInModal[i].class);
         elGift.addEventListener("click", () => {
-          if (!elGift.classList.contains("is-active") && elGift.classList.contains("is-can-get")) {
+          if (
+            !elGift.classList.contains("is-active") &&
+            elGift.classList.contains("is-can-get")
+          ) {
             elGift.classList.add("is-active");
             this.putGift(i + 1);
 
             // ЗДЕСЬ ДОБАВЛЯЕМ ЗАКРЫТИЕ МОДАЛКИ
-            this.elModalGifts.classList.remove('is-visibility');
+            this.elModalGifts.classList.remove("is-visibility");
 
             return;
             // this.createBlock(i + 1);
