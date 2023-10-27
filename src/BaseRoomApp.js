@@ -29,7 +29,7 @@ export default class BaseRoomApp {
       ROOM: "room",
     };
 
-    // this.preloader = document.querySelector(".preloader");
+    this.preloader = document.querySelector(".loader");
     this.wrapper = document.querySelector(".room-content");
     this.pixifeed = document.querySelector(".pixifeed");
     // this.spin = document.querySelector(".spin");
@@ -118,7 +118,7 @@ export default class BaseRoomApp {
       return;
     }
 
-    // this.preloader.classList.add("hidden");
+    this.preloader.classList.add("is-hidden");
     this.pixifeed.classList.remove("hidden");
 
     window.addEventListener("resize", this.resize.bind(this));
