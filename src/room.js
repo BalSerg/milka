@@ -140,7 +140,7 @@ class RoomApp extends BaseRoomApp {
     /**
      * РАБОТАТЬ ТУТ =)
      */
-    this.state.currentRoom = 3; // Комната 1
+    this.state.currentRoom = 1; // Комната 1
     // --------
 
     this.createRoom();
