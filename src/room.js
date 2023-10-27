@@ -262,7 +262,12 @@ class RoomApp extends BaseRoomApp {
         this.room.y = newPosition.y;
       }
     };
+
     const onRoomDragEnd = (e) => {
+      if (this.state.draggingGift === true) {
+        console.log(this.state.dragGift.x, this.state.dragGift.y);
+      }
+
       this.state.dragData = null;
       this.state.draggingRoom = false;
       this.state.draggingGift = false;
