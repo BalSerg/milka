@@ -70,9 +70,9 @@ class RoomsApp {
     //------------
 
     // Переход в комнату
-    this.arrRooms.forEach((item) => {
+    this.arrRooms.forEach((item, index) => {
       item.addEventListener("click", () => {
-        window.location.href = "room.html";
+        window.location.href = `room.html?room=${index + 1}`;
       });
     });
 
