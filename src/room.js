@@ -183,7 +183,7 @@ class RoomApp extends BaseRoomApp {
       this.elBlockRange.classList.add("z-index-max");
       setTimeout(() => {
         this.elBlockRange.classList.remove("z-index-max");
-      }, 250000);
+      }, 2500);
 
       setTimeout(() => {
         this.elBoardingRange.classList.remove("is-visibility");
@@ -191,19 +191,19 @@ class RoomApp extends BaseRoomApp {
           this.elBoardingMenuGift.classList.add("is-visibility");
           this.elMenu.classList.add("z-index-max");
         }
-      }, 250000);
+      }, 2500);
 
       setTimeout(() => {
         this.elBoardingMenuGift.classList.remove("is-visibility");
         if (this.state.isClickBoardingLk === false) {
           this.elBoardingLk.classList.add("is-visibility");
         }
-      }, 500000);
+      }, 5000);
 
       setTimeout(() => {
         this.elBoardingLk.classList.remove("is-visibility");
         this.elMenu.classList.remove("z-index-max");
-      }, 750000);
+      }, 7500);
 
 
       this.elOnboardingContent.style.left = `${
