@@ -92,7 +92,7 @@ class RoomApp extends BaseRoomApp {
     // this.showSecondOnboarding();
     // this.callModallAr();
     // this.deleteGiftFromRoom();
-    this.setHeightModalWithGifts();
+    // this.setHeightModalWithGifts();
     // this.moveRoom();
     // this.styleFixes();
     // this.setNumberRoom();
@@ -360,7 +360,7 @@ class RoomApp extends BaseRoomApp {
   }
 
   spritesResize() {
-    this.setBlockGifts();
+    // this.setBlockGifts();
 
     // if (this.sprites.bg) {
     //   this.sprites.bg.position.set(this.width / 2, 0);
