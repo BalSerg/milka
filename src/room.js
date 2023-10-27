@@ -8,6 +8,8 @@ import config from "./config";
 import { giftsObjMobile, giftsObj, giftsInModal } from "./data/data";
 import BaseRoomApp from "./BaseRoomApp";
 
+import roomNum from "./urlParams";
+
 const topValue = 160;
 const widthMobileRoom = 400;
 const heightTitleInModalGift = 104;
@@ -140,7 +142,7 @@ class RoomApp extends BaseRoomApp {
     /**
      * РАБОТАТЬ ТУТ =)
      */
-    this.state.currentRoom = 1; // Комната 1
+    this.state.currentRoom = parseInt(roomNum, 10);
     // --------
 
     this.createRoom();

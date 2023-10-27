@@ -1,11 +1,1 @@
-<svg width="90" height="90" viewBox="0 0 90 90" fill="none" xmlns="http://www.w3.org/2000/svg">
-<circle cx="45" cy="45" r="42" transform="matrix(-1 0 0 1 90 0)" fill="url(#paint0_linear_327_2918)" stroke="white" stroke-width="6"/>
-<circle cx="44.9999" cy="36.2572" r="12.6" fill="white"/>
-<ellipse cx="44.9996" cy="53.7436" rx="21.3429" ry="12.6" fill="white"/>
-<defs>
-<linearGradient id="paint0_linear_327_2918" x1="45" y1="0" x2="45" y2="90" gradientUnits="userSpaceOnUse">
-<stop stop-color="#826AB4"/>
-<stop offset="1" stop-color="#614897"/>
-</linearGradient>
-</defs>
-</svg>
+<svg fill="none" height="90" viewBox="0 0 90 90" width="90" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><linearGradient id="a" gradientUnits="userSpaceOnUse" x1="45" x2="45" y1="0" y2="90"><stop offset="0" stop-color="#826ab4"/><stop offset="1" stop-color="#614897"/></linearGradient><circle cx="45" cy="45" fill="url(#a)" r="42" stroke="#fff" stroke-width="6" transform="matrix(-1 0 0 1 90 0)"/><g fill="#fff"><circle cx="44.9999" cy="36.2572" r="12.6"/><ellipse cx="44.9996" cy="53.7436" rx="21.3429" ry="12.6"/></g></svg>
