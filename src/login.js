@@ -8,3 +8,8 @@ getElement('.js-call-modal').addEventListener('click', ()=> {
 getElement('.js-cross').addEventListener('click', () => {
   getElement('[class*= "js-modal"]').classList.remove('is-visibility');
 })
+
+getElement('.js-login-submit').addEventListener('click', (e) => {
+  e.preventDefault();
+  window.location.href = 'rooms.html'
+})

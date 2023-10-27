@@ -11,3 +11,8 @@ const elButtonLk = getElement(".js-go-lk");
 elButtonLk.addEventListener("click", () => {
   window.location.href = 'login.html';
 });
+
+getElement('.js-reg-submit').addEventListener('click', (e) => {
+  e.preventDefault();
+  window.location.href = 'rooms.html'
+})
