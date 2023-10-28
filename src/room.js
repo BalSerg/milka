@@ -16,7 +16,6 @@ const heightTitleInModalGift = 104;
 const paddingTopInModalGift = 88;
 const paddingInnerInModalGift = 48;
 const borderWidthInModalGift = 6;
-const roomNumber = 1;
 
 const availableWidth = document.documentElement.scrollWidth;
 const availableHeight = document.documentElement.scrollHeight;
@@ -34,15 +33,10 @@ class RoomApp extends BaseRoomApp {
         giftsModal: false,
       },
 
-      time1MS: 0,
-      time2MS: 0,
-
       draggingGift: false,
       dragGift: null,
       draggingRoom: false,
       dragData: null,
-
-      isMoveGift: null,
 
       isModal: false,
 
@@ -52,7 +46,6 @@ class RoomApp extends BaseRoomApp {
       isClickBoardingLk: false, // флаг щелчка на онбоардинге кнопки ЛК в меню
 
       currentRoom: 1,
-      newScale: 0, // Переменная для скейлинга в мобилке.
     });
 
     this.gifts = {};
@@ -62,7 +55,7 @@ class RoomApp extends BaseRoomApp {
     this.rooms = getArrayElements(".choice__item", this.elChoice);
     this.elRange = getElement(".js-range");
     this.elBlockRange = this.elRange.parentNode;
-    this.elMenu = getElement('.js-menu');
+    this.elMenu = getElement(".js-menu");
     this.arrModals = getArrayElements('[class *= "js-modal"]');
     this.arrButtonsCallModal = getArrayElements('[class *= "js-call-modal"]');
     this.arrCross = getArrayElements(".js-cross");
@@ -104,8 +97,6 @@ class RoomApp extends BaseRoomApp {
     // this.setDefaultValueRoomRange();
 
     this.loader();
-
-
   }
 
   main() {
@@ -205,7 +196,6 @@ class RoomApp extends BaseRoomApp {
         this.elMenu.classList.remove("z-index-max");
       }, 7500);
 
-
       this.elOnboardingContent.style.left = `${
         this.elBlockRange.getBoundingClientRect().x +
         this.elBlockRange.offsetHeight
@@ -223,7 +213,6 @@ class RoomApp extends BaseRoomApp {
       this.elOnboardingContentLk.style.top = `${
         this.elMenu.getBoundingClientRect().y + this.elMenu.offsetHeight + 50
       }px`;
-
     }
   }
 
@@ -444,22 +433,12 @@ class RoomApp extends BaseRoomApp {
     });
   }
 
-  //
-  // resize() {
-  //   this.setBlockGifts();
-  //   this.setRoomInAllWindowMobile();
-  // }
-
-  setNumberRoom() {
-    this.roomsList.classList.add(`room${roomNumber}`);
-  }
-
   reScaleRoom() {
     if (!this.room) {
       return;
     }
 
-    console.log(this.state.scale, this.elRange.value);
+    // console.log(this.state.scale, this.elRange.value);
 
     if (this.state.scale < 1) {
       this.state.scale = 1;
