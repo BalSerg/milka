@@ -6,7 +6,7 @@ import * as particles from "@pixi/particle-emitter";
 
 import { getElement, getArrayElements } from "./utils";
 import config from "./config";
-import { giftsObj, giftsInModal } from "./data/data";
+import giftsObj from "./data/data";
 import BaseRoomApp from "./BaseRoomApp";
 
 import giftParticles from "./giftParticles";
@@ -50,6 +50,8 @@ class RoomApp extends BaseRoomApp {
 
       currentRoom: 1,
     });
+
+    this.giftsInModal = window.giftsInModal || [];
 
     this.gifts = {};
     this.room = null;
@@ -806,20 +808,20 @@ class RoomApp extends BaseRoomApp {
    */
   createBlockInModalGift() {
     const elModal = getElement(".js-gifts");
-    for (let i = 0; i < giftsInModal.length; i++) {
+    this.giftsInModal.forEach((gift, index) => {
       const elGift = document.createElement("div");
       elGift.classList.add("gifts__item");
-      elGift.dataset.id = i + 1;
-      if (giftsInModal[i].class) {
+      elGift.dataset.id = index + 1;
+      if (gift.class) {
         // если есть класс в объекте json
-        elGift.classList.add(giftsInModal[i].class);
+        elGift.classList.add(gift.class);
         elGift.addEventListener("click", () => {
           if (
             !elGift.classList.contains("is-active") &&
             elGift.classList.contains("is-can-get")
           ) {
             elGift.classList.add("is-active");
-            this.putGift(i + 1);
+            this.putGift(index + 1);
 
             // ЗДЕСЬ ДОБАВЛЯЕМ ЗАКРЫТИЕ МОДАЛКИ
             this.elModalGifts.classList.remove("is-visibility");
@@ -862,13 +864,13 @@ class RoomApp extends BaseRoomApp {
         });
       }
       const elImg = document.createElement("img");
-      elImg.src = `assets/images/gifts/${giftsInModal[i].src}.png`;
+      elImg.src = `assets/images/gifts/${gift.src}.png`;
       const elSpan = document.createElement("span");
-      elSpan.textContent = `${i + 1}`;
+      elSpan.textContent = `${index + 1}`;
       elGift.append(elSpan);
       elGift.append(elImg);
       elModal.append(elGift);
-    }
+    });
   }
 
   // Показ-скрытие онбоардинга в модалке подарков
