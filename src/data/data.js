@@ -1,33 +1,4 @@
-const giftsInModal = [
-  { src: "gift1", class: "is-can-get" },
-  { src: "gift2", class: "is-can-get" },
-  { src: "gift3", class: "is-can-get" },
-  { src: "gift4", class: "is-can-get" },
-  { src: "gift5", class: "is-can-get" },
-  { src: "gift6", class: "is-can-get" },
-  { src: "gift7", class: "is-can-get" },
-  { src: "gift8", class: "is-can-get" },
-  { src: "gift9", class: "is-can-get" },
-  { src: "gift10", class: "is-can-get" },
-  { src: "gift11", class: "is-can-get" },
-  { src: "gift12", class: "is-can-get" },
-  { src: "gift13" },
-  { src: "gift14" },
-  { src: "gift15" },
-  { src: "gift16" },
-  { src: "gift17" },
-  { src: "gift18" },
-  { src: "gift19" },
-  { src: "gift20" },
-  { src: "gift21" },
-  { src: "gift22" },
-  { src: "gift23" },
-  { src: "gift24" },
-  { src: "gift25" },
-  { src: "gift26" },
-];
-
-const giftsObj = [
+export default [
   [
     { x: 0, y: 0, scale: 1.0, rotation: 0 }, // ЭТО МОЖНО НЕ ТРОГАТЬ
     { x: 30, y: -730, scale: 0.35, rotation: 0 }, // Это подарок 1 =)
@@ -116,5 +87,3 @@ const giftsObj = [
     { x: -575, y: 325, scale: 0.2, rotation: 0 },
   ],
 ];
-
-export { giftsObj, giftsInModal };
