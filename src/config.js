@@ -17,5 +17,7 @@ export default {
     ["room1", "assets/room1.png"],
     ["room2", "assets/room2.png"],
     ["room3", "assets/room3.png"],
+
+    ["snow", "assets/snow.png"],
   ],
 };
