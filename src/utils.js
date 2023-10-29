@@ -17,11 +17,11 @@ function getArrayElements(selector, parent = document) {
   return array;
 }
 
-function toggleModal(text = '') {
+function toggleModal(text) {
   if (getElement('[class*= "js-modal"]').classList.contains('is-visibility')) {
     getElement('[class*= "js-modal"]').classList.remove('is-visibility');
-  } else {
-    getElement('#auth_result_text').innerText = text;
+  } else if (text) {
+    getElement('.js-modal .modal__text').innerText = text;
     getElement('[class*= "js-modal"]').classList.add('is-visibility');
   }
 }

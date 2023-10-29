@@ -160,7 +160,6 @@ a {
     bottom: -76px;
     left: 0;
     width: 100%;
-    display: none;
     font-family: "lifehack";
     font-size: 32px;
     line-height: normal;
@@ -202,7 +201,9 @@ a {
     width: auto; } }
 @media screen and (max-width: 400px) {
   .form__wrapper {
-    padding: 16px 16px 0; } }
+    padding: 16px 16px 0; }
+  .form .re-password {
+    bottom: -100px; } }
 @media screen and (max-width: 310px) {
   .form .re-password {
     bottom: -120px; } }
@@ -446,6 +447,6 @@ a {
     background: url("./images/background-mobile.png") center 0 no-repeat;
     background-size: cover; }
     .main-wrapper > div {
-      padding: 344px 16px 148px; } }
+      padding: 48vw 0 148px; } }
 
 /*# sourceMappingURL=index.css.map */

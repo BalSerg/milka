@@ -102,7 +102,7 @@ module.exports = {
     // new EnvironmentPlugin(),
     new CopyPlugin({ patterns: [{ from: "src/assets", to: "assets" }] }),
     new MiniCssExtractPlugin({
-      filename: "[name].[contenthash].css",
+      filename: "[name].css",
     }),
   ],
   output: {

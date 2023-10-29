@@ -1,8 +1,8 @@
 import "./scss/index.scss";
-import {getElement} from "./utils";
+import {getElement, toggleModal} from "./utils";
 import {getSaveNewPassword} from "./auth";
 
-getElement('.js-cross').addEventListener('click', function () {
+getElement('.js-cross').addEventListener('click', () => {
   getElement('[class*= "js-modal"]').classList.remove('is-visibility');
 });
 

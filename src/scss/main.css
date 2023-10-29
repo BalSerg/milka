@@ -604,16 +604,10 @@ a {
     background-repeat: no-repeat; }
   .rooms.room1 {
     background-image: url("./images/for-room1.png"); }
-    .rooms.room1 .room-wrapper {
-      background-image: url("./images/room1.png"); }
   .rooms.room2 {
     background-image: url("./images/for-room2.png"); }
-    .rooms.room2 .room-wrapper {
-      background-image: url("./images/room2.png"); }
   .rooms.room3 {
     background-image: url("./images/for-room3.png"); }
-    .rooms.room3 .room-wrapper {
-      background-image: url("./images/room3.png"); }
   .rooms-shadow {
     position: fixed;
     z-index: 2;
@@ -779,6 +773,33 @@ a {
       width: 135px; }
     .onboarding-room > div > img {
       width: 30px; } }
+.loader {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 100;
+  height: 100%;
+  width: 100%;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.45); }
+
+.spin {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 11em;
+  height: 11em;
+  transform: translate(-50%, -50%);
+  animation: spin 2.1s cubic-bezier(0.785, 0.135, 0.15, 0.86) infinite both; }
+
+@keyframes spin {
+  0% {
+    transform: translate(-50%, -50%) rotate(0); }
+  100% {
+    transform: translate(-50%, -50%) rotate(360deg); } }
 .main {
   position: relative;
   background-image: url("./images/background-choise.png");

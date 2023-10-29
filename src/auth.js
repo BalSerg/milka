@@ -4,22 +4,11 @@ import {toggleModal} from "./utils";
 let STATUS_OK = 1;
 let STATUS_ERROR = -1;
 
-function getAuth() {
-    let isLoginForm = $('.js-form').hasClass('form-enter');
-    if (isLoginForm === true) {
-        /**login*/
-        getLogin();
-    } else {
-        /**register*/
-        getRegister();
-    }
-}
-
 function getRegister() {
     var data = {
         _csrf: $('meta[name="csrf-token"]').attr('content'),
-        email: $('input[name="email"]').val(),
-        password: $('input[name="password"]').val(),
+        email: $('input[type="email"]').val(),
+        password: $('input[type="password"]').val(),
     };
 
     $.ajax({
@@ -44,12 +33,12 @@ function getRegister() {
 function getLogin() {
     var data = {
         _csrf: $('meta[name="csrf-token"]').attr('content'),
-        email: $('input[name="email"]').val(),
-        password: $('input[name="password"]').val(),
+        email: $('input[type="email"]').val(),
+        password: $('input[type="password"]').val(),
     };
 
     $.ajax({
-        url: '/login',
+        url: '/signin',
         type: 'POST',
         data: data,//{data: JSON.stringify(data)},
         success: function (res) {
@@ -71,7 +60,7 @@ function getLogin() {
 function getRequestPassReset() {
     var data = {
         _csrf: $('meta[name="csrf-token"]').attr('content'),
-        email: $('input[name="email"]').val(),
+        email: $('input[type="email"]').val(),
     };
 
     $.ajax({
@@ -97,7 +86,7 @@ function getRequestPassReset() {
 function getSaveNewPassword() {
     let data = {
         _csrf: $('meta[name="csrf-token"]').attr('content'),
-        password: $('input[name="password"]').val(),
+        password: $('input[type="password"]').val(),
     };
     let token = $('input[name="token"]').val();
 
@@ -121,4 +110,4 @@ function getSaveNewPassword() {
     });
 }
 
-export { getAuth, getRegister, getLogin, getRequestPassReset, getSaveNewPassword };
+export { getRegister, getLogin, getRequestPassReset, getSaveNewPassword };
