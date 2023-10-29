@@ -1,12 +1,15 @@
 import "./scss/main.scss";
 
 import * as PIXI from "pixi.js";
+import { gsap } from "gsap";
 import * as particles from "@pixi/particle-emitter";
 
 import { getElement, getArrayElements } from "./utils";
 import config from "./config";
 import { giftsObj, giftsInModal } from "./data/data";
 import BaseRoomApp from "./BaseRoomApp";
+
+import giftParticles from "./giftParticles";
 
 import roomNum from "./urlParams";
 
@@ -27,10 +30,10 @@ class RoomApp extends BaseRoomApp {
     super();
 
     this.state = Object.assign(this.state, {
-      firstVisit: true,
+      firstVisit: false,
 
       tutorials: {
-        giftsModal: false,
+        giftsModal: true,
       },
 
       draggingGift: false,
@@ -50,6 +53,19 @@ class RoomApp extends BaseRoomApp {
 
     this.gifts = {};
     this.room = null;
+
+    this.emitter = null;
+
+    this.particleContainer = new PIXI.ParticleContainer(5000, {
+      vertices: true,
+      scale: true,
+      position: true,
+      rotation: true,
+      uvs: true,
+      alpha: true,
+    });
+    this.renderGame = this.renderGame.bind(this);
+    gsap.ticker.add(this.renderGame);
 
     this.roomsList = getElement(".js-rooms");
     this.rooms = getArrayElements(".choice__item", this.elChoice);
@@ -95,13 +111,25 @@ class RoomApp extends BaseRoomApp {
     // this.styleFixes();
     // this.setNumberRoom();
     // this.setDefaultValueRoomRange();
-
+    // if (this.emitter !== null) {
+    //   this.emitter.update(deltaTime * 0.001);
+    // }
     this.loader();
+  }
+
+  createEmitter() {
+    this.emitter = new particles.Emitter(
+      this.particleContainer,
+      particles.upgradeConfig(giftParticles, [this.resources.snow.texture]),
+    );
+    this.emitter.emit = false;
   }
 
   main() {
     // ЗДЕСЬ УСТАНАВЛИВАЕМ ФОН
     this.roomsList.classList.add(`room${this.state.currentRoom}`);
+
+    this.createEmitter();
 
     // this.sprites.bg = new PIXI.Sprite(this.resources.bg.texture);
     // this.sprites.bg.anchor.set(0.5, 0);
@@ -146,12 +174,12 @@ class RoomApp extends BaseRoomApp {
     /**
      * И ТУТ
      */
-    giftsObj[this.state.currentRoom - 1].forEach((obj, index) => {
-      // if (index > 2) {
-      //   return;
-      // }
-      this.putGift(index);
-    });
+    // giftsObj[this.state.currentRoom - 1].forEach((obj, index) => {
+    //   // if (index > 2) {
+    //   //   return;
+    //   // }
+    //   this.putGift(index);
+    // });
     // -------
 
     // setTimeout(() => {
@@ -233,6 +261,8 @@ class RoomApp extends BaseRoomApp {
     this.room.defaultScale = this.room.scale.x;
     this.room.interactive = true;
     this.stage.addChild(this.room);
+
+    this.room.addChild(this.particleContainer);
 
     this.reScaleRoom();
 
@@ -363,8 +393,12 @@ class RoomApp extends BaseRoomApp {
       return;
     }
 
-    const data = giftsObj[this.state.currentRoom - 1][args[0]];
+    let isGiftDefaultPos = false;
+    if (args.length === 1) {
+      isGiftDefaultPos = true;
+    }
 
+    const data = giftsObj[this.state.currentRoom - 1][args[0]];
     const [
       num,
       x = data.x,
@@ -388,9 +422,19 @@ class RoomApp extends BaseRoomApp {
       return;
     }
 
+    if (isGiftDefaultPos === true) {
+      console.log(this.emitter);
+      this.emitter.emit = false;
+      this.emitter.cleanup();
+      this.emitter.resetPositionTracking();
+      this.emitter.updateSpawnPos(x, y);
+      this.emitter.emit = true;
+    }
+
     const g = new PIXI.Sprite(this.resources.gifts.textures[`gift${num}.png`]);
     g.anchor.set(0.5, 0.5);
-    g.scale.set(scale);
+    g.alpha = 0;
+    // g.scale.set(scale);
     g.angle = rotation;
     g.position.set(x, y);
 
@@ -400,6 +444,13 @@ class RoomApp extends BaseRoomApp {
     g.interactive = true;
     g.type = "gift";
     this.room.addChild(g);
+
+    gsap.to(g, {
+      pixi: { alpha: 1, scale },
+      delay: 0.3,
+      duration: 1,
+      ease: "back.out",
+    });
 
     this.sprites[spriteName] = g;
     this.gifts[spriteName] = g;
@@ -889,6 +940,12 @@ class RoomApp extends BaseRoomApp {
         scrollWidth;
     }
     elGifts.style.width = `${newWidth}px`;
+  }
+
+  renderGame(time, deltaTime, frame) {
+    if (this.emitter !== null) {
+      this.emitter.update(deltaTime * 0.001);
+    }
   }
 }
 
