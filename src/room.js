@@ -30,10 +30,10 @@ class RoomApp extends BaseRoomApp {
     super();
 
     this.state = Object.assign(this.state, {
-      firstVisit: false,
+      firstVisit: true,
 
       tutorials: {
-        giftsModal: true,
+        giftsModal: false,
       },
 
       draggingGift: false,
