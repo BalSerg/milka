@@ -128,7 +128,6 @@
     left: 0;
 
     width: 100%;
-    display: none;
 
     font-family: "lifehack";
     font-size: 32px;
@@ -202,6 +201,10 @@
   .form {
     &__wrapper {
       padding: 16px 16px 0;
+    }
+
+    .re-password {
+      bottom: -100px;
     }
   }
 }

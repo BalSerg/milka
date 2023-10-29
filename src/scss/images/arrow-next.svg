@@ -1,12 +1,1 @@
-<svg width="70" height="70" viewBox="0 0 70 70" fill="none" xmlns="http://www.w3.org/2000/svg">
-<g id="Btns">
-<circle id="Ellipse 2" cx="35" cy="35" r="33" fill="url(#paint0_linear_115_4603)" stroke="white" stroke-width="4"/>
-<path id="Vector 1" d="M34.9345 16.625V25.375C31.8725 25.375 24.8038 25.375 20.9344 28.4375C11.311 36.0542 17.663 46.492 19.6229 48.125C22.6859 50.6771 31.872 54.6875 28.372 51.625C24.872 48.5625 24.4345 42.4375 26.1845 39.8125C27.5845 37.7125 32.6012 37.7708 34.9345 38.0625V48.125L54.1845 31.9375L34.9345 16.625Z" fill="white"/>
-</g>
-<defs>
-<linearGradient id="paint0_linear_115_4603" x1="35" y1="0" x2="35" y2="70" gradientUnits="userSpaceOnUse">
-<stop stop-color="#826AB4"/>
-<stop offset="1" stop-color="#614897"/>
-</linearGradient>
-</defs>
-</svg>
+<svg fill="none" height="70" viewBox="0 0 70 70" width="70" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><linearGradient id="a" gradientUnits="userSpaceOnUse" x1="35" x2="35" y1="0" y2="70"><stop offset="0" stop-color="#826ab4"/><stop offset="1" stop-color="#614897"/></linearGradient><circle cx="35" cy="35" fill="url(#a)" r="33" stroke="#fff" stroke-width="4"/><path d="m34.9345 16.625v8.75c-3.062 0-10.1307 0-14.0001 3.0625-9.6234 7.6167-3.2714 18.0545-1.3115 19.6875 3.063 2.5521 12.2491 6.5625 8.7491 3.5s-3.9375-9.1875-2.1875-11.8125c1.4-2.1 6.4167-2.0417 8.75-1.75v10.0625l19.25-16.1875z" fill="#fff"/></svg>

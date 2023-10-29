@@ -7,14 +7,17 @@ import { getElement, getArrayElements, toggleModal } from "./utils";
 import {getAuth, getRequestPassReset } from "./auth";
 
 // Показ формыы на странице index.html
-const elForm = getElement(".js-form");
+//const elForm = getElement(".js-form");
 const elButtonLk = getElement(".js-go-lk");
 
 elButtonLk.addEventListener("click", () => {
-  elForm.classList.add("form-enter");
-  elButtonLk.classList.add("is-hidden");
+  window.location.href = 'login.html';
 });
 
+getElement('.js-reg-submit').addEventListener('click', (e) => {
+  e.preventDefault();
+  window.location.href = 'rooms.html'
+})
 getElement('.js-cross').addEventListener('click', function () {
   getElement('[class*= "js-modal"]').classList.remove('is-visibility');
 });
