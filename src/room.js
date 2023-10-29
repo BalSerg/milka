@@ -422,35 +422,33 @@ class RoomApp extends BaseRoomApp {
       return;
     }
 
-    if (isGiftDefaultPos === true) {
-      console.log(this.emitter);
-      this.emitter.emit = false;
-      this.emitter.cleanup();
-      this.emitter.resetPositionTracking();
-      this.emitter.updateSpawnPos(x, y);
-      this.emitter.emit = true;
-    }
-
     const g = new PIXI.Sprite(this.resources.gifts.textures[`gift${num}.png`]);
     g.anchor.set(0.5, 0.5);
     g.alpha = 0;
     // g.scale.set(scale);
     g.angle = rotation;
     g.position.set(x, y);
-
     g.num = num;
     g.name = spriteName;
-
     g.interactive = true;
     g.type = "gift";
+    // g.on("click", onGiftClick).on("tap", onGiftClick);
     this.room.addChild(g);
 
-    gsap.to(g, {
-      pixi: { alpha: 1, scale },
-      delay: 0.3,
-      duration: 1,
-      ease: "back.out",
-    });
+    if (isGiftDefaultPos === true) {
+      this.emitter.emit = false;
+      this.emitter.cleanup();
+      this.emitter.resetPositionTracking();
+      this.emitter.updateSpawnPos(x, y);
+      this.emitter.emit = true;
+
+      gsap.to(g, {
+        pixi: { alpha: 1, scale },
+        delay: 0.3,
+        duration: 1,
+        ease: "back.out",
+      });
+    }
 
     this.sprites[spriteName] = g;
     this.gifts[spriteName] = g;
