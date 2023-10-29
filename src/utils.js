@@ -17,4 +17,13 @@ function getArrayElements(selector, parent = document) {
   return array;
 }
 
-export { getElement, getArrayElements };
+function toggleModal(text = '') {
+  if (getElement('[class*= "js-modal"]').classList.contains('is-visibility')) {
+    getElement('[class*= "js-modal"]').classList.remove('is-visibility');
+  } else {
+    getElement('#auth_result_text').innerText = text;
+    getElement('[class*= "js-modal"]').classList.add('is-visibility');
+  }
+}
+
+export { getElement, getArrayElements, toggleModal };
