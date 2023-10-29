@@ -1,0 +1,452 @@
+@use "fonts/font";
+* {
+  appearance: none;
+  outline: none;
+  background: none;
+  box-shadow: none;
+  padding: 0;
+  margin: 0;
+  -webkit-tap-highlight-color: transparent;
+  tap-highlight-color: transparent; }
+
+p,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  margin: 0; }
+
+ul,
+ol {
+  list-style: none; }
+
+li {
+  padding: 0; }
+
+button,
+input {
+  appearance: none;
+  outline: none;
+  background: none;
+  box-shadow: none;
+  padding: 0;
+  border: 0; }
+
+a {
+  text-decoration: none; }
+
+.height100 {
+  height: 100%; }
+
+.is-hidden {
+  display: none !important; }
+
+.is-no-mobile {
+  display: block; }
+
+.is-mobile {
+  display: none; }
+
+@media screen and (max-width: 870px) {
+  .is-mobile {
+    display: block; }
+
+  .is-no-mobile {
+    display: none; } }
+.form {
+  position: relative;
+  border-radius: 35px;
+  max-width: 480px;
+  background: #fff; }
+  .form__wrapper {
+    padding: 16px 73px 0;
+    text-align: center; }
+  .form__name {
+    font-family: "appetite";
+    font-size: 36px;
+    line-height: 36px;
+    padding: 42px 0 27px;
+    text-shadow: 0 4px 0 #fff;
+    color: #242F79;
+    text-transform: uppercase;
+    text-align: center;
+    background: #D1C6EF;
+    border-radius: 35px 35px 0 0; }
+    .form__name:first-of-type {
+      display: block; }
+      .form__name:first-of-type + .form__name {
+        display: none; }
+  .form.form-enter .form__name:first-of-type {
+    display: none; }
+    .form.form-enter .form__name:first-of-type + .form__name {
+      display: block; }
+  .form.form-enter .re-password {
+    display: block; }
+  .form__item {
+    position: relative;
+    margin: 0 0 24px; }
+    .form__item:last-of-type {
+      margin: 0; }
+    .form__item-text {
+      margin: 8px auto;
+      font-family: "lifehack";
+      font-size: 36px;
+      line-height: 43px;
+      color: #242F79; }
+    .form__item-input {
+      position: relative; }
+      .form__item-input > input {
+        height: 68px;
+        box-sizing: border-box;
+        width: 100%;
+        padding: 0 10px;
+        box-sizing: border-box;
+        border: 3px solid #D1C6EF;
+        border-radius: 35px; }
+        .form__item-input > input, .form__item-input > input::placeholder {
+          font-family: "lifehack";
+          font-size: 24px;
+          color: #242F79;
+          text-align: center; }
+      .form__item-input.is-error > input {
+        border-color: #F00; }
+      .form__item-input.is-error + .error-message {
+        display: block; }
+    .form__item .error-message {
+      position: absolute;
+      bottom: -23px;
+      left: 0;
+      display: none;
+      font-family: "lifehack";
+      font-size: 12px;
+      line-height: normal;
+      color: #F00; }
+  .form .button {
+    font-family: "appetite";
+    font-size: 36px;
+    line-height: 36px;
+    position: relative;
+    padding: 22px 35px;
+    border-radius: 51px;
+    border: 6px solid #fff;
+    box-shadow: -1px -1px 14px 4px rgba(96, 71, 150, 0.34);
+    color: #fff;
+    cursor: pointer;
+    margin: 33px 0 -22px; }
+    .form .button:before, .form .button:after {
+      position: absolute;
+      display: block;
+      border-radius: 51px;
+      content: ""; }
+    .form .button:before {
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(to bottom right, #937CC5, #5D468E); }
+    .form .button:after {
+      top: 6px;
+      left: 6px;
+      width: calc(100% - 12px);
+      height: calc(100% - 12px);
+      background: linear-gradient(180deg, rgba(96, 71, 150, 0) 0%, #604796 73.53%), #967DD0; }
+    .form .button span {
+      position: relative;
+      z-index: 1; }
+  .form .re-password {
+    position: absolute;
+    bottom: -76px;
+    left: 0;
+    width: 100%;
+    font-family: "lifehack";
+    font-size: 32px;
+    line-height: normal;
+    text-decoration: underline;
+    text-align: center;
+    color: #242F79;
+    cursor: pointer; }
+
+@media screen and (min-width: 1280px) {
+  .form {
+    width: 480px; } }
+@media screen and (max-width: 1100px) {
+  .form {
+    width: 480px; } }
+@media screen and (max-width: 870px) {
+  .form.form-enter {
+    margin-bottom: 100px; }
+  .form__name {
+    border: 6px solid #fff;
+    border-bottom: 0; }
+  .form__decor {
+    position: absolute;
+    top: calc(24px / -2 + 3px);
+    left: 0;
+    display: flex;
+    justify-content: space-evenly;
+    width: 100%; }
+    .form__decor > span {
+      display: block;
+      width: 24px;
+      height: 24px;
+      background: radial-gradient(50% 50% at 50% 50%, #FFEB3A 0%, #FFF7AF 100%);
+      border-radius: 50%;
+      filter: drop-shadow(1px 0px 18px #FFEF60); }
+  .form .re-password {
+    color: #fff; } }
+@media screen and (max-width: 500px) {
+  .form {
+    width: auto; } }
+@media screen and (max-width: 400px) {
+  .form__wrapper {
+    padding: 16px 16px 0; }
+  .form .re-password {
+    bottom: -100px; } }
+@media screen and (max-width: 310px) {
+  .form .re-password {
+    bottom: -120px; } }
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: -1;
+  height: 100%;
+  width: 100%;
+  padding: 48px;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.45);
+  opacity: 0;
+  transition: opacity ease-in 300ms, z-index ease-in 10ms 320ms; }
+  .modal-wrapper {
+    position: relative;
+    padding: 40px;
+    max-width: 480px;
+    box-sizing: border-box;
+    border-radius: 35px;
+    border: 6px solid #fff;
+    background: #D1C6EF;
+    transform: scale(0);
+    transition: all ease-out 300ms; }
+  .modal__cross {
+    position: absolute;
+    top: calc(70px / -2);
+    right: calc(70px / -2);
+    width: 70px;
+    height: 70px;
+    background: url("./images/cross.svg");
+    transform: rotate(0);
+    transition: all ease-out 300ms;
+    cursor: pointer; }
+    .modal__cross:hover {
+      transform: rotate(180deg);
+      transition: all ease-in 300ms; }
+  .modal__text {
+    font-family: "lifehack";
+    font-size: 32px;
+    text-align: center;
+    color: #242F79; }
+  .modal.is-visibility {
+    z-index: 10;
+    opacity: 1;
+    transition: z-index ease-in 10ms, opacity ease-in 300ms 15ms; }
+    .modal.is-visibility .modal-wrapper {
+      transform: scale(1);
+      transition: all ease-in 300ms; }
+
+@media screen and (max-width: 870px) {
+  .modal-wrapper {
+    padding: 40px 32px; } }
+@media screen and (max-width: 400px) {
+  .modal-wrapper {
+    padding: 40px 16px; } }
+.modal-gifts .modal-wrapper {
+  position: absolute;
+  max-width: 1340px;
+  margin: 0 auto;
+  padding: 40px 0; }
+.modal-gifts-content {
+  overflow-y: auto;
+  padding: 0 40px;
+  scrollbar-color: #aaa #777;
+  scrollbar-width: thin; }
+  .modal-gifts-content::-webkit-scrollbar {
+    width: 4px; }
+  .modal-gifts-content::-webkit-scrollbar-track {
+    background-color: #aaa;
+    height: 80%; }
+  .modal-gifts-content::-webkit-scrollbar-thumb {
+    background-color: #777; }
+
+@media screen and (max-width: 870px) {
+  .modal-gifts {
+    padding: 88px 16px 0;
+    display: block;
+    background: #7d69ac url("./images/stars.png") center 0 no-repeat;
+    background-size: contain;
+    text-align: center; }
+    .modal-gifts__title {
+      font-family: "appetite";
+      font-size: 36px;
+      line-height: 36px;
+      max-width: 400px;
+      margin: 0 auto 32px;
+      color: #fff;
+      text-align: center; }
+    .modal-gifts .modal__cross {
+      top: -164px;
+      right: -6px; }
+    .modal-gifts .modal-wrapper {
+      position: static;
+      display: inline-block;
+      padding: 0; }
+    .modal-gifts-content {
+      padding: 0;
+      margin: 48px 6px 48px 48px; } }
+.modal-lk {
+  display: block;
+  padding-top: 242px; }
+  .modal-lk .modal-wrapper {
+    padding: 36px 0 0;
+    max-width: 480px;
+    margin: 0 auto;
+    border-color: #5D468E; }
+  .modal-lk .modal-lk-title {
+    position: absolute;
+    top: -248px;
+    left: 0;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 0 8px;
+    justify-content: center;
+    padding: 64px 0 0; }
+    .modal-lk .modal-lk-title > img {
+      width: 80px;
+      height: 80px; }
+    .modal-lk .modal-lk-title > span {
+      font-family: "appetite";
+      font-size: 48px;
+      line-height: normal;
+      color: #fff;
+      white-space: nowrap; }
+  .modal-lk-content {
+    font-family: "lifehack";
+    font-size: 36px;
+    line-height: normal;
+    color: #242F79; }
+    .modal-lk-content > div {
+      padding: 0 0 30px;
+      text-align: center;
+      color: #242F79;
+      border-bottom: 4px solid rgba(96, 71, 150, 0.6); }
+    .modal-lk-content > ul {
+      overflow: hidden;
+      border-radius: 0 0 35px 35px; }
+      .modal-lk-content > ul > li {
+        padding: 8px 16px;
+        margin: 0 0 8px;
+        background: linear-gradient(180deg, rgba(209, 198, 239, 0.66) 1.56%, rgba(255, 255, 255, 0.07) 44.79%, rgba(157, 131, 218, 0.23) 100%);
+        cursor: pointer; }
+        .modal-lk-content > ul > li:last-of-type {
+          margin: 0; }
+
+@media screen and (max-width: 870px) {
+  .modal-lk {
+    padding-top: 178px; }
+    .modal-lk .modal-lk-title {
+      top: -178px;
+      padding: 36px 0 0; }
+      .modal-lk .modal-lk-title > img {
+        width: 70px;
+        height: 70px; }
+      .modal-lk .modal-lk-title > span {
+        font-family: "appetite";
+        font-size: 36px;
+        line-height: normal;
+        white-space: normal; } }
+.modal-qr .modal-wrapper {
+  text-align: center; }
+  .modal-qr .modal-wrapper .modal__text {
+    margin: 0 0 8px; }
+
+.main {
+  position: relative;
+  background: url("./images/background.png") center 0 no-repeat;
+  background-size: cover; }
+  .main-wrapper {
+    max-width: 1440px;
+    margin: 0 auto;
+    padding: 0 48px;
+    box-sizing: border-box;
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    height: 100%; }
+    .main-wrapper > div {
+      width: 100%;
+      margin: auto;
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between; }
+
+.button-to-lk {
+  font-family: "appetite";
+  font-size: 36px;
+  line-height: 36px;
+  position: relative;
+  padding: 15px 34px;
+  color: #fff;
+  text-transform: uppercase;
+  border-radius: 51px;
+  cursor: pointer;
+  max-width: 480px; }
+  .button-to-lk span {
+    position: relative;
+    z-index: 1; }
+  .button-to-lk:before, .button-to-lk:after {
+    position: absolute;
+    border-radius: 51px;
+    content: ""; }
+  .button-to-lk:before {
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(to bottom right, #947CC5, #634C94); }
+  .button-to-lk:after {
+    top: 6px;
+    left: 6px;
+    width: calc(100% - 12px);
+    height: calc(100% - 12px);
+    background: linear-gradient(180deg, rgba(96, 71, 150, 0) 0%, #604796 76.96%), #967DD0; }
+
+@media screen and (min-width: 1600px) {
+  .main-wrapper > div {
+    flex-direction: column;
+    align-items: self-start;
+    gap: 48px 0; } }
+@media screen and (max-width: 1100px) {
+  .height100 {
+    height: inherit; }
+
+  .main {
+    background: url("./images/background-tablet.png") center 0 no-repeat;
+    background-size: cover; }
+    .main-wrapper > div {
+      flex-direction: column;
+      align-items: center;
+      gap: 48px 0;
+      padding: 540px 24px 120px; } }
+@media screen and (max-width: 870px) {
+  .main {
+    background: url("./images/background-mobile.png") center 0 no-repeat;
+    background-size: cover; }
+    .main-wrapper > div {
+      padding: 48vw 0 148px; } }
+
+/*# sourceMappingURL=index.css.map */
