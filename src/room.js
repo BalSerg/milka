@@ -17,7 +17,7 @@ const topValue = 160;
 
 const heightTitleInModalGift = 104;
 const paddingTopInModalGift = 88;
-const paddingInnerInModalGift = 48;
+const paddingInnerInModalGift = 32;
 const borderWidthInModalGift = 6;
 
 const availableWidth = document.documentElement.scrollWidth;
@@ -108,7 +108,7 @@ class RoomApp extends BaseRoomApp {
     // this.showSecondOnboarding();
     // this.callModallAr();
     // this.deleteGiftFromRoom();
-    // this.setHeightModalWithGifts();
+    this.setHeightModalWithGifts();
     // this.moveRoom();
     // this.styleFixes();
     // this.setNumberRoom();
@@ -163,6 +163,9 @@ class RoomApp extends BaseRoomApp {
     //-------
 
     this.styleFixes();
+    if (window.screen.width <= 870) {
+      this.elMenu.style.width = `${window.screen.height}px`;
+    }
 
     /**
      * РАБОТАТЬ ТУТ =)
@@ -611,7 +614,8 @@ class RoomApp extends BaseRoomApp {
           this.elOnboardingWrapperGift.style.top = `${
             (availableHeight - this.elGiftsContent.offsetHeight) / 2 + 40 + 6
           }px`;
-        } else {
+        }
+        else {
           this.elOnboardingWrapperGift.style.top = `${
             paddingTopInModalGift +
             heightTitleInModalGift +

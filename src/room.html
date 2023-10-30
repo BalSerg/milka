@@ -3,6 +3,10 @@
   <head>
     <meta charset="UTF-8" />
     <title>milka</title>
+    <meta
+      name="viewport"
+      content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0, viewport-fit=cover"
+    />
     <script>
       window.giftsInModal = [
         { src: "gift1", class: "is-can-get" },
@@ -42,6 +46,10 @@
       </div>
       <div class="rooms js-rooms">
         <div class="room-content is-hidden">
+          <!-- Для тутроиалов 4 картинки и у них меняется только цифра в адресе в зависимости от четверти -->
+          <div class="tutorial-room js-tutorial-room">
+            <img src="assets/onboardingRoom1.png" alt=""/>
+          </div>
           <canvas class="pixifeed"></canvas>
           <!--<div
         class="room-wrapper js-current-room"
