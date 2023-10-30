@@ -1,8 +1,7 @@
 .gifts {
   display: flex;
   flex-wrap: wrap;
-  gap: 32px;
-  justify-content: center;
+  gap: 48px;
 
   &__item {
     $width: 128px;

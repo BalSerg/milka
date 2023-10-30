@@ -47,7 +47,7 @@
       display: block;
 
       >span {
-        padding: 0 0 0 138px;
+        padding: 20px 0 0 138px;
 
         &:first-of-type {
           display: block;
@@ -99,6 +99,15 @@
 
 @include mobile {
   .onboarding {
+    &-gift {
+      >div {
+        >span {
+          padding: 20px 0 0;
+          width: 80%;
+        }
+      }
+    }
+
     >div {
       left: 70px;
       top: 120px;

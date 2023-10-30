@@ -17,7 +17,7 @@ const topValue = 160;
 
 const heightTitleInModalGift = 104;
 const paddingTopInModalGift = 88;
-const paddingInnerInModalGift = 32;
+const paddingInnerInModalGift = 48;
 const borderWidthInModalGift = 6;
 
 const availableWidth = document.documentElement.scrollWidth;
@@ -104,7 +104,7 @@ class RoomApp extends BaseRoomApp {
 
     // this.resize = this.resize.bind(this);
     // this.initListeners();
-    // this.setBlockGifts();
+    this.setBlockGifts();
     // this.showSecondOnboarding();
     // this.callModallAr();
     // this.deleteGiftFromRoom();
@@ -229,23 +229,28 @@ class RoomApp extends BaseRoomApp {
         this.elMenu.classList.remove("z-index-max");
       }, 7500);
 
-      this.elOnboardingContent.style.left = `${
-        this.elBlockRange.getBoundingClientRect().x +
-        this.elBlockRange.offsetHeight
-      }px`;
-      this.elOnboardingContent.style.top = `50px`; // 50px - костыль
-      this.elOnboardingContentGift.style.left = `${
-        this.elMenu.getBoundingClientRect().x - this.elMenu.offsetWidth
-      }px`;
-      this.elOnboardingContentGift.style.top = `${
-        this.elMenu.getBoundingClientRect().y + this.elMenu.offsetHeight
-      }px`;
-      this.elOnboardingContentLk.style.left = `${
-        this.elMenu.getBoundingClientRect().x - this.elMenu.offsetWidth / 4
-      }px`;
-      this.elOnboardingContentLk.style.top = `${
-        this.elMenu.getBoundingClientRect().y + this.elMenu.offsetHeight + 50
-      }px`;
+      if (window.screen.width > 820) {
+        this.elOnboardingContent.style.left = `${
+          this.elBlockRange.getBoundingClientRect().x +
+          this.elBlockRange.offsetHeight
+        }px`;
+        //this.elOnboardingContent.style.top = `50px`; // 50px - костыль
+        this.elOnboardingContent.style.top = `${
+          this.elBlockRange.getBoundingClientRect().y - this.elOnboardingContent.offsetHeight
+        }px`;
+        this.elOnboardingContentGift.style.left = `${
+          this.elMenu.getBoundingClientRect().x - this.elMenu.offsetWidth
+        }px`;
+        this.elOnboardingContentGift.style.top = `${
+          this.elMenu.getBoundingClientRect().y + this.elMenu.offsetHeight
+        }px`;
+        this.elOnboardingContentLk.style.left = `${
+          this.elMenu.getBoundingClientRect().x - this.elMenu.offsetWidth / 4
+        }px`;
+        this.elOnboardingContentLk.style.top = `${
+          this.elMenu.getBoundingClientRect().y + this.elMenu.offsetHeight + 50
+        }px`;
+      }
     }
   }
 

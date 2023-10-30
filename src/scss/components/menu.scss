@@ -36,7 +36,7 @@
   }
 }
 
-@media screen and (max-width: 1000px){
+@include mobile {
   .menu {
     left: inherit;
     right: 86px;
