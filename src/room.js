@@ -164,7 +164,9 @@ class RoomApp extends BaseRoomApp {
 
     this.styleFixes();
     if (window.screen.width <= 870) {
-      this.elMenu.style.width = `${window.screen.height}px`;
+      setTimeout(() => {
+        this.elMenu.style.width = `${window.screen.height}px`;
+      }, 1000)
     }
 
     /**
@@ -671,10 +673,7 @@ class RoomApp extends BaseRoomApp {
 
     // Обработка нажатия на кнопку Подарки в меню
     this.elCallGiftModal.addEventListener("click", () => {
-      if (
-        this.state.firstVisit === true &&
-        this.state.tutorials.giftsModal === false
-      ) {
+      if (this.state.firstVisit === true && this.state.tutorials.giftsModal === false) {
         this.elOnboardingGift.classList.add("is-visibility");
         this.elOnboardingWrapperGift.style.left = `${
           (availableWidth - this.elGifts.offsetWidth) / 2
@@ -744,11 +743,8 @@ class RoomApp extends BaseRoomApp {
         heightTitleInModalGift -
         paddingBottom;
       this.elGiftsContent.style.height = `${valueHeight}px`;
-      this.modalGiftsContentMobile =
-        valueHeight - paddingInnerInModalGift * 2 - borderWidthInModalGift * 2;
-      getElement(
-        ".modal-gifts-content",
-      ).style.height = `${this.modalGiftsContentMobile}px`;
+      this.modalGiftsContentMobile = valueHeight - paddingInnerInModalGift * 2 - borderWidthInModalGift * 2;
+      getElement(".modal-gifts-content").style.height = `${this.modalGiftsContentMobile}px`;
     }
   }
 
@@ -887,7 +883,6 @@ class RoomApp extends BaseRoomApp {
     if (this.state.tutorials.giftsModal === true) {
       return;
     }
-
     this.elOnboardingGift.classList.add("is-added");
     if (this.elOnboardingGift.classList.contains("is-added")) {
       setTimeout(() => {
@@ -912,7 +907,7 @@ class RoomApp extends BaseRoomApp {
     const elGifts = getElement(".js-gifts-content");
     elGifts.removeAttribute("style");
     const elWidth = 128;
-    const margin = 32;
+    const margin = 48;
     const maxCount = 8;
     const borderWidth = 6;
     const scrollWidth = 4;
@@ -922,18 +917,18 @@ class RoomApp extends BaseRoomApp {
       outerPadding = 16;
       innerPadding = 48;
     }
+    console.log(availableWidth, outerPadding)
     const availableWidthBlock = availableWidth - outerPadding * 2;
     const generalWidth =
-      availableWidthBlock -
-      innerPadding -
-      (innerPadding - margin - scrollWidth) -
-      borderWidth * 2;
+      availableWidthBlock - 40 *2 - 6 *2;
+      //innerPadding * 2 -
+      //borderWidth * 2;
     let countElements = Math.trunc(generalWidth / (elWidth + margin));
     if (countElements >= maxCount) {
       countElements = maxCount;
     }
     let newWidth;
-    if (window.navigator.userAgent.indexOf("Fire")) {
+    if (window.navigator.userAgent.indexOf("Fire") !== -1) {
       newWidth =
         margin * (countElements - 1) +
         countElements * elWidth +
@@ -948,7 +943,7 @@ class RoomApp extends BaseRoomApp {
         borderWidth * 2 +
         scrollWidth;
     }
-    elGifts.style.width = `${newWidth}px`;
+    elGifts.style.maxWidth = `${newWidth}px`;
   }
 
   renderGame(time, deltaTime, frame) {
