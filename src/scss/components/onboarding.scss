@@ -14,7 +14,14 @@
       max-width: 315px;
 
       color: #604796;
-      text-shadow: 2px 2px 0 $white, 2px -2px 0 $white, -2px -2px 0 $white, -2px 2px 0 $white;
+      text-shadow: -2px -2px $white,
+                    0   -2px $white,
+                    2px -2px $white,
+                    2px  0   $white,
+                    2px  2px $white,
+                    0    2px $white,
+                    -2px  2px $white,
+                    -2px  0   $white;
     }
   }
 
