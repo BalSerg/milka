@@ -488,9 +488,32 @@ class RoomApp extends BaseRoomApp {
 
         this.tutorialGift.classList.remove("is-hidden");
         const tutorialImage = this.tutorialGift.querySelector("img");
+        alert(556 *100 / document.documentElement.scrollWidth);
+        if(corner.includes('right')) {
+          if(window.screen.width > 870) {
+            // 556 - изначальный размер картинки, 1.9 во столько раз картника уменьшена стилем 20%
+            tutorialImage.style.left = `${stagePos.x - (556 / 1.9)}px`;
+          }
+          else {
+            // 556 - изначальный размер картинки, 3.8 во столько раз картника уменьшена стилем 40%
+            tutorialImage.style.left = `${stagePos.x - (556 / 3.4)}px`;
+          }
+
+        }
+        else {
+          tutorialImage.style.left = `${stagePos.x}px`;
+        }
         tutorialImage.style.top = `${stagePos.y}px`;
-        tutorialImage.style.left = `${stagePos.x}px`;
+
         tutorialImage.src = `assets/onboardingRoom${corner}.png`;
+        this.tutorialGift.addEventListener('click' , () => {
+          this.tutorialGift.classList.add('is-hidden');
+        })
+        setTimeout(() => {
+          if(!this.tutorialGift.classList.contains('is-hidden')) {
+            this.tutorialGift.classList.add('is-hidden');
+          }
+        }, 5000)
       }
     }
 
