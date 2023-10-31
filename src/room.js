@@ -34,6 +34,7 @@ class RoomApp extends BaseRoomApp {
 
       tutorials: {
         giftsModal: false,
+        firstGift: false,
       },
 
       draggingGift: false,
@@ -51,10 +52,9 @@ class RoomApp extends BaseRoomApp {
       currentRoom: 1,
     });
 
-    if(window.screen.width >= 870) {
+    if (window.screen.width >= 870) {
       this.giftsInModal = window.giftsInModal || [];
-    }
-    else {
+    } else {
       this.giftsInModal = window.giftsInModalMobile || [];
     }
 
@@ -101,6 +101,8 @@ class RoomApp extends BaseRoomApp {
     this.elOnboardingGift = getElement(".js-onboarding-gift");
     this.elLinkSave = getElement(".js-link-save");
 
+    this.tutorialGift = getElement(".js-tutorial-room");
+
     // this.elLoader = getElement(".js-loader");
 
     this.modalGiftsContentMobile = 0;
@@ -138,8 +140,8 @@ class RoomApp extends BaseRoomApp {
     if (window.screen.width <= 870) {
       this.elMenu.style.width = `${window.screen.height}px`;
     }
-    this.elBlockRange.classList.remove('is-hidden');
-    this.elMenu.classList.remove('is-hidden');
+    this.elBlockRange.classList.remove("is-hidden");
+    this.elMenu.classList.remove("is-hidden");
     this.showTutorial();
 
     // this.sprites.bg = new PIXI.Sprite(this.resources.bg.texture);
@@ -242,7 +244,8 @@ class RoomApp extends BaseRoomApp {
         }px`;
         //this.elOnboardingContent.style.top = `50px`; // 50px - костыль
         this.elOnboardingContent.style.top = `${
-          this.elBlockRange.getBoundingClientRect().y - this.elOnboardingContent.offsetHeight
+          this.elBlockRange.getBoundingClientRect().y -
+          this.elOnboardingContent.offsetHeight
         }px`;
         this.elOnboardingContentGift.style.left = `${
           this.elMenu.getBoundingClientRect().x - this.elMenu.offsetWidth
@@ -464,6 +467,31 @@ class RoomApp extends BaseRoomApp {
         duration: 1,
         ease: "back.out",
       });
+
+      if (this.state.tutorials.firstGift === false) {
+        this.state.tutorials.firstGift = true;
+
+        const stagePos = g.getGlobalPosition();
+        let corner = "";
+
+        if (stagePos.x <= this.width / 2) {
+          corner += "_left";
+        } else {
+          corner += "_right";
+        }
+
+        if (stagePos.y <= this.height / 2) {
+          corner += "_top";
+        } else {
+          corner += "_bottom";
+        }
+
+        this.tutorialGift.classList.remove("is-hidden");
+        const tutorialImage = this.tutorialGift.querySelector("img");
+        tutorialImage.style.top = `${stagePos.y}px`;
+        tutorialImage.style.left = `${stagePos.x}px`;
+        tutorialImage.src = `assets/onboardingRoom${corner}.png`;
+      }
     }
 
     this.sprites[spriteName] = g;
@@ -610,9 +638,12 @@ class RoomApp extends BaseRoomApp {
 
     // Нажатие на пункт Мои подарки в Модалке ЛК
     this.elLinkGift.addEventListener("click", () => {
-      this.elModalGifts.classList.add('is-visibility');
-      this.elModalLk.classList.remove('is-visibility');
-      if (this.state.firstVisit === true && this.state.tutorials.giftsModal === false) {
+      this.elModalGifts.classList.add("is-visibility");
+      this.elModalLk.classList.remove("is-visibility");
+      if (
+        this.state.firstVisit === true &&
+        this.state.tutorials.giftsModal === false
+      ) {
         this.elOnboardingGift.classList.add("is-visibility");
         this.elOnboardingWrapperGift.style.left = `${
           (availableWidth - this.elGifts.offsetWidth) / 2
@@ -625,8 +656,7 @@ class RoomApp extends BaseRoomApp {
           this.elOnboardingWrapperGift.style.top = `${
             (availableHeight - this.elGiftsContent.offsetHeight) / 2 + 40 + 6
           }px`;
-        }
-        else {
+        } else {
           this.elOnboardingWrapperGift.style.top = `${
             paddingTopInModalGift +
             heightTitleInModalGift +
@@ -711,7 +741,10 @@ class RoomApp extends BaseRoomApp {
 
     // Обработка нажатия на кнопку Подарки в меню
     this.elCallGiftModal.addEventListener("click", () => {
-      if (this.state.firstVisit === true && this.state.tutorials.giftsModal === false) {
+      if (
+        this.state.firstVisit === true &&
+        this.state.tutorials.giftsModal === false
+      ) {
         this.elOnboardingGift.classList.add("is-visibility");
         this.elOnboardingWrapperGift.style.left = `${
           (availableWidth - this.elGifts.offsetWidth) / 2
@@ -724,8 +757,7 @@ class RoomApp extends BaseRoomApp {
           this.elOnboardingWrapperGift.style.top = `${
             (availableHeight - this.elGiftsContent.offsetHeight) / 2 + 40 + 6
           }px`;
-        }
-        else {
+        } else {
           this.elOnboardingWrapperGift.style.top = `${
             paddingTopInModalGift +
             heightTitleInModalGift +
@@ -782,8 +814,11 @@ class RoomApp extends BaseRoomApp {
         heightTitleInModalGift -
         paddingBottom;
       this.elGiftsContent.style.height = `${valueHeight}px`;
-      this.modalGiftsContentMobile = valueHeight - paddingInnerInModalGift * 2 - borderWidthInModalGift * 2;
-      getElement(".modal-gifts-content").style.height = `${this.modalGiftsContentMobile}px`;
+      this.modalGiftsContentMobile =
+        valueHeight - paddingInnerInModalGift * 2 - borderWidthInModalGift * 2;
+      getElement(
+        ".modal-gifts-content",
+      ).style.height = `${this.modalGiftsContentMobile}px`;
     }
   }
 
@@ -958,12 +993,12 @@ class RoomApp extends BaseRoomApp {
       outerPadding = 16;
       innerPadding = 24;
     }
-    console.log(availableWidth, outerPadding)
+    console.log(availableWidth, outerPadding);
     const availableWidthBlock = availableWidth - outerPadding * 2;
     const generalWidth =
-      availableWidthBlock - innerPadding *2 - borderWidth *2;
-      //innerPadding * 2 -
-      //borderWidth * 2;
+      availableWidthBlock - innerPadding * 2 - borderWidth * 2;
+    //innerPadding * 2 -
+    //borderWidth * 2;
     let countElements = Math.trunc(generalWidth / (elWidth + margin));
     if (countElements >= maxCount) {
       countElements = maxCount;
