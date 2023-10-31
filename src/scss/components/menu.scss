@@ -41,7 +41,8 @@
     left: inherit;
     right: 86px;
 
-    padding: 0 32px 0 88px;
+    width: 100%;
+    padding: 0 32px 0 150px;
     display: flex;
     justify-content: space-between;
     transform: rotate(-90deg);
@@ -55,13 +56,13 @@
 
       transform: rotate(90deg);
 
+      &:first-of-type {
+        background-image: url("./images/gift.svg");
+      }
+
       &:last-of-type {
         background-image: url("./images/lk.svg");
         margin-left: auto;
-      }
-
-      &:first-of-type {
-        background-image: url("./images/gift.svg");
       }
     }
   }

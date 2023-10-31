@@ -123,6 +123,7 @@ class RoomsApp {
     // Обработка нажатия кнопки Сохранить
     this.elLinkSave.addEventListener("click", () => {
       this.elModalLk.classList.remove("is-visibility");
+      this.elCallLkModal.classList.remove('is-hidden');
     });
 
     // Закрытие модалок по кнопке Escc

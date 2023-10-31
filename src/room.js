@@ -105,8 +105,6 @@ class RoomApp extends BaseRoomApp {
 
     this.modalGiftsContentMobile = 0;
 
-    this.showTutorial();
-
     // this.resize = this.resize.bind(this);
     // this.initListeners();
     this.setBlockGifts();
@@ -137,6 +135,12 @@ class RoomApp extends BaseRoomApp {
     this.roomsList.classList.add(`room${this.state.currentRoom}`);
 
     this.createEmitter();
+    if (window.screen.width <= 870) {
+      this.elMenu.style.width = `${window.screen.height}px`;
+    }
+    this.elBlockRange.classList.remove('is-hidden');
+    this.elMenu.classList.remove('is-hidden');
+    this.showTutorial();
 
     // this.sprites.bg = new PIXI.Sprite(this.resources.bg.texture);
     // this.sprites.bg.anchor.set(0.5, 0);
@@ -168,11 +172,6 @@ class RoomApp extends BaseRoomApp {
     //-------
 
     this.styleFixes();
-    if (window.screen.width <= 870) {
-      setTimeout(() => {
-        this.elMenu.style.width = `${window.screen.height}px`;
-      }, 1000)
-    }
 
     /**
      * РАБОТАТЬ ТУТ =)
