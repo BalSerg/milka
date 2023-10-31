@@ -488,7 +488,6 @@ class RoomApp extends BaseRoomApp {
 
         this.tutorialGift.classList.remove("is-hidden");
         const tutorialImage = this.tutorialGift.querySelector("img");
-        alert(556 *100 / document.documentElement.scrollWidth);
         if(corner.includes('right')) {
           if(window.screen.width > 870) {
             // 556 - изначальный размер картинки, 1.9 во столько раз картника уменьшена стилем 20%
