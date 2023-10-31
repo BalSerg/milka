@@ -115,7 +115,33 @@
   }
 }
 
-@media screen and (max-width: 820px) {
+@include mobile {
+  .gifts {
+    gap: 24px;
+
+    &__item {
+      $width: 80px;
+
+      position: relative;
+
+      width: $width;
+      height: $width;
+
+      &:nth-child(11),
+      &:nth-child(14) {
+        >img {
+          width: 100%;
+        }
+      }
+
+      &.is-can-get {
+        >img {
+          max-height: 70px;
+        }
+      }
+    }
+  }
+
   .gift {
     > img {
       max-width: 80px !important;

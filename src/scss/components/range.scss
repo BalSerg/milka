@@ -6,6 +6,21 @@
   transform: rotate(-90deg);
   transform-origin: 0;
 
+  z-index: 5;
+
+  &:before {
+    position: absolute;
+    left: 0;
+    top: 0;
+
+    width: 100%;
+    height: 100%;
+
+    background-color: transparent;
+
+    content: "";
+  }
+
   &-top,
   &-bottom {
     $width: 60px;
@@ -35,6 +50,9 @@
   }
 
   > input {
+    position: relative;
+    z-index: 2;
+
     height: 60px;
     margin: 0 0 0 54px;
     width: calc(100% - 54px - 54px);

@@ -83,6 +83,17 @@
     &-wrapper {
       padding: 40px 32px;
     }
+
+    &__cross {
+      $width: 40px;
+
+      width: $width;
+      height: $width;
+      top: calc(#{$width} / -2);
+      right: calc(#{$width} / -2);
+
+      background-size: cover;
+    }
   }
 }
 
@@ -164,7 +175,7 @@
       }
 
       .modal__cross {
-        top: -185px;
+        top: -155px;
         right: -6px;
       }
 
@@ -177,7 +188,7 @@
 
       &-content {
         padding: 0;
-        margin: 48px 6px 48px 48px;
+        margin: 24px 6px 24px 24px;
       }
     }
   }

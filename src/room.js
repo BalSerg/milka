@@ -17,7 +17,7 @@ const topValue = 160;
 
 const heightTitleInModalGift = 104;
 const paddingTopInModalGift = 88;
-const paddingInnerInModalGift = 48;
+const paddingInnerInModalGift = 24;
 const borderWidthInModalGift = 6;
 
 const availableWidth = document.documentElement.scrollWidth;
@@ -51,7 +51,12 @@ class RoomApp extends BaseRoomApp {
       currentRoom: 1,
     });
 
-    this.giftsInModal = window.giftsInModal || [];
+    if(window.screen.width >= 870) {
+      this.giftsInModal = window.giftsInModal || [];
+    }
+    else {
+      this.giftsInModal = window.giftsInModalMobile || [];
+    }
 
     this.gifts = {};
     this.room = null;
@@ -231,7 +236,7 @@ class RoomApp extends BaseRoomApp {
         this.elMenu.classList.remove("z-index-max");
       }, 7500);
 
-      if (window.screen.width > 820) {
+      if (window.screen.width > 870) {
         this.elOnboardingContent.style.left = `${
           this.elBlockRange.getBoundingClientRect().x +
           this.elBlockRange.offsetHeight
@@ -606,7 +611,41 @@ class RoomApp extends BaseRoomApp {
 
     // Нажатие на пункт Мои подарки в Модалке ЛК
     this.elLinkGift.addEventListener("click", () => {
-      if (this.arrGiftsInModal.length === 0) {
+      this.elModalGifts.classList.add('is-visibility');
+      this.elModalLk.classList.remove('is-visibility');
+      if (this.state.firstVisit === true && this.state.tutorials.giftsModal === false) {
+        this.elOnboardingGift.classList.add("is-visibility");
+        this.elOnboardingWrapperGift.style.left = `${
+          (availableWidth - this.elGifts.offsetWidth) / 2
+        }px`;
+
+        if (window.screen.width > 870) {
+          this.elOnboardingWrapperGift.style.left = `${
+            (availableWidth - this.elGifts.offsetWidth) / 2
+          }px`;
+          this.elOnboardingWrapperGift.style.top = `${
+            (availableHeight - this.elGiftsContent.offsetHeight) / 2 + 40 + 6
+          }px`;
+        }
+        else {
+          this.elOnboardingWrapperGift.style.top = `${
+            paddingTopInModalGift +
+            heightTitleInModalGift +
+            borderWidthInModalGift +
+            paddingInnerInModalGift
+          }px`;
+          this.elOnboardingWrapperGift.style.left = `${
+            (window.screen.width - this.elGiftsContent.offsetWidth) / 2 +
+            paddingInnerInModalGift +
+            borderWidthInModalGift
+          }px`;
+        }
+
+        setTimeout(() => {
+          this.showSecondOnboarding();
+        }, 2500);
+      }
+      /*if (this.arrGiftsInModal.length === 0) {
         this.createBlockInModalGift();
       }
       this.elModalLk.classList.remove("is-visibility");
@@ -638,7 +677,7 @@ class RoomApp extends BaseRoomApp {
         setTimeout(() => {
           this.showSecondOnboarding();
         }, 2500);
-      }
+      }*/
     });
 
     // Скрытие онбоардинга в модалке с подарками по нажатию
@@ -686,7 +725,8 @@ class RoomApp extends BaseRoomApp {
           this.elOnboardingWrapperGift.style.top = `${
             (availableHeight - this.elGiftsContent.offsetHeight) / 2 + 40 + 6
           }px`;
-        } else {
+        }
+        else {
           this.elOnboardingWrapperGift.style.top = `${
             paddingTopInModalGift +
             heightTitleInModalGift +
@@ -906,21 +946,23 @@ class RoomApp extends BaseRoomApp {
 
     const elGifts = getElement(".js-gifts-content");
     elGifts.removeAttribute("style");
-    const elWidth = 128;
-    const margin = 48;
+    let elWidth = 128;
+    let margin = 48;
     const maxCount = 8;
     const borderWidth = 6;
     const scrollWidth = 4;
     let outerPadding = 48;
     let innerPadding = 40;
     if (window.screen.width <= 870) {
+      elWidth = 80;
+      margin = 24;
       outerPadding = 16;
-      innerPadding = 48;
+      innerPadding = 24;
     }
     console.log(availableWidth, outerPadding)
     const availableWidthBlock = availableWidth - outerPadding * 2;
     const generalWidth =
-      availableWidthBlock - 40 *2 - 6 *2;
+      availableWidthBlock - innerPadding *2 - borderWidth *2;
       //innerPadding * 2 -
       //borderWidth * 2;
     let countElements = Math.trunc(generalWidth / (elWidth + margin));
