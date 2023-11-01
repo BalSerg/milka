@@ -138,7 +138,7 @@ class RoomApp extends BaseRoomApp {
 
     this.createEmitter();
     if (window.screen.width <= 870) {
-      this.elMenu.style.width = `${window.screen.height}px`;
+      this.elMenu.style.width = `${this.roomsList.offsetHeight}px`;
     }
     this.elBlockRange.classList.remove("is-hidden");
     this.elMenu.classList.remove("is-hidden");
