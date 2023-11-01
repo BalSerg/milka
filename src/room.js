@@ -887,13 +887,15 @@ class RoomApp extends BaseRoomApp {
    */
   callModalAr() {
     if (window.screen.width >= config.size.desktop) {
+
+      //Собираем все кнопки с классом js-call-ar
       getArrayElements(".js-call-ar").forEach((item) => {
-        item.addEventListener("click", () => {
-          const indexGift = this.getIndexElementFromCollection(item);
+        item.addEventListener("click", () => { // На каждую вешаем событие
+          const indexGift = this.getIndexElementFromCollection(item); // Определяем индекс подарка
           getElement(
             ".js-qr-code",
-          ).src = `assets/images/qr-codes/qr-code${indexGift}.png`;
-          getElement(".js-qr").classList.add("is-visibility");
+          ).src = `assets/images/qr-codes/qr-code${indexGift}.png`;// Индекс добавляем в адрес картинки с qr кодом
+          getElement(".js-qr").classList.add("is-visibility"); // Показываем модалку
         });
       });
     }
@@ -929,38 +931,6 @@ class RoomApp extends BaseRoomApp {
 
             return;
             // this.createBlock(i + 1);
-          }
-
-          if (this.state.firstVisit) {
-            const elDiv = document.createElement("div");
-            const elContent = document.createElement("div");
-            elDiv.setAttribute("class", "onboarding");
-            elDiv.classList.add("onboarding-room");
-            elDiv.classList.add("z-index-max");
-            const isClickBoardingGiftRoom = () => {
-              elDiv.remove();
-              getElement(".js-rooms-shadow").classList.add("is-hidden");
-              this.state.firstVisit = false;
-            };
-            elDiv.addEventListener("click", isClickBoardingGiftRoom);
-            const elSpan = document.createElement("span");
-            elSpan.textContent =
-              "Кликни, чтобы перейти в ar или убрать в коробку";
-            const elImg = document.createElement("img");
-            elImg.src = "assets/images/finger2.svg";
-            elContent.append(elSpan);
-            elContent.append(elImg);
-            elDiv.append(elContent);
-            if (getElement(".gift1")) {
-              getElement(".gift1").append(elDiv);
-            }
-            setTimeout(() => {
-              if (this.state.firstVisit) {
-                getElement(".onboarding-room").remove();
-                getElement(".js-rooms-shadow").classList.add("is-hidden");
-                this.state.firstVisit = false;
-              }
-            }, 2000);
           }
         });
       }
