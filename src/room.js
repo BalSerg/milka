@@ -490,8 +490,8 @@ class RoomApp extends BaseRoomApp {
 
         this.sprites.bg = new PIXI.TilingSprite(
           this.resources.sprites.textures["pixel_black.png"],
-          window.innerWidth * devicePixelRatio * 2,
-          window.innerHeight * devicePixelRatio * 2,
+          window.innerWidth * devicePixelRatio * 4,
+          window.innerHeight * devicePixelRatio * 4,
         );
         this.sprites.bg.anchor.set(0.5);
         this.sprites.bg.alpha = 0.65;
@@ -510,13 +510,13 @@ class RoomApp extends BaseRoomApp {
         const t = gsap.timeline();
         t.to(giftTMP, {
           pixi: { alpha: 1, scale },
-          delay: 0.3,
+          // delay: 0.2,
           duration: 1,
           ease: "back.out",
         }).to(giftTMP, {
           pixi: { alpha: 0 },
-          delay: 2,
-          duration: 0.3,
+          delay: 4.5,
+          duration: 0.2,
           onComplete: () => {
             this.room.removeChild(this.sprites.bg);
             this.sprites.bg = null;
@@ -550,6 +550,14 @@ class RoomApp extends BaseRoomApp {
             onComplete: () => {
               if (!this.tutorialGift.classList.contains("is-hidden")) {
                 this.tutorialGift.classList.add("is-hidden");
+              }
+
+              // FIXME
+              if (t) {
+                t.kill();
+
+                this.room.removeChild(this.sprites.bg);
+                this.sprites.bg = null;
               }
             },
           },
