@@ -43,7 +43,7 @@ class RoomsApp {
     this.elOnboardingChoice = getElement(".js-onboarding-choice");
     this.elLinkSave = getElement(".js-link-save");
     this.arrRooms = getArrayElements(".js-go-room");
-    this.arrMobileButtons = getArrayElements('.js-mobile-button')
+    this.arrMobileButtons = getArrayElements(".js-mobile-button");
 
     this.resize = this.resize.bind(this);
 
@@ -65,8 +65,10 @@ class RoomsApp {
 
   setWidthMobileButton() {
     this.arrMobileButtons.forEach((item) => {
-      item.style.width = this.arrRooms[this.arrRooms.length -1].offsetWidth + 'px';
-    })
+      // eslint-disable-next-line no-param-reassign
+      item.style.width =
+        this.arrRooms[this.arrRooms.length - 1].offsetWidth + "px";
+    });
   }
 
   initListeners() {
@@ -123,7 +125,7 @@ class RoomsApp {
     // Обработка нажатия кнопки Сохранить
     this.elLinkSave.addEventListener("click", () => {
       this.elModalLk.classList.remove("is-visibility");
-      this.elCallLkModal.classList.remove('is-hidden');
+      this.elCallLkModal.classList.remove("is-hidden");
     });
 
     // Закрытие модалок по кнопке Escc

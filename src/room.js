@@ -4,6 +4,8 @@ import * as PIXI from "pixi.js";
 import { gsap } from "gsap";
 import * as particles from "@pixi/particle-emitter";
 
+import { GlowFilter } from "pixi-filters";
+
 import { getElement, getArrayElements } from "./utils";
 import config from "./config";
 import giftsObj from "./data/data";
@@ -486,33 +488,72 @@ class RoomApp extends BaseRoomApp {
           corner += "_bottom";
         }
 
+        this.sprites.bg = new PIXI.TilingSprite(
+          this.resources.sprites.textures["pixel_black.png"],
+          window.innerWidth * devicePixelRatio * 2,
+          window.innerHeight * devicePixelRatio * 2,
+        );
+        this.sprites.bg.anchor.set(0.5);
+        this.sprites.bg.alpha = 0.65;
+        this.room.addChild(this.sprites.bg);
+
+        const giftTMP = new PIXI.Sprite(
+          this.resources.gifts.textures[`gift${num}.png`],
+        );
+        giftTMP.anchor.set(0.5);
+        giftTMP.scale.set(0);
+        giftTMP.angle = rotation;
+        giftTMP.position.set(x, y);
+        giftTMP.filters = [new GlowFilter({ distance: 20, outerStrength: 10 })];
+        this.sprites.bg.addChild(giftTMP);
+
+        const t = gsap.timeline();
+        t.to(giftTMP, {
+          pixi: { alpha: 1, scale },
+          delay: 0.3,
+          duration: 1,
+          ease: "back.out",
+        }).to(giftTMP, {
+          pixi: { alpha: 0 },
+          delay: 2,
+          duration: 0.3,
+          onComplete: () => {
+            this.room.removeChild(this.sprites.bg);
+            this.sprites.bg = null;
+          },
+        });
+
         this.tutorialGift.classList.remove("is-hidden");
         const tutorialImage = this.tutorialGift.querySelector("img");
-        if(corner.includes('right')) {
-          if(window.screen.width > 870) {
-            // 556 - изначальный размер картинки, 1.9 во столько раз картника уменьшена стилем 20%
-            tutorialImage.style.left = `${stagePos.x - (556 / 1.9)}px`;
+        if (corner.includes("right")) {
+          if (window.screen.width > 870) {
+            // 556 - изначальный размер картинки, 1.9 во столько раз картинка уменьшена стилем 20%
+            tutorialImage.style.left = `${stagePos.x - 556 / 1.9}px`;
+          } else {
+            // 556 - изначальный размер картинки, 3.8 во столько раз картинка уменьшена стилем 40%
+            tutorialImage.style.left = `${stagePos.x - 556 / 3.4}px`;
           }
-          else {
-            // 556 - изначальный размер картинки, 3.8 во столько раз картника уменьшена стилем 40%
-            tutorialImage.style.left = `${stagePos.x - (556 / 3.4)}px`;
-          }
-
-        }
-        else {
+        } else {
           tutorialImage.style.left = `${stagePos.x}px`;
         }
         tutorialImage.style.top = `${stagePos.y}px`;
 
         tutorialImage.src = `assets/onboardingRoom${corner}.png`;
-        this.tutorialGift.addEventListener('click' , () => {
-          this.tutorialGift.classList.add('is-hidden');
-        })
-        setTimeout(() => {
-          if(!this.tutorialGift.classList.contains('is-hidden')) {
-            this.tutorialGift.classList.add('is-hidden');
-          }
-        }, 5000)
+        this.tutorialGift.addEventListener("click", () => {
+          this.tutorialGift.classList.add("is-hidden");
+        });
+
+        gsap.to(
+          {},
+          {
+            duration: 5,
+            onComplete: () => {
+              if (!this.tutorialGift.classList.contains("is-hidden")) {
+                this.tutorialGift.classList.add("is-hidden");
+              }
+            },
+          },
+        );
       }
     }
 
@@ -887,14 +928,14 @@ class RoomApp extends BaseRoomApp {
    */
   callModalAr() {
     if (window.screen.width >= config.size.desktop) {
-
-      //Собираем все кнопки с классом js-call-ar
+      // Собираем все кнопки с классом js-call-ar
       getArrayElements(".js-call-ar").forEach((item) => {
-        item.addEventListener("click", () => { // На каждую вешаем событие
+        item.addEventListener("click", () => {
+          // На каждую вешаем событие
           const indexGift = this.getIndexElementFromCollection(item); // Определяем индекс подарка
           getElement(
             ".js-qr-code",
-          ).src = `assets/images/qr-codes/qr-code${indexGift}.png`;// Индекс добавляем в адрес картинки с qr кодом
+          ).src = `assets/images/qr-codes/qr-code${indexGift}.png`; // Индекс добавляем в адрес картинки с qr кодом
           getElement(".js-qr").classList.add("is-visibility"); // Показываем модалку
         });
       });
@@ -928,9 +969,6 @@ class RoomApp extends BaseRoomApp {
 
             // ЗДЕСЬ ДОБАВЛЯЕМ ЗАКРЫТИЕ МОДАЛКИ
             this.elModalGifts.classList.remove("is-visibility");
-
-            return;
-            // this.createBlock(i + 1);
           }
         });
       }
