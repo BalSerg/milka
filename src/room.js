@@ -428,6 +428,9 @@ class RoomApp extends BaseRoomApp {
     this.room.removeChild(this.gifts[`gift${num}`]);
     delete this.gifts[`gift${num}`];
 
+    const giftItem = getElement(`.gifts__item[data-id="${num}"]`, this.elGifts);
+    giftItem.classList.remove("is-active");
+
     console.log(this.gifts);
   }
 
@@ -800,6 +803,7 @@ class RoomApp extends BaseRoomApp {
           this.showSecondOnboarding();
         }, 2500);
       }
+
       /*if (this.arrGiftsInModal.length === 0) {
         this.createBlockInModalGift();
       }
