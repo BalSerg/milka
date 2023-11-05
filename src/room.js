@@ -584,7 +584,7 @@ class RoomApp extends BaseRoomApp {
         }
         tutorialImage.style.top = `${stagePos.y}px`;
 
-        tutorialImage.src = `assets/onboardingRoom${corner}.png`;
+        tutorialImage.src = `/assets/onboardingRoom${corner}.png`;
         this.tutorialGift.addEventListener("click", () => {
           this.tutorialGift.classList.add("is-hidden");
         });
@@ -846,27 +846,7 @@ class RoomApp extends BaseRoomApp {
 
     // Обработка нажатия на кнопку Сменить комнату
     this.elLinkChoice.addEventListener("click", () => {
-      window.location.href = "./rooms.html";
-      // this.elModalLk.classList.remove("is-visibility");
-      //
-      // // Удалить все из комнаты и убрать в коробку
-      // const arrGifts = this.elCurrentRoom.childNodes;
-      // for (let i = arrGifts.length - 1; i >= 0; i--) {
-      //   // Обратный порядок перебора массива, чтоб в массиве элементы по индексу не смещались
-      //   arrGifts[i].remove();
-      // }
-      //
-      // // При смене комнаты убираем в модалке подарков класс is-active у всех подарков
-      // for (let i = 0; i < this.arrGiftsInModal.length; i++) {
-      //   if (this.arrGiftsInModal[i].nodeType === 1) {
-      //     this.arrGiftsInModal[i].classList.remove("is-active");
-      //   }
-      // }
-      //
-      // this.elCallLkModal.classList.remove("is-hidden");
-      // this.elCallGiftModal.classList.add("is-hidden");
-      // this.setDefaultValueRoomRange();
-      // this.state.currentRoom = null;
+      window.location.href = "/personal/clear";
     });
 
     // Обработка нажатия на кнопку Подарки в меню
@@ -1003,7 +983,7 @@ class RoomApp extends BaseRoomApp {
       // const indexGift = this.getIndexElementFromCollection(item); // Определяем индекс подарка
       getElement(
         ".js-qr-code",
-      ).src = `assets/images/qr-codes/qr-code${giftID}.png`; // Индекс добавляем в адрес картинки с qr кодом
+      ).src = `/assets/images/qr-codes/qr-code${giftID}.png`; // Индекс добавляем в адрес картинки с qr кодом
       getElement(".js-qr").classList.add("is-visibility"); // Показываем модалку
       // });
       // });
@@ -1041,7 +1021,7 @@ class RoomApp extends BaseRoomApp {
         });
       }
       const elImg = document.createElement("img");
-      elImg.src = `assets/images/gifts/${gift.src}.png`;
+      elImg.src = `/assets/images/gifts/${gift.src}.png`;
       const elSpan = document.createElement("span");
       elSpan.textContent = `${index + 1}`;
       elGift.append(elSpan);

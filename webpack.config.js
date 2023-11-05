@@ -17,6 +17,7 @@ const ENV_URLS = {
   rooms: process.env.NODE_ENV === "production" ? "/personal" : "rooms.html",
   reset:
     process.env.NODE_ENV === "production" ? "/personal/reset" : "reset.html",
+  logout: "/logout",
 };
 
 let ENV_EMAIL = "example@mail.ru";
@@ -80,8 +81,8 @@ window.giftsInModal = [
 `;
 
 if (process.env.NODE_ENV === "production") {
-  ENV_EMAIL = `{{.Email}}`;
-  ENV_DATA = `{{.Data}}`;
+  ENV_EMAIL = `{{.User.Email}}`;
+  // ENV_DATA = `{{.Room}}`;
 }
 
 // Список HTML-ок, к каждой отдельный JS
@@ -187,6 +188,7 @@ module.exports = {
     filename: "[name].bundle.js",
     // filename: "main.js",
     path: path.resolve(__dirname, `build`),
+    publicPath: "/",
   },
   module: {
     rules: [
