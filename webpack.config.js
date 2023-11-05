@@ -10,6 +10,15 @@ const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 // окажется во всех HTML-файлах
 const metrikaHTML = ``;
 
+const ENV_URLS = {
+  register: process.env.NODE_ENV === "production" ? "/register" : "index.html",
+  login: process.env.NODE_ENV === "production" ? "/login" : "login.html",
+  room: process.env.NODE_ENV === "production" ? "{{.RoomLink}}" : "room.html",
+  rooms: process.env.NODE_ENV === "production" ? "/personal" : "rooms.html",
+  reset:
+    process.env.NODE_ENV === "production" ? "/personal/reset" : "reset.html",
+};
+
 let ENV_EMAIL = "example@mail.ru";
 let ENV_DATA = `
 window.giftsInModal = [
@@ -87,8 +96,10 @@ listOfHTML.forEach((html) => {
     new HtmlWebpackPlugin({
       templateParameters: {
         metrikaHTML,
+
         ENV_EMAIL,
         ENV_DATA,
+        ENV_URLS,
       },
       minify: {
         collapseWhitespace: process.env.NODE_ENV === "production",

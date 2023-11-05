@@ -1,11 +1,12 @@
 <!doctype html>
-<html lang="en" class="height100">
+<html lang="ru" class="height100">
   <head>
     <meta charset="UTF-8" />
-    <title>milka</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-
-    <!--    <link rel="stylesheet" href="styles/index.min.css">-->
+    <title>{{.Title}}</title>
+    <meta
+      name="viewport"
+      content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0, viewport-fit=cover"
+    />
   </head>
   <body class="height100">
     <%= metrikaHTML %>
@@ -13,24 +14,34 @@
     <main class="main height100">
       <div class="main-wrapper">
         <div>
-          <form class="form js-form">
+          <form
+            class="form js-form"
+            action="<%= ENV_URLS.register %>"
+            method="POST"
+          >
+            <input type="hidden" name="csrf" value="{{.CsrfToken}}" />
+
             <div class="form__name">РЕГИСТРАЦИЯ</div>
             <div class="form__name">Вход</div>
             <div class="form__wrapper">
               <div class="form__item">
                 <div class="form__item-text">Почта</div>
                 <div class="form__item-input">
-                  <input type="email" placeholder="example@gmail.com" />
+                  <input
+                    type="email"
+                    name="email"
+                    placeholder="example@gmail.com"
+                    required
+                  />
                 </div>
+                <div class="error-message">{{.FormError.Email}}</div>
               </div>
               <div class="form__item">
                 <div class="form__item-text">Пароль</div>
                 <div class="form__item-input js-password">
-                  <input type="password" />
+                  <input type="password" name="password" required />
                 </div>
-                <div class="error-message">
-                  Неверный пароль, попробуйте еще раз
-                </div>
+                <div class="error-message">{{.FormError.Password}}</div>
               </div>
               <button type="submit" class="button js-reg-submit">
                 <span>Готово</span>
@@ -46,21 +57,21 @@
               <span></span>
             </div>
           </form>
-          <button class="button-to-lk js-go-lk">
+
+          <a class="button-to-lk js-go-lk" href="<%= ENV_URLS.login %>">
             <span>УЖЕ ЕСТЬ ЛИЧНЫЙ КАБИНЕТ</span>
-          </button>
+          </a>
         </div>
       </div>
-      <div class="modal js-modal">
-        <div class="modal-wrapper">
-          <div class="modal__cross js-cross"></div>
-          <div class="modal__text">
-            Подробная инструкция по восстановлению пароля отправлена вам на
-            почту
-          </div>
-        </div>
-      </div>
+      <!--            <div class="modal js-modal">-->
+      <!--        <div class="modal-wrapper">-->
+      <!--          <div class="modal__cross js-cross"></div>-->
+      <!--          <div class="modal__text">-->
+      <!--            Подробная инструкция по восстановлению пароля отправлена вам на-->
+      <!--            почту-->
+      <!--          </div>-->
+      <!--        </div>-->
+      <!--      </div>-->
     </main>
-    <!--<script src="scripts/index.js"></script>-->
   </body>
 </html>
