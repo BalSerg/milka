@@ -4,6 +4,7 @@ export default {
     mobile: 820,
     desktop: 1100,
   },
+  clickGiftTimeout: 150,
   defaultScale: 1.2,
   contentButtonsForGift: [
     ["ПЕРЕЙТИ В AR", "ВЕРНУТЬ В КОРОБКУ"],

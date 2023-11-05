@@ -32,17 +32,19 @@ class RoomApp extends BaseRoomApp {
     super();
 
     this.state = Object.assign(this.state, {
-      firstVisit: true,
+      firstVisit: false,
 
       tutorials: {
-        giftsModal: false,
-        firstGift: false,
+        giftsModal: true,
+        firstGift: true,
       },
 
       draggingGift: false,
       dragGift: null,
       draggingRoom: false,
       dragData: null,
+
+      dragGiftStartTime: 0,
 
       isModal: false,
 
@@ -102,6 +104,10 @@ class RoomApp extends BaseRoomApp {
     this.elBoardingLk = getElement(".js-onboarding-lk");
     this.elOnboardingGift = getElement(".js-onboarding-gift");
     this.elLinkSave = getElement(".js-link-save");
+
+    this.giftMenu = getElement(".js-gift-menu");
+    this.giftBtnAR = getElement(".js-gift-ar", this.giftMenu);
+    this.giftBtnBox = getElement(".js-gift-box", this.giftMenu);
 
     this.tutorialGift = getElement(".js-tutorial-room");
 
@@ -290,10 +296,14 @@ class RoomApp extends BaseRoomApp {
     const onRoomDragStart = (e) => {
       this.state.dragData = e.data;
 
+      this.hideGiftMenu();
+
       // eslint-disable-next-line no-prototype-builtins
       if (e.target.hasOwnProperty("type") && e.target.type === "gift") {
         this.state.draggingGift = true;
         this.state.dragGift = e.target;
+
+        this.state.dragGiftStartTime = Date.now();
       }
 
       if (this.state.draggingGift === true) {
@@ -359,7 +369,21 @@ class RoomApp extends BaseRoomApp {
 
     const onRoomDragEnd = (e) => {
       if (this.state.draggingGift === true) {
-        console.log(this.state.dragGift.x, this.state.dragGift.y);
+        // console.log(this.state.dragGift.x, this.state.dragGift.y);
+        const now = Date.now();
+        const diff = Math.floor(now - this.state.dragGiftStartTime);
+        // console.log(diff);
+        if (diff < config.clickGiftTimeout) {
+          this.state.dragGiftStartTime = 0;
+          const stagePos = this.state.dragGift.getGlobalPosition();
+
+          this.showGiftMenu(
+            stagePos.x,
+            stagePos.y,
+            this.state.dragGift.name,
+            this.state.dragGift.num,
+          );
+        }
       }
 
       this.state.dragData = null;
@@ -373,6 +397,25 @@ class RoomApp extends BaseRoomApp {
       .on("pointerup", onRoomDragEnd)
       .on("pointerupoutside", onRoomDragEnd)
       .on("pointermove", onRoomDragMove);
+  }
+
+  hideGiftMenu() {
+    this.giftMenu.classList.add("is-hidden");
+    this.giftMenu.dataset.gift = "";
+    this.giftMenu.dataset.id = "";
+  }
+
+  showGiftMenu(x = 0, y = 0, name = "", num = "") {
+    if (name === "" || num === "") {
+      return;
+    }
+
+    this.giftMenu.style.left = `${x}px`;
+    this.giftMenu.style.top = `${y}px`;
+
+    this.giftMenu.dataset.gift = name;
+    this.giftMenu.dataset.id = num;
+    this.giftMenu.classList.remove("is-hidden");
   }
 
   removeGift(num = 1) {
@@ -646,6 +689,18 @@ class RoomApp extends BaseRoomApp {
   }
 
   initListeners() {
+    this.giftBtnAR.addEventListener("click", () => {
+      // console.log(this.giftMenu.dataset.gift, this.giftMenu.dataset.id);
+
+      this.callModalAr(this.giftMenu.dataset.id);
+      this.hideGiftMenu();
+    });
+
+    this.giftBtnBox.addEventListener("click", () => {
+      this.removeGift(this.giftMenu.dataset.id);
+      this.hideGiftMenu();
+    });
+
     /**
      * Вешаем события на кнопки комнат
      */
@@ -934,19 +989,20 @@ class RoomApp extends BaseRoomApp {
   /**
    * Функция вызова модалки AR но только на десктопе. В других разрешениях не нужна эта модалка
    */
-  callModalAr() {
+  // eslint-disable-next-line class-methods-use-this
+  callModalAr(giftID) {
     if (window.screen.width >= config.size.desktop) {
       // Собираем все кнопки с классом js-call-ar
-      getArrayElements(".js-call-ar").forEach((item) => {
-        item.addEventListener("click", () => {
-          // На каждую вешаем событие
-          const indexGift = this.getIndexElementFromCollection(item); // Определяем индекс подарка
-          getElement(
-            ".js-qr-code",
-          ).src = `assets/images/qr-codes/qr-code${indexGift}.png`; // Индекс добавляем в адрес картинки с qr кодом
-          getElement(".js-qr").classList.add("is-visibility"); // Показываем модалку
-        });
-      });
+      // getArrayElements(".js-call-ar").forEach((item) => {
+      //   item.addEventListener("click", () => {
+      // На каждую вешаем событие
+      // const indexGift = this.getIndexElementFromCollection(item); // Определяем индекс подарка
+      getElement(
+        ".js-qr-code",
+      ).src = `assets/images/qr-codes/qr-code${giftID}.png`; // Индекс добавляем в адрес картинки с qr кодом
+      getElement(".js-qr").classList.add("is-visibility"); // Показываем модалку
+      // });
+      // });
     }
   }
 
