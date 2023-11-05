@@ -1,45 +1,47 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="ru" class="height100">
-<head>
-  <meta charset="UTF-8">
-  <title>milka</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-</head>
-<body class="height100">
-<main class="main height100">
-  <div class="main-wrapper">
-    <div>
-      <form class="form js-form">
-        <div class="form__name">Сброс пароля</div>
-        <div class="form__wrapper">
-          <div class="form__item">
-            <div class="form__item-text">Введите новый пароль</div>
-            <div class="form__item-input js-password">
-              <input type="password" required/>
+  <head>
+    <meta charset="UTF-8" />
+    <title>milka</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+  </head>
+  <body class="height100">
+    <%= metrikaHTML %>
+
+    <main class="main height100">
+      <div class="main-wrapper">
+        <div>
+          <form class="form js-form">
+            <div class="form__name">Сброс пароля</div>
+            <div class="form__wrapper">
+              <div class="form__item">
+                <div class="form__item-text">Введите новый пароль</div>
+                <div class="form__item-input js-password">
+                  <input type="password" required />
+                </div>
+              </div>
+              <button type="submit" class="button">
+                <span>Сохранить</span>
+              </button>
             </div>
-          </div>
-          <button type="submit" class="button"><span>Сохранить</span></button>
+            <div class="form__decor is-mobile">
+              <span></span>
+              <span></span>
+              <span></span>
+              <span></span>
+              <span></span>
+              <span></span>
+              <span></span>
+            </div>
+          </form>
         </div>
-        <div class="form__decor is-mobile">
-          <span></span>
-          <span></span>
-          <span></span>
-          <span></span>
-          <span></span>
-          <span></span>
-          <span></span>
-        </div>
-      </form>
-    </div>
-  </div>
-  <div class="modal js-modal">
-    <div class="modal-wrapper">
-      <div class="modal__cross js-cross"></div>
-      <div class="modal__text">
-        Пароль успешно изменен
       </div>
-    </div>
-  </div>
-</main>
-</body>
+      <div class="modal js-modal">
+        <div class="modal-wrapper">
+          <div class="modal__cross js-cross"></div>
+          <div class="modal__text">Пароль успешно изменен</div>
+        </div>
+      </div>
+    </main>
+  </body>
 </html>

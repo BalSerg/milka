@@ -7,9 +7,9 @@
       name="viewport"
       content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0, viewport-fit=cover"
     />
-
   </head>
   <body class="height100">
+    <%= metrikaHTML %>
     <main class="main height100">
       <div class="menu js-menu">
         <div class="menu__item js-call-modal js-call-lk-modal"></div>
@@ -119,7 +119,7 @@
             <span>Личный кабинет</span>
           </div>
           <div class="modal-lk-content">
-            <div>examlpe@email.com</div>
+            <div><%= ENV_EMAIL %></div>
             <ul>
               <li class="js-link-choice">Сменить комнату</li>
               <li class="js-link-save">Сохранить</li>

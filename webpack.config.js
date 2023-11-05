@@ -10,6 +10,71 @@ const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 // окажется во всех HTML-файлах
 const metrikaHTML = ``;
 
+let ENV_EMAIL = "example@mail.ru";
+let ENV_DATA = `
+window.giftsInModal = [
+        { src: "gift1", class: "is-can-get" },
+        { src: "gift2", class: "is-can-get" },
+        { src: "gift3", class: "is-can-get" },
+        { src: "gift4", class: "is-can-get" },
+        { src: "gift5", class: "is-can-get" },
+        { src: "gift6", class: "is-can-get" },
+        { src: "gift7", class: "is-can-get" },
+        { src: "gift8", class: "is-can-get" },
+        { src: "gift9", class: "is-can-get" },
+        { src: "gift10", class: "is-can-get" },
+        { src: "gift11", class: "is-can-get" },
+        { src: "gift12", class: "is-can-get" },
+        { src: "gift13", class: "is-can-get" },
+        { src: "gift14", class: "is-can-get" },
+        { src: "gift15", class: "is-can-get" },
+        { src: "gift16", class: "is-can-get" },
+        { src: "gift17", class: "is-can-get" },
+        { src: "gift18", class: "is-can-get" },
+        { src: "gift19", class: "is-can-get" },
+        { src: "gift20", class: "is-can-get" },
+        { src: "gift21", class: "is-can-get" },
+        { src: "gift22", class: "is-can-get" },
+        { src: "gift23", class: "is-can-get" },
+        { src: "gift24", class: "is-can-get" },
+        { src: "gift25", class: "is-can-get" },
+        { src: "gift26", class: "is-can-get" },
+      ];
+      window.giftsInModalMobile = [
+        { src: "gift1_m", class: "is-can-get" },
+        { src: "gift2_m", class: "is-can-get" },
+        { src: "gift3_m", class: "is-can-get" },
+        { src: "gift4_m", class: "is-can-get" },
+        { src: "gift5_m", class: "is-can-get" },
+        { src: "gift6_m", class: "is-can-get" },
+        { src: "gift7_m", class: "is-can-get" },
+        { src: "gift8_m", class: "is-can-get" },
+        { src: "gift9_m", class: "is-can-get" },
+        { src: "gift10_m", class: "is-can-get" },
+        { src: "gift11_m", class: "is-can-get" },
+        { src: "gift12_m", class: "is-can-get" },
+        { src: "gift13_m", class: "is-can-get" },
+        { src: "gift14_m", class: "is-can-get" },
+        { src: "gift15_m", class: "is-can-get" },
+        { src: "gift16_m", class: "is-can-get" },
+        { src: "gift17_m", class: "is-can-get" },
+        { src: "gift18_m", class: "is-can-get" },
+        { src: "gift19_m", class: "is-can-get" },
+        { src: "gift20_m", class: "is-can-get" },
+        { src: "gift21_m", class: "is-can-get" },
+        { src: "gift22_m", class: "is-can-get" },
+        { src: "gift23_m", class: "is-can-get" },
+        { src: "gift24_m", class: "is-can-get" },
+        { src: "gift25_m", class: "is-can-get" },
+        { src: "gift26_m", class: "is-can-get" },
+      ];
+`;
+
+if (process.env.NODE_ENV === "production") {
+  ENV_EMAIL = `{{.Email}}`;
+  ENV_DATA = `{{.Data}}`;
+}
+
 // Список HTML-ок, к каждой отдельный JS
 const listOfHTML = ["index", "rooms", "reset", "room", "login"];
 
@@ -22,6 +87,8 @@ listOfHTML.forEach((html) => {
     new HtmlWebpackPlugin({
       templateParameters: {
         metrikaHTML,
+        ENV_EMAIL,
+        ENV_DATA,
       },
       minify: {
         collapseWhitespace: process.env.NODE_ENV === "production",
