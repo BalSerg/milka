@@ -60,6 +60,7 @@ if (process.env.NODE_ENV === "production") {
 window.firstVisit = {{.RoomData.FirstVisit}};
 window.room = {{.RoomData.RoomNum}};
 window.giftsInModal = {{.RoomData.Gifts}};
+window.giftsPosions = {{.RoomData.Gifts}};
 window.csrfToken = {{.CsrfToken}};
 `;
 }
