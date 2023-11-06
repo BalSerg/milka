@@ -13,7 +13,7 @@ import BaseRoomApp from "./BaseRoomApp";
 
 import giftParticles from "./giftParticles";
 
-import roomNum from "./urlParams";
+// import roomNum from "./urlParams";
 
 const topValue = 160;
 
@@ -32,7 +32,7 @@ class RoomApp extends BaseRoomApp {
     super();
 
     this.state = Object.assign(this.state, {
-      firstVisit: false,
+      firstVisit: window.firstVisit,
 
       tutorials: {
         giftsModal: true,
@@ -53,14 +53,10 @@ class RoomApp extends BaseRoomApp {
       isClickBoardingGift: false, // флаг щелчка на онбоардинге кнопки подарка в меню
       isClickBoardingLk: false, // флаг щелчка на онбоардинге кнопки ЛК в меню
 
-      currentRoom: 1,
+      currentRoom: parseInt(window.room, 10) || 1,
     });
 
-    if (window.screen.width >= 870) {
-      this.giftsInModal = window.giftsInModal || [];
-    } else {
-      this.giftsInModal = window.giftsInModalMobile || [];
-    }
+    this.giftsInModal = window.giftsInModal || [];
 
     this.gifts = {};
     this.room = null;
@@ -182,12 +178,6 @@ class RoomApp extends BaseRoomApp {
     //-------
 
     this.styleFixes();
-
-    /**
-     * РАБОТАТЬ ТУТ =)
-     */
-    this.state.currentRoom = parseInt(roomNum, 10);
-    // --------
 
     this.createRoom();
     this.initListeners();
@@ -444,7 +434,7 @@ class RoomApp extends BaseRoomApp {
   }
 
   putGift(...args) {
-    console.log(args);
+    // console.log(args);
 
     if (args.length === 0) {
       console.log("args length = 0");
@@ -676,12 +666,17 @@ class RoomApp extends BaseRoomApp {
       });
     });
 
-    console.log(JSON.stringify(objToSave));
+    console.log(
+      JSON.stringify({
+        room: this.state.room,
+        positions: objToSave,
+      }),
+    );
   }
 
   loadGifts(data = []) {
     if (data.length === 0) {
-      console.log("no data");
+      // console.log("no data");
       return;
     }
 
@@ -847,6 +842,11 @@ class RoomApp extends BaseRoomApp {
     // Обработка нажатия на кнопку Сменить комнату
     this.elLinkChoice.addEventListener("click", () => {
       window.location.href = "/personal/clear";
+    });
+
+    const logoutLink = getElement(".js-link-logout");
+    logoutLink.addEventListener("click", () => {
+      window.location.href = "/logout";
     });
 
     // Обработка нажатия на кнопку Подарки в меню
@@ -1021,7 +1021,10 @@ class RoomApp extends BaseRoomApp {
         });
       }
       const elImg = document.createElement("img");
-      elImg.src = `/assets/images/gifts/${gift.src}.png`;
+
+      elImg.src = `/assets/images/gifts/${gift.src}${
+        window.screen.width >= 870 ? "" : "_m"
+      }.png`;
       const elSpan = document.createElement("span");
       elSpan.textContent = `${index + 1}`;
       elGift.append(elSpan);

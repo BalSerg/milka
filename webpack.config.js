@@ -22,6 +22,8 @@ const ENV_URLS = {
 
 let ENV_EMAIL = "example@mail.ru";
 let ENV_DATA = `
+window.firstVisit = true;
+window.room = 1;
 window.giftsInModal = [
         { src: "gift1", class: "is-can-get" },
         { src: "gift2", class: "is-can-get" },
@@ -50,39 +52,15 @@ window.giftsInModal = [
         { src: "gift25", class: "is-can-get" },
         { src: "gift26", class: "is-can-get" },
       ];
-      window.giftsInModalMobile = [
-        { src: "gift1_m", class: "is-can-get" },
-        { src: "gift2_m", class: "is-can-get" },
-        { src: "gift3_m", class: "is-can-get" },
-        { src: "gift4_m", class: "is-can-get" },
-        { src: "gift5_m", class: "is-can-get" },
-        { src: "gift6_m", class: "is-can-get" },
-        { src: "gift7_m", class: "is-can-get" },
-        { src: "gift8_m", class: "is-can-get" },
-        { src: "gift9_m", class: "is-can-get" },
-        { src: "gift10_m", class: "is-can-get" },
-        { src: "gift11_m", class: "is-can-get" },
-        { src: "gift12_m", class: "is-can-get" },
-        { src: "gift13_m", class: "is-can-get" },
-        { src: "gift14_m", class: "is-can-get" },
-        { src: "gift15_m", class: "is-can-get" },
-        { src: "gift16_m", class: "is-can-get" },
-        { src: "gift17_m", class: "is-can-get" },
-        { src: "gift18_m", class: "is-can-get" },
-        { src: "gift19_m", class: "is-can-get" },
-        { src: "gift20_m", class: "is-can-get" },
-        { src: "gift21_m", class: "is-can-get" },
-        { src: "gift22_m", class: "is-can-get" },
-        { src: "gift23_m", class: "is-can-get" },
-        { src: "gift24_m", class: "is-can-get" },
-        { src: "gift25_m", class: "is-can-get" },
-        { src: "gift26_m", class: "is-can-get" },
-      ];
 `;
 
 if (process.env.NODE_ENV === "production") {
   ENV_EMAIL = `{{.User.Email}}`;
-  // ENV_DATA = `{{.Room}}`;
+  ENV_DATA = `
+window.firstVisit = {{.RoomData.FirstVisit}};
+window.room = {{.RoomData.RoomNum}};
+window.giftsInModal = {{.RoomData.Gifts}}
+`;
 }
 
 // Список HTML-ок, к каждой отдельный JS

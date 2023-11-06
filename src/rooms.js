@@ -4,13 +4,13 @@ import "./scss/main.scss";
 import $ from "jquery";
 import "slick-carousel";
 
-import config from "./config";
+// import config from "./config";
 import { getElement, getArrayElements } from "./utils";
 
 // import {stat} from "copy-webpack-plugin/types/utils";
 
-const availableWidth = document.documentElement.scrollWidth;
-const availableHeight = document.documentElement.scrollHeight;
+// const availableWidth = document.documentElement.scrollWidth;
+// const availableHeight = document.documentElement.scrollHeight;
 
 class RoomsApp {
   constructor() {
@@ -33,15 +33,15 @@ class RoomsApp {
     });
 
     this.elChoice = getElement(".js-choice");
-    this.elMenu = getElement(".js-menu");
-    this.arrModals = getArrayElements('[class *= "js-modal"]');
-    this.arrButtonsCallModal = getArrayElements('[class *= "js-call-modal"]');
-    this.arrCross = getArrayElements(".js-cross");
-    this.elCallLkModal = getElement(".js-call-lk-modal");
-    this.elModalLk = getElement(".js-modal-lk");
-    this.elLinkChoice = getElement(".js-link-choice");
+    // this.elMenu = getElement(".js-menu");
+    // this.arrModals = getArrayElements('[class *= "js-modal"]');
+    // this.arrButtonsCallModal = getArrayElements('[class *= "js-call-modal"]');
+    // this.arrCross = getArrayElements(".js-cross");
+    // this.elCallLkModal = getElement(".js-call-lk-modal");
+    // this.elModalLk = getElement(".js-modal-lk");
+    // this.elLinkChoice = getElement(".js-link-choice");
     this.elOnboardingChoice = getElement(".js-onboarding-choice");
-    this.elLinkSave = getElement(".js-link-save");
+    // this.elLinkSave = getElement(".js-link-save");
     this.arrRooms = getArrayElements(".js-go-room");
     this.arrMobileButtons = getArrayElements(".js-mobile-button");
 
@@ -66,8 +66,9 @@ class RoomsApp {
   setWidthMobileButton() {
     this.arrMobileButtons.forEach((item) => {
       // eslint-disable-next-line no-param-reassign
-      item.style.width =
-        this.arrRooms[this.arrRooms.length - 1].offsetWidth + "px";
+      item.style.width = `${
+        this.arrRooms[this.arrRooms.length - 1].offsetWidth
+      }px`;
     });
   }
 
@@ -82,7 +83,8 @@ class RoomsApp {
     // Переход в комнату
     this.arrRooms.forEach((item, index) => {
       item.addEventListener("click", () => {
-        window.location.href = `room.html?room=${index + 1}`;
+        // window.location.href = `room.html?room=${index + 1}`;
+        window.location.href = `/personal/room/${index + 1}`;
       });
     });
 
@@ -96,50 +98,50 @@ class RoomsApp {
     /**
      * MODAL events
      */
-    this.arrButtonsCallModal.forEach((item, index) => {
-      item.addEventListener("click", (e) => {
-        // Если нажали на копку ЛК НЕ в комнате!, то скрываем эту кнопку
-        if (e.target.classList.contains("js-call-lk-modal")) {
-          this.elCallLkModal.classList.add("is-hidden");
-        }
-
-        // Показ модалки
-        this.arrModals[index].classList.add("is-visibility");
-      });
-    });
-
-    // Обработка нажатия на кнопку Сменить комнату
-    this.elLinkChoice.addEventListener("click", () => {
-      this.elCallLkModal.classList.remove("is-hidden");
-      this.elModalLk.classList.remove("is-visibility");
-    });
-
-    // Закрытие модалки по крестику
-    this.arrCross.forEach((item) => {
-      item.addEventListener("click", () => {
-        item.parentNode.parentNode.classList.remove("is-visibility");
-        this.elCallLkModal.classList.remove("is-hidden");
-      });
-    });
-
-    // Обработка нажатия кнопки Сохранить
-    this.elLinkSave.addEventListener("click", () => {
-      this.elModalLk.classList.remove("is-visibility");
-      this.elCallLkModal.classList.remove("is-hidden");
-    });
-
-    // Закрытие модалок по кнопке Escc
-    window.addEventListener("keypress", (e) => {
-      if (this.state.isModal === false) {
-        return;
-      }
-
-      if (e.key === "Escape" || e.key === "Esc" || e.keyCode === 27) {
-        this.arrModals.forEach((item) => {
-          item.classList.remove("is-visibility");
-        });
-      }
-    });
+    // this.arrButtonsCallModal.forEach((item, index) => {
+    //   item.addEventListener("click", (e) => {
+    //     // Если нажали на копку ЛК НЕ в комнате!, то скрываем эту кнопку
+    //     if (e.target.classList.contains("js-call-lk-modal")) {
+    //       this.elCallLkModal.classList.add("is-hidden");
+    //     }
+    //
+    //     // Показ модалки
+    //     this.arrModals[index].classList.add("is-visibility");
+    //   });
+    // });
+    //
+    // // Обработка нажатия на кнопку Сменить комнату
+    // this.elLinkChoice.addEventListener("click", () => {
+    //   this.elCallLkModal.classList.remove("is-hidden");
+    //   this.elModalLk.classList.remove("is-visibility");
+    // });
+    //
+    // // Закрытие модалки по крестику
+    // this.arrCross.forEach((item) => {
+    //   item.addEventListener("click", () => {
+    //     item.parentNode.parentNode.classList.remove("is-visibility");
+    //     this.elCallLkModal.classList.remove("is-hidden");
+    //   });
+    // });
+    //
+    // // Обработка нажатия кнопки Сохранить
+    // this.elLinkSave.addEventListener("click", () => {
+    //   this.elModalLk.classList.remove("is-visibility");
+    //   this.elCallLkModal.classList.remove("is-hidden");
+    // });
+    //
+    // // Закрытие модалок по кнопке Esc
+    // window.addEventListener("keypress", (e) => {
+    //   if (this.state.isModal === false) {
+    //     return;
+    //   }
+    //
+    //   if (e.key === "Escape" || e.key === "Esc" || e.keyCode === 27) {
+    //     this.arrModals.forEach((item) => {
+    //       item.classList.remove("is-visibility");
+    //     });
+    //   }
+    // });
     //---------
   }
 }
