@@ -666,12 +666,32 @@ class RoomApp extends BaseRoomApp {
       });
     });
 
-    console.log(
-      JSON.stringify({
-        room: this.state.room,
-        positions: objToSave,
-      }),
-    );
+    const data = JSON.stringify({
+      room: this.state.currentRoom,
+      positions: objToSave,
+    });
+
+    const formData = new FormData();
+    formData.append("data", data);
+    formData.append("csrf", window.csrf || "");
+
+    console.log(formData.values());
+
+    fetch("/personal/save", {
+      method: "POST",
+      // headers: {
+      //  "Content-Type": "application/json;charset=utf-8",
+      // },
+      credentials: "include",
+      body: formData,
+    })
+      .then((response) => response.json())
+      .then((result) => alert(result.result))
+      .catch((e) => {
+        console.log(e);
+      });
+
+    console.log(data);
   }
 
   loadGifts(data = []) {
@@ -898,6 +918,7 @@ class RoomApp extends BaseRoomApp {
     // Обработка нажатия кнопки Сохранить
     this.elLinkSave.addEventListener("click", () => {
       this.elModalLk.classList.remove("is-visibility");
+      this.saveGifts();
     });
 
     // Закрытие модалок по кнопке Esc
