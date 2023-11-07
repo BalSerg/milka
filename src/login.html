@@ -42,6 +42,11 @@
                 <div class="error-message">{{.FormError.Password}}</div>
                 {{end}}
               </div>
+
+              {{if .FormError.Total}}
+              <div class="error-message">{{.FormError.Total}}</div>
+              {{end}}
+
               <button type="submit" class="button js-login-submit">
                 <span>Готово</span>
               </button>
@@ -60,15 +65,15 @@
         </div>
       </div>
 
-      <div class="modal js-modal">
-        <div class="modal-wrapper">
-          <div class="modal__cross js-cross"></div>
-          <div class="modal__text">
-            Подробная инструкция по восстановлению пароля отправлена вам на
-            почту
-          </div>
-        </div>
-      </div>
+      <!--      <div class="modal js-modal">-->
+      <!--        <div class="modal-wrapper">-->
+      <!--          <div class="modal__cross js-cross"></div>-->
+      <!--          <div class="modal__text">-->
+      <!--            Подробная инструкция по восстановлению пароля отправлена вам на-->
+      <!--            почту-->
+      <!--          </div>-->
+      <!--        </div>-->
+      <!--      </div>-->
     </main>
   </body>
 </html>
