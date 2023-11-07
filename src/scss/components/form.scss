@@ -71,7 +71,7 @@
     &-input {
       position: relative;
 
-      >input {
+      > input {
         height: 68px;
         box-sizing: border-box;
         width: 100%;
@@ -91,7 +91,7 @@
       }
 
       &.is-error {
-        >input {
+        > input {
           border-color: $red;
         }
 
@@ -106,7 +106,7 @@
       bottom: -23px;
       left: 0;
 
-      display: none;
+      // display: none;
 
       font-family: "lifehack";
       font-size: 12px;
@@ -167,21 +167,25 @@
       $width: 24px;
 
       position: absolute;
-      top: calc(#{$width} / -2 + 3px);// +3 половина высоты border'a
+      top: calc(#{$width} / -2 + 3px); // +3 половина высоты border'a
       left: 0;
 
       display: flex;
       justify-content: space-evenly;
       width: 100%;
 
-      >span {
+      > span {
         display: block;
         width: $width;
         height: $width;
 
-        background: radial-gradient(50% 50% at 50% 50%, #FFEB3A 0%, #FFF7AF 100%);
+        background: radial-gradient(
+          50% 50% at 50% 50%,
+          #ffeb3a 0%,
+          #fff7af 100%
+        );
         border-radius: 50%;
-        filter: drop-shadow(1px 0px 18px #FFEF60);
+        filter: drop-shadow(1px 0px 18px #ffef60);
       }
     }
 
@@ -195,7 +199,7 @@
   .form {
     width: auto;
   }
-};
+}
 
 @media screen and (max-width: 400px) {
   .form {

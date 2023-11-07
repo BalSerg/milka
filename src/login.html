@@ -29,20 +29,24 @@
                     placeholder="example@gmail.com"
                   />
                 </div>
+                {{if .FormError.Email}}
                 <div class="error-message">{{.FormError.Email}}</div>
+                {{end}}
               </div>
               <div class="form__item">
                 <div class="form__item-text">Пароль</div>
                 <div class="form__item-input js-password">
                   <input type="password" name="password" required />
                 </div>
+                {{if .FormError.Password}}
                 <div class="error-message">{{.FormError.Password}}</div>
+                {{end}}
               </div>
               <button type="submit" class="button js-login-submit">
                 <span>Готово</span>
               </button>
             </div>
-            <div class="re-password js-call-modal">Восстановить пароль</div>
+            <!--            <div class="re-password js-call-modal">Восстановить пароль</div>-->
             <div class="form__decor is-mobile">
               <span></span>
               <span></span>
