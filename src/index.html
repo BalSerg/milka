@@ -28,6 +28,10 @@
                 <div class="form__item-text">Почта</div>
                 <div class="form__item-input">
                   <input
+                    {{if
+                    .FormError.Email}}
+                    class="error"
+                    {{end}}
                     type="email"
                     name="email"
                     placeholder="example@gmail.com"
@@ -41,7 +45,15 @@
               <div class="form__item">
                 <div class="form__item-text">Пароль</div>
                 <div class="form__item-input js-password">
-                  <input type="password" name="password" required />
+                  <input
+                    {{if
+                    .FormError.Password}}
+                    class="error"
+                    {{end}}
+                    type="password"
+                    name="password"
+                    required
+                  />
                 </div>
                 {{if .FormError.Password}}
                 <div class="error-message">{{.FormError.Password}}</div>
