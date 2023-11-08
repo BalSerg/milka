@@ -76,7 +76,6 @@
         box-sizing: border-box;
         width: 100%;
         padding: 0 10px;
-        box-sizing: border-box;
 
         border: 3px solid $purple-light;
         border-radius: 35px;
@@ -88,15 +87,9 @@
           color: $purple;
           text-align: center;
         }
-      }
 
-      &.is-error {
-        > input {
+        &.error {
           border-color: $red;
-        }
-
-        & + .error-message {
-          display: block;
         }
       }
     }
