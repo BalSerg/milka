@@ -56,6 +56,8 @@ class RoomApp extends BaseRoomApp {
       currentRoom: parseInt(window.room, 10) || 1,
     });
 
+    console.log(this.state.currentRoom, parseInt(window.room, 10));
+
     this.giftsInModal = window.giftsInModal || [];
 
     this.gifts = {};
