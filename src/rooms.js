@@ -82,9 +82,17 @@ class RoomsApp {
 
     // Переход в комнату
     this.arrRooms.forEach((item, index) => {
+      if (!("room" in item.dataset)) {
+        return;
+      }
+
+      const { room } = item.dataset;
+
+      console.log(`/personal/room/${room}`);
+
       item.addEventListener("click", () => {
         // window.location.href = `room.html?room=${index + 1}`;
-        window.location.href = `/personal/room/${index + 1}`;
+        window.location.href = `/personal/room/${room}`;
       });
     });
 
