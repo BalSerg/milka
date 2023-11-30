@@ -14,6 +14,7 @@
 
   &__name {
     @include appetite36;
+    font-family: appetite ,HelveticaRegular, sans-serif;
 
     padding: 42px 0 27px;
 
@@ -62,7 +63,7 @@
     &-text {
       margin: 8px auto;
 
-      font-family: "lifehack";
+      font-family: "lifehack", PacificoRegular, sans-serif;
       font-size: 36px;
       line-height: 43px;
       color: $purple;
@@ -82,7 +83,7 @@
 
         &,
         &::placeholder {
-          font-family: "lifehack";
+          font-family: "lifehack", PacificoRegular, sans-serif;
           font-size: 24px;
           color: $purple;
           text-align: center;
@@ -101,7 +102,7 @@
 
       // display: none;
 
-      font-family: "lifehack";
+      font-family: "lifehack", PacificoRegular, sans-serif;
       font-size: 12px;
       line-height: normal;
       color: $red;
