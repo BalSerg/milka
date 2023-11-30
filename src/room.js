@@ -31,6 +31,81 @@ class RoomApp extends BaseRoomApp {
   constructor() {
     super();
 
+    let language;
+
+    language = 'kz';
+
+    switch (language) {
+      case 'ru':
+        getElement('.modal-lk-content>div').classList.add('font-ru');
+        getElement('.modal-lk-content li').classList.add('font-ru');
+        getElement('.js-qr .modal__text').classList.add('font-ru');
+        getElement('.js-modal-gifts .modal-gifts__title').classList.add('font-ru');
+        getElement('.js-gift-box > img').src = '/assets/images/btn_box.png';
+        getElement('.js-gift-ar > img').src = '/assets/images/btn_ar.png';
+
+      case 'kz':
+        getElement('.modal-lk-content>div').classList.add('font-kz');
+        getElement('.modal-lk-content li').classList.add('font-lifehack-pacifico');
+        getElement('.js-qr .modal__text').classList.add('font-lifehack-pacifico');
+        getElement('.js-modal-gifts .modal-gifts__title').classList.add('font-kz');
+        getElement('.js-gift-box > img').src = '/assets/images/btn_box_kz.png';
+        getElement('.js-gift-ar > img').src = '/assets/images/btn_ar_kz.png';
+
+      case 'az':
+        getElement('.modal-lk-content>div').classList.add('font-appetite-helvetica');
+        getElement('.modal-lk-content li').classList.add('font-lifehack-helvetica');
+        getElement('.js-qr .modal__text').classList.add('font-helvetica');
+        getElement('.js-modal-gifts .modal-gifts__title').classList.add('font-appetite-helvetica');
+        getElement('.js-gift-box > img').src = '/assets/images/btn_box_az.png';
+        getElement('.js-gift-ar > img').src = '/assets/images/btn_ar_az.png';
+
+      case 'uz':
+        getElement('.modal-lk-content>div').classList.add('font-uz');
+        getElement('.modal-lk-content li').classList.add('font-uz');
+        getElement('.js-qr .modal__text').classList.add('font-uz');
+        getElement('.js-modal-gifts .modal-gifts__title').classList.add('font-uz');
+        getElement('.js-gift-box > img').src = '/assets/images/btn_box_uz.png';
+        getElement('.js-gift-ar > img').src = '/assets/images/btn_ar_uz.png';
+
+
+      case 'kg':
+        getElement('.modal-lk-content>div').classList.add('font-kz');
+        getElement('.modal-lk-content li').classList.add('font-lifehack-pacifico');
+        getElement('.js-qr .modal__text').classList.add('font-lifehack-pacifico');
+        getElement('.js-modal-gifts .modal-gifts__title').classList.add('font-kz');
+        getElement('.js-gift-box > img').src = '/assets/images/btn_box_kg.png';
+        getElement('.js-gift-ar > img').src = '/assets/images/btn_ar_kg.png';
+
+
+      case 'mn':
+        getElement('.modal-lk-content>div').classList.add('font-kz');
+        getElement('.modal-lk-content li').classList.add('font-lifehack-pacifico');
+        getElement('.js-qr .modal__text').classList.add('font-lifehack-pacifico');
+        getElement('.js-modal-gifts .modal-gifts__title').classList.add('font-kz');
+        getElement('.js-gift-box > img').src = '/assets/images/btn_box_mn.png';
+        getElement('.js-gift-ar > img').src = '/assets/images/btn_ar_mn.png';
+
+
+      case 'ge':
+        getElement('.modal-lk-content>div').classList.add('font-helvetica');
+        getElement('.modal-lk-content li').classList.add('font-helvetica');
+        getElement('.js-qr .modal__text').classList.add('font-helvetica');
+        getElement('.js-modal-gifts .modal-gifts__title').classList.add('font-helvetica');
+        getElement('.js-gift-box > img').src = '/assets/images/btn_box_ge.png';
+        getElement('.js-gift-ar > img').src = '/assets/images/btn_ar_ge.png';
+
+
+      case 'am':
+        getElement('.modal-lk-content>div').classList.add('font-amGuard');
+        getElement('.modal-lk-content li').classList.add('font-amHelv');
+        getElement('.js-qr .modal__text').classList.add('font-amHelv');
+        getElement('.js-modal-gifts .modal-gifts__title').classList.add('font-amGuard');
+        getElement('.js-gift-box > img').src = '/assets/images/btn_box_am.png';
+        getElement('.js-gift-ar > img').src = '/assets/images/btn_ar_am.png';
+
+    }
+
     this.state = Object.assign(this.state, {
       firstVisit: window.firstVisit,
 
