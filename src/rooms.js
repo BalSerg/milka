@@ -12,9 +12,126 @@ import { getElement, getArrayElements } from "./utils";
 // const availableWidth = document.documentElement.scrollWidth;
 // const availableHeight = document.documentElement.scrollHeight;
 
+let language;
+
 class RoomsApp {
   constructor() {
     // super();
+
+    language = 'kz';
+    switch (language) {
+      case 'ru':
+        getElement('.js-rooms-title').classList.add('font-ru');
+        getArrayElements('[class *= "js-rooms-name"]').forEach((item) => {
+          item.classList.add('font-ru');
+        });
+        getArrayElements('[class *= "js-rooms-text"]').forEach((item) => {
+          item.classList.add('font-ru');
+        });
+        getArrayElements('.js-rooms-button').forEach((item) => {
+          item.classList.add('font-ru');
+        });
+        getElement('.js-onboarding-choice-text').classList.add('font-ru');
+        break;
+
+      case 'kz':
+        getElement('.js-rooms-title').classList.add('font-kz');
+        getArrayElements('[class *= "js-rooms-name"]').forEach((item) => {
+          item.classList.add('font-kz');
+        });
+        getArrayElements('[class *= "js-rooms-text"]').forEach((item) => {
+          item.classList.add('font-kz');
+        });
+        getArrayElements('.js-rooms-button').forEach((item) => {
+          item.classList.add('font-kz');
+        });
+        getElement('.js-onboarding-choice-text').classList.add('font-kz');
+        break;
+
+      case 'az':
+        getElement('.js-rooms-title').classList.add('font-helvetica');
+        getArrayElements('[class *= "js-rooms-name"]').forEach((item) => {
+          item.classList.add('font-helvetica');
+        });
+        getArrayElements('[class *= "js-rooms-text"]').forEach((item) => {
+          item.classList.add('font-helvetica');
+        });
+        getArrayElements('.js-rooms-button').forEach((item) => {
+          item.classList.add('font-helvetica');
+        });
+        getElement('.js-onboarding-choice-text').classList.add('font-helvetica');
+        break;
+
+      case 'uz':
+        getElement('.js-rooms-title').classList.add('font-uz');
+        getArrayElements('[class *= "js-rooms-name"]').forEach((item) => {
+          item.classList.add('font-uz');
+        });
+        getArrayElements('[class *= "js-rooms-text"]').forEach((item) => {
+          item.classList.add('font-uz');
+        });
+        getArrayElements('.js-rooms-button').forEach((item) => {
+          item.classList.add('font-uz');
+        });
+        getElement('.js-onboarding-choice-text').classList.add('font-uz');
+        break;
+
+      case 'kg':
+        getElement('.js-rooms-title').classList.add('font-kz');
+        getArrayElements('[class *= "js-rooms-name"]').forEach((item) => {
+          item.classList.add('font-kz');
+        });
+        getArrayElements('[class *= "js-rooms-text"]').forEach((item) => {
+          item.classList.add('font-kz');
+        });
+        getArrayElements('.js-rooms-button').forEach((item) => {
+          item.classList.add('font-kz');
+        });
+        getElement('.js-onboarding-choice-text').classList.add('font-kz');
+        break;
+
+      case 'mn':
+        getElement('.js-rooms-title').classList.add('font-kz');
+        getArrayElements('[class *= "js-rooms-name"]').forEach((item) => {
+          item.classList.add('font-kz');
+        });
+        getArrayElements('[class *= "js-rooms-text"]').forEach((item) => {
+          item.classList.add('font-kz');
+        });
+        getArrayElements('.js-rooms-button').forEach((item) => {
+          item.classList.add('font-kz');
+        });
+        getElement('.js-onboarding-choice-text').classList.add('font-kz');
+        break;
+
+      case 'ge':
+        getElement('.js-rooms-title').classList.add('font-helvetica');
+        getArrayElements('[class *= "js-rooms-name"]').forEach((item) => {
+          item.classList.add('font-helvetica');
+        });
+        getArrayElements('[class *= "js-rooms-text"]').forEach((item) => {
+          item.classList.add('font-helvetica');
+        });
+        getArrayElements('.js-rooms-button').forEach((item) => {
+          item.classList.add('font-helvetica');
+        });
+        getElement('.js-onboarding-choice-text').classList.add('font-helvetica');
+        break;
+
+      case 'am':
+        getElement('.js-rooms-title').classList.add('font-amGuard');
+        getArrayElements('[class *= "js-rooms-name"]').forEach((item) => {
+          item.classList.add('font-amGuard');
+        });
+        getArrayElements('[class *= "js-rooms-text"]').forEach((item) => {
+          item.classList.add('font-amHelv');
+        });
+        getArrayElements('.js-rooms-button').forEach((item) => {
+          item.classList.add('font-amGuard');
+        });
+        getElement('.js-onboarding-choice-text').classList.add('font-amHelv');
+        break;
+    }
 
     this.state = {
       firstVisit: true,
@@ -87,8 +204,6 @@ class RoomsApp {
       }
 
       const { room } = item.dataset;
-
-      console.log(`/personal/room/${room}`);
 
       item.addEventListener("click", () => {
         // window.location.href = `room.html?room=${index + 1}`;

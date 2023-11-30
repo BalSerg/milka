@@ -11,3 +11,56 @@
   font-weight: 400;
   font-style: normal;
 }
+
+@font-face {
+  font-family: "kzAppetite";
+  src : url("./fonts/KzAppetiteNew.otf") format("opentype");
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "PacificoRegular";
+  src : url("./fonts/PacificoRegular.ttf") format("opentype");
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "HelveticaRegular";
+  src : url("./fonts/HelveticaRegular.otf") format("opentype");
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "ArmHelv";
+  src : url("./fonts/ArmHelv.ttf") format("opentype");
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "amHelv";
+  src : url("./fonts/Armguard.ttf") format("opentype");
+  font-weight: 400;
+  font-style: normal;
+}
+
+.font-kz {
+  font-family: kzAppetite, PacificoRegular, sans-serif !important;
+}
+
+.font-helvetica {
+  font-family: HelveticaRegular, sans-serif !important;
+}
+
+.font-amGuard {
+  font-family: Armguard, sans-serif !important;
+}
+
+.font-amGuard {
+  font-family: ArmHelv, sans-serif !important;
+}
+
+
