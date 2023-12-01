@@ -43,6 +43,11 @@ class RoomApp extends BaseRoomApp {
         getElement('.js-modal-gifts .modal-gifts__title').classList.add('font-ru');
         getElement('.js-gift-box > img').src = '/assets/images/btn_box.png';
         getElement('.js-gift-ar > img').src = '/assets/images/btn_ar.png';
+        getElement('.js-onboarding-content > span').classList.add('font-ru');
+        getElement('.js-onboarding-content-gift > span').classList.add('font-ru');
+        getElement('.js-onboarding-content-lk > span').classList.add('font-ru');
+        getElement('.js-onboarding-wrapper-gift span').classList.add('font-ru');
+
 
       case 'kz':
         getElement('.modal-lk-content>div').classList.add('font-kz');
@@ -51,6 +56,10 @@ class RoomApp extends BaseRoomApp {
         getElement('.js-modal-gifts .modal-gifts__title').classList.add('font-kz');
         getElement('.js-gift-box > img').src = '/assets/images/btn_box_kz.png';
         getElement('.js-gift-ar > img').src = '/assets/images/btn_ar_kz.png';
+        getElement('.js-onboarding-content > span').classList.add('font-kz');
+        getElement('.js-onboarding-content-gift > span').classList.add('font-kz');
+        getElement('.js-onboarding-content-lk > span').classList.add('font-kz');
+        getElement('.js-onboarding-wrapper-gift span').classList.add('font-kz');
 
       case 'az':
         getElement('.modal-lk-content>div').classList.add('font-appetite-helvetica');
@@ -59,6 +68,10 @@ class RoomApp extends BaseRoomApp {
         getElement('.js-modal-gifts .modal-gifts__title').classList.add('font-appetite-helvetica');
         getElement('.js-gift-box > img').src = '/assets/images/btn_box_az.png';
         getElement('.js-gift-ar > img').src = '/assets/images/btn_ar_az.png';
+        getElement('.js-onboarding-content > span').classList.add('font-appetite-helvetica');
+        getElement('.js-onboarding-content-gift > span').classList.add('font-appetite-helvetica');
+        getElement('.js-onboarding-content-lk > span').classList.add('font-appetite-helvetica');
+        getElement('.js-onboarding-wrapper-gift span').classList.add('font-appetite-helvetica');
 
       case 'uz':
         getElement('.modal-lk-content>div').classList.add('font-uz');
@@ -67,6 +80,10 @@ class RoomApp extends BaseRoomApp {
         getElement('.js-modal-gifts .modal-gifts__title').classList.add('font-uz');
         getElement('.js-gift-box > img').src = '/assets/images/btn_box_uz.png';
         getElement('.js-gift-ar > img').src = '/assets/images/btn_ar_uz.png';
+        getElement('.js-onboarding-content > span').classList.add('font-uz');
+        getElement('.js-onboarding-content-gift > span').classList.add('font-uz');
+        getElement('.js-onboarding-content-lk > span').classList.add('font-uz');
+        getElement('.js-onboarding-wrapper-gift span').classList.add('font-uz');
 
 
       case 'kg':
@@ -76,7 +93,10 @@ class RoomApp extends BaseRoomApp {
         getElement('.js-modal-gifts .modal-gifts__title').classList.add('font-kz');
         getElement('.js-gift-box > img').src = '/assets/images/btn_box_kg.png';
         getElement('.js-gift-ar > img').src = '/assets/images/btn_ar_kg.png';
-
+        getElement('.js-onboarding-content > span').classList.add('font-kz');
+        getElement('.js-onboarding-content-gift > span').classList.add('font-kz');
+        getElement('.js-onboarding-content-lk > span').classList.add('font-kz');
+        getElement('.js-onboarding-wrapper-gift span').classList.add('font-kz');
 
       case 'mn':
         getElement('.modal-lk-content>div').classList.add('font-kz');
@@ -85,6 +105,10 @@ class RoomApp extends BaseRoomApp {
         getElement('.js-modal-gifts .modal-gifts__title').classList.add('font-kz');
         getElement('.js-gift-box > img').src = '/assets/images/btn_box_mn.png';
         getElement('.js-gift-ar > img').src = '/assets/images/btn_ar_mn.png';
+        getElement('.js-onboarding-content > span').classList.add('font-kz');
+        getElement('.js-onboarding-content-gift > span').classList.add('font-kz');
+        getElement('.js-onboarding-content-lk > span').classList.add('font-kz');
+        getElement('.js-onboarding-wrapper-gift span').classList.add('font-kz');
 
 
       case 'ge':
@@ -94,6 +118,10 @@ class RoomApp extends BaseRoomApp {
         getElement('.js-modal-gifts .modal-gifts__title').classList.add('font-helvetica');
         getElement('.js-gift-box > img').src = '/assets/images/btn_box_ge.png';
         getElement('.js-gift-ar > img').src = '/assets/images/btn_ar_ge.png';
+        getElement('.js-onboarding-content > span').classList.add('font-helvetica');
+        getElement('.js-onboarding-content-gift > span').classList.add('font-helvetica');
+        getElement('.js-onboarding-content-lk > span').classList.add('font-helvetica');
+        getElement('.js-onboarding-wrapper-gift span').classList.add('font-helvetica');
 
 
       case 'am':
@@ -103,6 +131,10 @@ class RoomApp extends BaseRoomApp {
         getElement('.js-modal-gifts .modal-gifts__title').classList.add('font-amGuard');
         getElement('.js-gift-box > img').src = '/assets/images/btn_box_am.png';
         getElement('.js-gift-ar > img').src = '/assets/images/btn_ar_am.png';
+        getElement('.js-onboarding-content > span').classList.add('font-amHelv');
+        getElement('.js-onboarding-content-gift > span').classList.add('font-amHelv');
+        getElement('.js-onboarding-content-lk > span').classList.add('font-amHelv');
+        getElement('.js-onboarding-wrapper-gift span').classList.add('font-amHelv');
 
     }
 
