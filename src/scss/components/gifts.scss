@@ -127,6 +127,12 @@
       width: $width;
       height: $width;
 
+      >span {
+        @include appetite60;
+
+        height: auto;
+      }
+
       &:nth-child(11),
       &:nth-child(14) {
         >img {
