@@ -18,7 +18,7 @@ class RoomsApp {
   constructor() {
     // super();
 
-    language = 'kz';
+    language = 'ru';
     switch (language) {
       case 'ru':
         getElement('.js-rooms-title').classList.add('font-ru');
