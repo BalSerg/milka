@@ -39,7 +39,9 @@
                   />
                 </div>
                 {{if .FormError.Email}}
-                <div class="error-message is-hidden js-error-message">{{.FormError.Email}}</div>
+                <div class="error-message js-error-message">
+                  {{.FormError.Email}}
+                </div>
                 {{end}}
               </div>
               <div class="form__item">
@@ -56,12 +58,14 @@
                   />
                 </div>
                 {{if .FormError.Password}}
-                <div class="error-message is-hidden js-error">{{.FormError.Password}}</div>
+                <div class="error-message js-error">
+                  {{.FormError.Password}}
+                </div>
                 {{end}}
               </div>
 
               {{if .FormError.Total}}
-              <div class="error-message is-hidden js-error">{{.FormError.Total}}</div>
+              <div class="error-message js-error">{{.FormError.Total}}</div>
               {{end}}
 
               <button type="submit" class="button js-reg-submit">
